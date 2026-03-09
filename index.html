@@ -1,0 +1,214 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invitación</title>
+    <meta name="description" content="Una invitación especial." />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div id="welcomeScreen" class="screen-overlay">
+        <div class="screen-card welcome-card">
+
+            <p id="welcomeKicker" class="screen-kicker">Bienvenido/a</p>
+
+            <h2 id="welcomeGuestName" class="screen-title">
+                Estamos preparando tu invitación
+            </h2>
+
+            <p id="welcomeMessage" class="screen-text">
+                Un momento, estamos dejando todo listo para vos.
+            </p>
+
+            <div id="welcomeStatus" class="welcome-status">
+
+                <div id="welcomeLoader" class="welcome-loader"></div>
+
+                <div id="welcomeReady" class="welcome-ready hidden">
+                    <span class="welcome-ready-icon">✓</span>
+                    <span>Tu invitación está lista</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bg-overlay"></div>
+
+    <header class="hero">
+
+        <div class="container hero-card fade-in visible">
+
+            <p class="eyebrow">Una invitación especial</p>
+
+            <h1 id="mainTitle" class="title">
+                Cargando invitación...
+            </h1>
+
+            <p id="mainSubtitle" class="subtitle">
+                Estamos preparando tu experiencia.
+            </p>
+
+            <div class="guest-box">
+
+                <span class="label">Invitación para</span>
+
+                <h2 id="guestName">
+                    Aguardanos un instante
+                </h2>
+
+                <p id="guestExtra" class="guest-extra"></p>
+
+            </div>
+
+            <div id="countdownSection" class="countdown-section hidden">
+
+                <p class="label">Faltan</p>
+
+                <div id="countdown" class="countdown">
+
+                    <div><span id="days">00</span><small>días</small></div>
+                    <div><span id="hours">00</span><small>hs</small></div>
+                    <div><span id="minutes">00</span><small>min</small></div>
+                    <div><span id="seconds">00</span><small>seg</small></div>
+
+                </div>
+
+            </div>
+
+            <a id="detailsBtn" class="btn primary hidden" href="#details">
+                Ver detalles
+            </a>
+
+        </div>
+
+    </header>
+
+    <main id="invitationContent" class="hidden">
+
+        <section id="details" class="section">
+
+            <div class="container grid-2">
+
+                <div class="card fade-up">
+
+                    <h3>Cuándo</h3>
+
+                    <p id="eventDateText">-</p>
+                    <p id="eventTimeText">-</p>
+
+                </div>
+
+                <div class="card fade-up">
+
+                    <h3>Dónde</h3>
+
+                    <p id="venueName">-</p>
+                    <p id="venueAddress">-</p>
+
+                    <a id="mapButton" class="btn secondary" href="#" target="_blank" rel="noopener noreferrer">
+                        Abrir mapa
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="section alt">
+
+            <div class="container card fade-up center-text">
+
+                <h3>Tu acceso</h3>
+
+                <p id="personalMessage">-</p>
+
+                <div id="guestTags" class="tags"></div>
+
+            </div>
+
+        </section>
+
+        <section class="section">
+
+            <div class="container card fade-up">
+
+                <h3>Confirmación</h3>
+
+                <p>
+                    Ayudanos confirmando tu asistencia antes del
+                    <strong id="rsvpDeadline">-</strong>.
+                </p>
+
+                <a id="rsvpButton" class="btn primary" href="#" target="_blank" rel="noopener noreferrer">
+                    Confirmar asistencia
+                </a>
+
+            </div>
+
+        </section>
+
+        <section id="gallerySection" class="section alt hidden">
+
+            <div class="container fade-up">
+
+                <h3 class="center-text">Galería</h3>
+
+                <div id="gallery" class="gallery"></div>
+
+            </div>
+
+        </section>
+
+        <section id="playlistSection" class="section hidden">
+
+            <div class="container card fade-up center-text">
+
+                <h3>Playlist</h3>
+
+                <p>Entrá en clima con una selección que nos encanta.</p>
+
+                <a id="playlistButton" class="btn secondary" href="#" target="_blank" rel="noopener noreferrer">
+                    Escuchar playlist
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <section id="errorSection" class="section hidden">
+
+        <div class="container card center-text">
+
+            <h3 id="errorTitle">No pudimos validar tu acceso</h3>
+
+            <p id="errorMessage">
+                Este enlace no es válido o ya no está disponible.
+            </p>
+
+        </div>
+
+    </section>
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <p id="footerText">Con amor</p>
+
+        </div>
+
+    </footer>
+
+    <script type="module" src="main.js"></script>
+
+</body>
+
+</html>
