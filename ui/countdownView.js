@@ -1,63 +1,68 @@
-export function renderCountdown(els, state, data) {
-    if (!els.countdownSection) return;
-
-    if (data.eventIsoDate) {
-        state.eventDate = new Date(data.eventIsoDate);
-
-        if (!Number.isNaN(state.eventDate.getTime())) {
-            els.countdownSection.classList.remove("hidden");
-            updateCountdown(els, state);
-
-            if (state.countdownInterval) {
-                clearInterval(state.countdownInterval);
-            }
-
-            state.countdownInterval = setInterval(() => {
-                updateCountdown(els, state);
-            }, 1000);
-
-            return;
-        }
-    }
-
-    state.eventDate = null;
-    els.countdownSection.classList.add("hidden");
-
+function clearCountdown(state) {
     if (state.countdownInterval) {
         clearInterval(state.countdownInterval);
         state.countdownInterval = null;
     }
 }
 
+function setCountdownValues(els, { days = "00", hours = "00", minutes = "00", seconds = "00" }) {
+    if (els.days) els.days.textContent = days;
+    if (els.hours) els.hours.textContent = hours;
+    if (els.minutes) els.minutes.textContent = minutes;
+    if (els.seconds) els.seconds.textContent = seconds;
+}
+
+export function renderCountdown(els, state, data) {
+    if (!els.countdownSection) return;
+
+    clearCountdown(state);
+
+    if (!data.eventIsoDate) {
+        state.eventDate = null;
+        els.countdownSection.classList.add("hidden");
+        return;
+    }
+
+    const parsedDate = new Date(data.eventIsoDate);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+        state.eventDate = null;
+        els.countdownSection.classList.add("hidden");
+        return;
+    }
+
+    state.eventDate = parsedDate;
+    els.countdownSection.classList.remove("hidden");
+    updateCountdown(els, state);
+
+    state.countdownInterval = setInterval(() => {
+        if (document.hidden) return;
+        updateCountdown(els, state);
+    }, 1000);
+}
+
 export function updateCountdown(els, state) {
     if (!state.eventDate) return;
-    if (!els.days || !els.hours || !els.minutes || !els.seconds) return;
 
     const now = new Date();
-    const diff = state.eventDate - now;
+    const diff = state.eventDate.getTime() - now.getTime();
 
     if (diff <= 0) {
-        els.days.textContent = "00";
-        els.hours.textContent = "00";
-        els.minutes.textContent = "00";
-        els.seconds.textContent = "00";
-
-        if (state.countdownInterval) {
-            clearInterval(state.countdownInterval);
-            state.countdownInterval = null;
-        }
-
+        setCountdownValues(els, {});
+        clearCountdown(state);
         return;
     }
 
     const totalSeconds = Math.floor(diff / 1000);
-    const days = Math.floor(totalSeconds / (60 * 60 * 24));
-    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    els.days.textContent = String(days).padStart(2, "0");
-    els.hours.textContent = String(hours).padStart(2, "0");
-    els.minutes.textContent = String(minutes).padStart(2, "0");
-    els.seconds.textContent = String(seconds).padStart(2, "0");
+    setCountdownValues(els, {
+        days: String(days).padStart(2, "0"),
+        hours: String(hours).padStart(2, "0"),
+        minutes: String(minutes).padStart(2, "0"),
+        seconds: String(seconds).padStart(2, "0")
+    });
 }

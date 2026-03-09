@@ -36,8 +36,8 @@ function resetInvitationState() {
     if (els.playlistSection) els.playlistSection.classList.add("hidden");
     if (els.countdownSection) els.countdownSection.classList.add("hidden");
 
-    if (els.gallery) els.gallery.innerHTML = "";
-    if (els.guestTags) els.guestTags.innerHTML = "";
+    if (els.gallery) els.gallery.replaceChildren();
+    if (els.guestTags) els.guestTags.replaceChildren();
 
     if (state.countdownInterval) {
         clearInterval(state.countdownInterval);
@@ -66,6 +66,11 @@ async function renderInvitation(data) {
     await renderHero(els, viewData);
 }
 
+async function showInvitationError(copy) {
+    showError(els, copy);
+    await hideWelcomeScreen(els);
+}
+
 async function loadInvitationFlow() {
     showWelcomeScreen(els);
     resetInvitationState();
@@ -74,15 +79,21 @@ async function loadInvitationFlow() {
     const token = getToken();
 
     if (!token) {
-        showError(els, COPY.errors.missingToken);
+        await showInvitationError(COPY.errors.missingToken);
         return;
+    }
+
+    if (els.retryButton) {
+        els.retryButton.addEventListener("click", () => {
+            loadInvitationFlow();
+        });
     }
 
     try {
         const data = await fetchInvitation(token);
 
         if (!data || !data.ok || !data.invitation) {
-            showError(els, COPY.errors.invalidAccess);
+            await showInvitationError(COPY.errors.invalidAccess);
             return;
         }
 
@@ -94,7 +105,9 @@ async function loadInvitationFlow() {
         console.error("Error cargando invitación:", error);
 
         const isTimeout = error && error.message === "REQUEST_TIMEOUT";
-        showError(els, isTimeout ? COPY.errors.timeout : COPY.errors.connection);
+        await showInvitationError(
+            isTimeout ? COPY.errors.timeout : COPY.errors.connection
+        );
     }
 }
 

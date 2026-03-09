@@ -44,19 +44,15 @@ a {
 }
 
 .bg-overlay {
-
     position: fixed;
     inset: 0;
-
     background:
-        linear-gradient(rgba(247, 242, 238, 0.62),
-            rgba(247, 242, 238, 0.92)),
-        url("assets/img/hero.jpg") center/cover no-repeat;
-
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.35), transparent 45%),
+        linear-gradient(rgba(247, 242, 238, 0.62), rgba(247, 242, 238, 0.92)),
+        url("assets/img/Fondo.jpg") center/cover no-repeat,
+        linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
     z-index: -1;
-
     animation: bgSlowZoom 24s ease-out forwards;
-
 }
 
 .bg-ready .bg-overlay {
@@ -159,6 +155,8 @@ a {
 
 .section {
     padding: 68px 0;
+    content-visibility: auto;
+    contain-intrinsic-size: 700px;
 }
 
 .alt {
@@ -201,6 +199,13 @@ a {
     transform: translateY(-2px);
 }
 
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid rgba(143, 111, 90, 0.35);
+    outline-offset: 3px;
+}
+
 .btn.primary {
     background: var(--primary);
     color: var(--white);
@@ -236,6 +241,25 @@ a {
     grid-template-columns: 1fr;
     gap: 14px;
     margin-top: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    box-shadow: var(--shadow);
+}
+
+@media (min-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery img:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+        aspect-ratio: 1 / 1;
+    }
 }
 
 .footer {
@@ -424,6 +448,20 @@ a {
 
 .hidden {
     display: none !important;
+}
+
+@media (max-width: 767px) {
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero-card,
+    .card,
+    .screen-card {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 @media (min-width: 768px) {

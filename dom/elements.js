@@ -42,6 +42,8 @@ export function getElements() {
         errorTitle: document.getElementById("errorTitle"),
         errorMessage: document.getElementById("errorMessage"),
 
-        footerText: document.getElementById("footerText")
+        footerText: document.getElementById("footerText"),
+
+        retryButton: document.getElementById("retryButton")
     };
 }

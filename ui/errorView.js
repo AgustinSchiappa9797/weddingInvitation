@@ -6,16 +6,19 @@ export function hideError(els) {
     }
 }
 
-export function showError(els, {
-    heroTitle = COPY.errors.fallback.heroTitle,
-    heroSubtitle = COPY.errors.fallback.heroSubtitle,
-    guestName = COPY.errors.fallback.guestName,
-    welcomeKickerText = COPY.errors.fallback.welcomeKickerText,
-    welcomeTitle = COPY.errors.fallback.welcomeTitle,
-    welcomeMessageText = COPY.errors.fallback.welcomeMessageText,
-    errorTitle = COPY.errors.fallback.errorTitle,
-    errorMessage = COPY.errors.fallback.errorMessage
-} = {}) {
+export function showError(
+    els,
+    {
+        heroTitle = COPY.errors.fallback.heroTitle,
+        heroSubtitle = COPY.errors.fallback.heroSubtitle,
+        guestName = COPY.errors.fallback.guestName,
+        welcomeKickerText = COPY.errors.fallback.welcomeKickerText,
+        welcomeTitle = COPY.errors.fallback.welcomeTitle,
+        welcomeMessageText = COPY.errors.fallback.welcomeMessageText,
+        errorTitle = COPY.errors.fallback.errorTitle,
+        errorMessage = COPY.errors.fallback.errorMessage
+    } = {}
+) {
     if (els.mainTitle) els.mainTitle.textContent = heroTitle;
     if (els.mainSubtitle) els.mainSubtitle.textContent = heroSubtitle;
     if (els.guestName) els.guestName.textContent = guestName;

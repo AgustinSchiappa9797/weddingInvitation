@@ -1,6 +1,38 @@
 import { COPY } from "../constants/copy.js";
 import { setOptionalLink } from "../utils/links.js";
-import { escapeHtml } from "../utils/escapeHtml.js";
+
+function buildTags(data) {
+    const tags = [];
+
+    if (data.companionsText) {
+        tags.push(data.companionsText);
+    }
+
+    tags.push(data.kidsAllowed ? COPY.tags.kidsAllowed : COPY.tags.adultsOnly);
+
+    if (data.dressCode) {
+        tags.push(`Dress code: ${data.dressCode}`);
+    }
+
+    return tags;
+}
+
+function renderTags(container, tags) {
+    if (!container) return;
+
+    container.replaceChildren();
+
+    const fragment = document.createDocumentFragment();
+
+    tags.forEach((tag) => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        fragment.appendChild(span);
+    });
+
+    container.appendChild(fragment);
+}
 
 export function renderAccess(els, data) {
     if (els.guestExtra) {
@@ -12,7 +44,8 @@ export function renderAccess(els, data) {
     }
 
     if (els.rsvpDeadline) {
-        els.rsvpDeadline.textContent = data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
+        els.rsvpDeadline.textContent =
+            data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
     }
 
     if (els.footerText) {
@@ -21,12 +54,5 @@ export function renderAccess(els, data) {
 
     setOptionalLink(els.rsvpButton, data.rsvpUrl);
 
-    const tags = [data.companionsText];
-    tags.push(data.kidsAllowed ? COPY.tags.kidsAllowed : COPY.tags.adultsOnly);
-
-    if (els.guestTags) {
-        els.guestTags.innerHTML = tags
-            .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
-            .join("");
-    }
+    renderTags(els.guestTags, buildTags(data));
 }
