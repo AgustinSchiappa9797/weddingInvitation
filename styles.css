@@ -43,18 +43,6 @@ a {
     margin: 0 auto;
 }
 
-.bg-overlay {
-    position: fixed;
-    inset: 0;
-    background:
-        radial-gradient(circle at top, rgba(255, 255, 255, 0.35), transparent 45%),
-        linear-gradient(rgba(247, 242, 238, 0.62), rgba(247, 242, 238, 0.92)),
-        url("assets/img/Fondo.jpg") center/cover no-repeat,
-        linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
-    z-index: -1;
-    animation: bgSlowZoom 24s ease-out forwards;
-}
-
 .bg-ready .bg-overlay {
 
     animation: none;
@@ -295,16 +283,10 @@ button:focus-visible {
 }
 
 .screen-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: grid;
-    place-items: center;
-    padding: 24px;
     background:
         linear-gradient(rgba(247, 242, 238, 0.9), rgba(247, 242, 238, 0.95)),
-        url("assets/img/hero.jpg") center/cover no-repeat;
-    transition: opacity 0.7s ease, visibility 0.7s ease;
+        url("assets/img/Fondo.jpg") center/cover no-repeat,
+        linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
 }
 
 .screen-overlay.is-leaving {

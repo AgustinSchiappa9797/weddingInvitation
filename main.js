@@ -83,12 +83,6 @@ async function loadInvitationFlow() {
         return;
     }
 
-    if (els.retryButton) {
-        els.retryButton.addEventListener("click", () => {
-            loadInvitationFlow();
-        });
-    }
-
     try {
         const data = await fetchInvitation(token);
 
@@ -113,6 +107,14 @@ async function loadInvitationFlow() {
 
 async function init() {
     setupAnimations();
+
+    if (els.retryButton) {
+        els.retryButton.addEventListener("click", () => {
+            els.retryButton.disabled = true;
+            window.location.reload();
+        });
+    }
+
     await loadInvitationFlow();
 }
 
