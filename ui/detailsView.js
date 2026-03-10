@@ -1,4 +1,5 @@
 import { setOptionalLink } from "../utils/links.js";
+import { buildGoogleCalendarUrl } from "../utils/calendar.js";
 
 export function renderDetails(els, data) {
     if (els.eventDateText) {
@@ -18,4 +19,7 @@ export function renderDetails(els, data) {
     }
 
     setOptionalLink(els.mapButton, data.mapUrl);
+
+    const calendarUrl = buildGoogleCalendarUrl(data);
+    setOptionalLink(els.calendarButton, calendarUrl);
 }

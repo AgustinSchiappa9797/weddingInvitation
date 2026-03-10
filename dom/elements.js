@@ -48,6 +48,8 @@ export function getElements() {
         stickyMapButton: document.getElementById("stickyMapButton"),
         stickyRsvpButton: document.getElementById("stickyRsvpButton"),
 
+        calendarButton: document.getElementById("calendarButton"),
+
         retryButton: document.getElementById("retryButton")
     };
 }
