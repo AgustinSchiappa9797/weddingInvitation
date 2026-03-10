@@ -21,57 +21,85 @@ import { renderCountdown } from "./ui/countdownView.js";
 import { setupAnimations, revealContentAnimations } from "./ui/animations.js";
 import { getInvitationViewData } from "./ui/viewData.js";
 
-const els = getElements();
+const els = Object.freeze(getElements());
 
 function getToken() {
     const params = new URLSearchParams(window.location.search);
-    return params.get("token");
+    const token = params.get("token")?.trim();
+
+    return token || null;
+}
+
+function hideElements(...elements) {
+    elements.forEach(el => el?.classList.add("hidden"));
 }
 
 function resetInvitationState() {
     hideError(els);
 
-    if (els.invitationContent) els.invitationContent.classList.add("hidden");
-    if (els.detailsBtn) els.detailsBtn.classList.add("hidden");
-    if (els.gallerySection) els.gallerySection.classList.add("hidden");
-    if (els.playlistSection) els.playlistSection.classList.add("hidden");
-    if (els.countdownSection) els.countdownSection.classList.add("hidden");
-    if (els.mobileStickyBar) els.mobileStickyBar.classList.add("hidden");
+    hideElements(
+        els.invitationContent,
+        els.detailsBtn,
+        els.gallerySection,
+        els.playlistSection,
+        els.countdownSection,
+        els.mobileStickyBar
+    );
 
-    if (els.gallery) els.gallery.replaceChildren();
-    if (els.guestTags) els.guestTags.replaceChildren();
+    els.gallery?.replaceChildren();
+    els.guestTags?.replaceChildren();
 
-    if (state.countdownInterval) {
-        clearInterval(state.countdownInterval);
-        state.countdownInterval = null;
-    }
-
-    state.eventDate = null;
+    state.reset();
 }
 
 function showInvitationShell() {
-    if (els.invitationContent) els.invitationContent.classList.remove("hidden");
-    if (els.detailsBtn) els.detailsBtn.classList.remove("hidden");
+    els.invitationContent?.classList.remove("hidden");
+    els.detailsBtn?.classList.remove("hidden");
 }
 
 async function renderInvitation(data) {
     const viewData = getInvitationViewData(data);
 
     showInvitationShell();
+
     renderDetails(els, viewData);
     renderAccess(els, viewData);
     renderGallery(els, viewData);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
     renderStickyBar(els, viewData);
-    revealContentAnimations();
 
+    revealContentAnimations();
     await renderHero(els, viewData);
 }
 
 async function showInvitationError(copy) {
     showError(els, copy);
     await hideWelcomeScreen(els);
+}
+
+async function getInvitationData(token) {
+    const data = await fetchInvitation(token);
+
+    if (!data || !data.ok || !data.invitation) {
+        throw new Error("INVALID_INVITATION");
+    }
+
+    return data.invitation;
+}
+
+async function handleInvitationError(error) {
+    console.error("Error cargando invitación:", error);
+
+    if (error?.message === "REQUEST_TIMEOUT") {
+        return showInvitationError(COPY.errors.timeout);
+    }
+
+    if (error?.message === "INVALID_INVITATION") {
+        return showInvitationError(COPY.errors.invalidAccess);
+    }
+
+    return showInvitationError(COPY.errors.connection);
 }
 
 async function loadInvitationFlow() {
@@ -82,43 +110,36 @@ async function loadInvitationFlow() {
     const token = getToken();
 
     if (!token) {
-        await showInvitationError(COPY.errors.missingToken);
-        return;
+        return showInvitationError(COPY.errors.missingToken);
     }
 
     try {
-        const data = await fetchInvitation(token);
+        const invitation = await getInvitationData(token);
 
-        if (!data || !data.ok || !data.invitation) {
-            await showInvitationError(COPY.errors.invalidAccess);
-            return;
-        }
+        await renderInvitation(invitation);
 
-        await renderInvitation(data.invitation);
-        setWelcomeScreenReadyState(els, data.invitation);
+        setWelcomeScreenReadyState(els, invitation);
+
         await wait(WELCOME_SCREEN_READY_DELAY_MS);
         await hideWelcomeScreen(els);
     } catch (error) {
-        console.error("Error cargando invitación:", error);
-
-        const isTimeout = error && error.message === "REQUEST_TIMEOUT";
-        await showInvitationError(
-            isTimeout ? COPY.errors.timeout : COPY.errors.connection
-        );
+        await handleInvitationError(error);
     }
 }
 
 async function init() {
     setupAnimations();
 
-    if (els.retryButton) {
-        els.retryButton.addEventListener("click", () => {
-            els.retryButton.disabled = true;
-            window.location.reload();
-        });
-    }
+    els.retryButton?.addEventListener("click", () => {
+        els.retryButton.disabled = true;
+        window.location.reload();
+    });
 
     await loadInvitationFlow();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+} else {
+    init();
+}
