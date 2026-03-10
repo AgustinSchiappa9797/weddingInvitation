@@ -4,6 +4,7 @@ import { getElements } from "./dom/elements.js";
 import { state } from "./state.js";
 import { fetchInvitation } from "./api/invitationApi.js";
 import { wait } from "./utils/wait.js";
+import { renderStickyBar } from "./ui/stickyBarView.js";
 import {
     showWelcomeScreen,
     setWelcomeScreenLoadingState,
@@ -35,6 +36,7 @@ function resetInvitationState() {
     if (els.gallerySection) els.gallerySection.classList.add("hidden");
     if (els.playlistSection) els.playlistSection.classList.add("hidden");
     if (els.countdownSection) els.countdownSection.classList.add("hidden");
+    if (els.mobileStickyBar) els.mobileStickyBar.classList.add("hidden");
 
     if (els.gallery) els.gallery.replaceChildren();
     if (els.guestTags) els.guestTags.replaceChildren();
@@ -61,6 +63,7 @@ async function renderInvitation(data) {
     renderGallery(els, viewData);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
+    renderStickyBar(els, viewData);
     revealContentAnimations();
 
     await renderHero(els, viewData);

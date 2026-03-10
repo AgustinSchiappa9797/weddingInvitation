@@ -1,12 +1,10 @@
 import { setOptionalLink } from "../utils/links.js";
 
 export function renderPlaylist(els, data) {
-    if (!els.playlistSection) return;
+    if (!els.playlistSection || !els.playlistButton) return;
 
-    if (typeof data.playlistUrl === "string" && data.playlistUrl.trim() !== "") {
-        setOptionalLink(els.playlistButton, data.playlistUrl);
-        els.playlistSection.classList.remove("hidden");
-    } else {
-        els.playlistSection.classList.add("hidden");
-    }
+    setOptionalLink(els.playlistButton, data.playlistUrl);
+
+    const isVisible = !els.playlistButton.classList.contains("hidden");
+    els.playlistSection.classList.toggle("hidden", !isVisible);
 }

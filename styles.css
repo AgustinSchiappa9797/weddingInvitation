@@ -26,6 +26,7 @@ body {
     color: var(--text);
     background: var(--bg);
     line-height: 1.5;
+    overflow-x: hidden;
 }
 
 img {
@@ -36,6 +37,11 @@ img {
 
 a {
     text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font: inherit;
 }
 
 .container {
@@ -48,17 +54,18 @@ a {
     inset: 0;
     z-index: -1;
     background:
-        radial-gradient(circle at top, rgba(255, 255, 255, 0.35), transparent 45%),
-        linear-gradient(rgba(247, 242, 238, 0.62), rgba(247, 242, 238, 0.92)),
-        url("assets/img/Fondo.JPG") center/cover no-repeat,
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.32), transparent 42%),
+        linear-gradient(rgba(247, 242, 238, 0.45), rgba(247, 242, 238, 0.82)),
+        url("assets/img/Fondo.JPG") center 18% / cover no-repeat,
         linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
     transform: scale(1);
+    transform-origin: center center;
     animation: bgSlowZoom 24s ease-out forwards;
 }
 
 .bg-ready .bg-overlay {
     animation: none;
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
 .hero {
@@ -71,6 +78,7 @@ a {
 .hero-card {
     background: var(--card);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 40px 24px;
@@ -90,6 +98,7 @@ a {
     margin: 0;
     font-size: clamp(2.6rem, 6vw, 5rem);
     font-weight: 600;
+    line-height: 1.05;
 }
 
 .subtitle {
@@ -171,6 +180,7 @@ a {
 .card {
     background: var(--card);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 26px;
@@ -189,8 +199,10 @@ a {
     display: inline-block;
     margin-top: 14px;
     padding: 13px 22px;
+    border: 0;
     border-radius: 999px;
     font-weight: 600;
+    cursor: pointer;
     transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
 }
 
@@ -249,18 +261,6 @@ button:focus-visible {
     box-shadow: var(--shadow);
 }
 
-@media (min-width: 768px) {
-    .gallery {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .gallery img:first-child {
-        grid-column: span 2;
-        grid-row: span 2;
-        aspect-ratio: 1 / 1;
-    }
-}
-
 .footer {
     padding: 30px 0 45px;
     text-align: center;
@@ -301,10 +301,11 @@ button:focus-visible {
     place-items: center;
     padding: 24px;
     background:
-        linear-gradient(rgba(247, 242, 238, 0.9), rgba(247, 242, 238, 0.95)),
-        url("assets/img/Fondo.JPG") center/cover no-repeat,
+        linear-gradient(rgba(247, 242, 238, 0.78), rgba(247, 242, 238, 0.9)),
+        url("assets/img/Fondo.JPG") center 18% / cover no-repeat,
         linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     opacity: 1;
     visibility: visible;
     transition: opacity 0.7s ease, visibility 0.7s ease;
@@ -319,8 +320,9 @@ button:focus-visible {
     width: min(92%, 720px);
     background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 24px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
     padding: 36px 24px;
     text-align: center;
     transform: translateY(10px);
@@ -371,7 +373,7 @@ button:focus-visible {
     gap: 10px;
     padding: 10px 16px;
     border-radius: 999px;
-    background: rgba(143, 111, 90, 0.10);
+    background: rgba(143, 111, 90, 0.1);
     color: var(--primary-dark);
     font-size: 0.95rem;
     animation: readyFadeIn 0.45s ease;
@@ -438,15 +440,13 @@ button:focus-visible {
 }
 
 @keyframes bgSlowZoom {
-
     from {
         transform: scale(1);
     }
 
     to {
-        transform: scale(1.06);
+        transform: scale(1.05);
     }
-
 }
 
 .hidden {
@@ -454,6 +454,25 @@ button:focus-visible {
 }
 
 @media (max-width: 767px) {
+    .bg-overlay {
+        background:
+            radial-gradient(circle at top, rgba(255, 255, 255, 0.28), transparent 40%),
+            linear-gradient(rgba(247, 242, 238, 0.42), rgba(247, 242, 238, 0.84)),
+            url("assets/img/Fondo.JPG") center 10% / cover no-repeat,
+            linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    }
+
+    .screen-overlay {
+        background:
+            linear-gradient(rgba(247, 242, 238, 0.76), rgba(247, 242, 238, 0.9)),
+            url("assets/img/Fondo.JPG") center 10% / cover no-repeat,
+            linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    }
+
+    .hero {
+        padding: 20px 0;
+    }
+
     .btn {
         width: 100%;
         text-align: center;
@@ -464,6 +483,22 @@ button:focus-visible {
     .screen-card {
         padding-left: 20px;
         padding-right: 20px;
+    }
+
+    .countdown {
+        grid-template-columns: repeat(2, minmax(90px, 1fr));
+    }
+
+    .title {
+        font-size: clamp(2.2rem, 10vw, 3.4rem);
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .screen-title {
+        font-size: clamp(1.85rem, 8vw, 2.8rem);
     }
 }
 
@@ -478,5 +513,75 @@ button:focus-visible {
 
     .gallery {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery img:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+@media (min-width: 1200px) {
+    .bg-overlay {
+        background:
+            radial-gradient(circle at top, rgba(255, 255, 255, 0.32), transparent 42%),
+            linear-gradient(rgba(247, 242, 238, 0.42), rgba(247, 242, 238, 0.78)),
+            url("assets/img/Fondo.JPG") center 16% / cover no-repeat,
+            linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    }
+
+    .screen-overlay {
+        background:
+            linear-gradient(rgba(247, 242, 238, 0.74), rgba(247, 242, 238, 0.88)),
+            url("assets/img/Fondo.JPG") center 16% / cover no-repeat,
+            linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    }
+}
+
+.mobile-sticky-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+    pointer-events: none;
+}
+
+.mobile-sticky-inner {
+    width: min(100%, 560px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+    pointer-events: auto;
+}
+
+.mobile-sticky-btn {
+    margin-top: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.mobile-sticky-btn.is-full {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+    .mobile-sticky-bar {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-bottom: 92px;
     }
 }

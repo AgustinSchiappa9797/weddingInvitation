@@ -44,6 +44,10 @@ export function getElements() {
 
         footerText: document.getElementById("footerText"),
 
+        mobileStickyBar: document.getElementById("mobileStickyBar"),
+        stickyMapButton: document.getElementById("stickyMapButton"),
+        stickyRsvpButton: document.getElementById("stickyRsvpButton"),
+
         retryButton: document.getElementById("retryButton")
     };
 }
