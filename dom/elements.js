@@ -50,6 +50,22 @@ export function getElements() {
 
         calendarButton: document.getElementById("calendarButton"),
 
+        countdownLabel: document.getElementById("countdownLabel"),
+        countdownMessage: document.getElementById("countdownMessage"),
+        countdown: document.getElementById("countdown"),
+
+        stickyCalendarButton: document.getElementById("stickyCalendarButton"),
+
+        lightbox: document.getElementById("lightbox"),
+        lightboxImage: document.getElementById("lightboxImage"),
+        lightboxClose: document.getElementById("lightboxClose"),
+
+        timelineSection: document.getElementById("timelineSection"),
+        timeline: document.getElementById("timeline"),
+
+        welcomeProgressText: document.getElementById("welcomeProgressText"),
+        rsvpHelperText: document.getElementById("rsvpHelperText"),
+
         retryButton: document.getElementById("retryButton")
     };
 }

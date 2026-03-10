@@ -7,14 +7,30 @@ function isSafeImageUrl(value) {
     }
 }
 
-function createGalleryImage(src, index) {
+function createGalleryItem(src, index, els) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "gallery-item";
+
     const img = document.createElement("img");
     img.src = src;
     img.alt = `Foto de la invitación ${index + 1}`;
     img.loading = "lazy";
     img.decoding = "async";
     img.referrerPolicy = "no-referrer";
-    return img;
+
+    button.appendChild(img);
+
+    button.addEventListener("click", () => {
+        if (!els.lightbox || !els.lightboxImage) return;
+
+        els.lightboxImage.src = src;
+        els.lightboxImage.alt = img.alt;
+        els.lightbox.classList.remove("hidden");
+        els.lightbox.setAttribute("aria-hidden", "false");
+    });
+
+    return button;
 }
 
 export function renderGallery(els, data) {
@@ -34,7 +50,7 @@ export function renderGallery(els, data) {
     const fragment = document.createDocumentFragment();
 
     validImages.forEach((src, index) => {
-        fragment.appendChild(createGalleryImage(src, index));
+        fragment.appendChild(createGalleryItem(src, index, els));
     });
 
     els.gallery.appendChild(fragment);

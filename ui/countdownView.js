@@ -24,6 +24,11 @@ export function renderCountdown(els, state, data) {
         return;
     }
 
+    if (els.countdownMessage) {
+        els.countdownMessage.textContent = "";
+        els.countdownMessage.classList.add("hidden");
+    }
+
     state.setEventDate(parsedDate);
     els.countdownSection.classList.remove("hidden");
     updateCountdown(els, state);
@@ -33,6 +38,21 @@ export function renderCountdown(els, state, data) {
     );
 }
 
+function showCountdownMessage(els, message, hideGrid = false) {
+    if (els.countdownMessage) {
+        els.countdownMessage.textContent = message;
+        els.countdownMessage.classList.remove("hidden");
+    }
+
+    if (els.countdownLabel) {
+        els.countdownLabel.classList.toggle("hidden", hideGrid);
+    }
+
+    if (els.countdown) {
+        els.countdown.classList.toggle("hidden", hideGrid);
+    }
+}
+
 export function updateCountdown(els, state, now = new Date()) {
     if (!state.eventDate) return;
 
@@ -40,6 +60,7 @@ export function updateCountdown(els, state, now = new Date()) {
 
     if (diff <= 0) {
         setCountdownValues(els, {});
+        showCountdownMessage(els, "Hoy es el gran día.", true);
         state.clearCountdown();
         return;
     }
@@ -49,6 +70,12 @@ export function updateCountdown(els, state, now = new Date()) {
     const hours = Math.floor((totalSeconds % 86400) / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
+
+    showCountdownMessage(
+        els,
+        days === 0 ? "Falta muy poquito." : "Cada vez falta menos.",
+        false
+    );
 
     setCountdownValues(els, {
         days: String(days).padStart(2, "0"),

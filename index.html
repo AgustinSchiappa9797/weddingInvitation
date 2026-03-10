@@ -29,6 +29,8 @@
 
                 <div id="welcomeLoader" class="welcome-loader"></div>
 
+                <p id="welcomeProgressText" class="screen-text">Validando acceso…</p>
+
                 <div id="welcomeReady" class="welcome-ready hidden">
                     <span class="welcome-ready-icon">✓</span>
                     <span>Tu invitación está lista</span>
@@ -68,18 +70,15 @@
             </div>
 
             <div id="countdownSection" class="countdown-section hidden">
-
-                <p class="label">Faltan</p>
+                <p id="countdownLabel" class="label">Faltan</p>
+                <p id="countdownMessage" class="countdown-message hidden"></p>
 
                 <div id="countdown" class="countdown">
-
                     <div><span id="days">00</span><small>días</small></div>
                     <div><span id="hours">00</span><small>hs</small></div>
                     <div><span id="minutes">00</span><small>min</small></div>
                     <div><span id="seconds">00</span><small>seg</small></div>
-
                 </div>
-
             </div>
 
             <a id="detailsBtn" class="btn primary hidden" href="#details">
@@ -125,37 +124,45 @@
 
         </section>
 
+        <section id="timelineSection" class="section hidden">
+            <div class="container card fade-up">
+                <p class="section-kicker">Agenda del día</p>
+                <h3>Momentos importantes</h3>
+                <div id="timeline" class="timeline"></div>
+            </div>
+        </section>
+
         <section class="section alt">
-
-            <div class="container card fade-up center-text">
-
+            <div class="container card fade-up center-text access-card">
+                <p class="section-kicker">Información para vos</p>
                 <h3>Tu acceso</h3>
 
-                <p id="personalMessage">-</p>
+                <div class="personal-message-box">
+                    <p id="personalMessage" class="personal-message">-</p>
+                </div>
 
                 <div id="guestTags" class="tags"></div>
-
             </div>
-
         </section>
 
         <section class="section">
-
-            <div class="container card fade-up">
-
+            <div class="container card fade-up center-text rsvp-card">
+                <p class="section-kicker">Acción importante</p>
                 <h3>Confirmación</h3>
 
-                <p>
+                <p class="rsvp-text">
                     Ayudanos confirmando tu asistencia antes del
                     <strong id="rsvpDeadline">-</strong>.
+                </p>
+
+                <p id="rsvpHelperText" class="rsvp-helper-text">
+                    Nos ayuda muchísimo para organizar cada detalle.
                 </p>
 
                 <a id="rsvpButton" class="btn primary" href="#" target="_blank" rel="noopener noreferrer">
                     Confirmar asistencia
                 </a>
-
             </div>
-
         </section>
 
         <section id="gallerySection" class="section alt hidden">
@@ -207,6 +214,11 @@
                 Cómo llegar
             </a>
 
+            <a id="stickyCalendarButton" class="btn secondary mobile-sticky-btn hidden" href="#" target="_blank"
+                rel="noopener noreferrer">
+                Agendar
+            </a>
+
             <a id="stickyRsvpButton" class="btn primary mobile-sticky-btn" href="#" target="_blank"
                 rel="noopener noreferrer">
                 Confirmar
@@ -219,6 +231,11 @@
             <p id="footerText">Con amor</p>
         </div>
     </footer>
+
+    <div id="lightbox" class="lightbox hidden" aria-hidden="true">
+        <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="" />
+    </div>
 
     <script type="module" src="main.js"></script>
 

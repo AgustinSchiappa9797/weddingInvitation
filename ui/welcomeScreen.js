@@ -13,6 +13,9 @@ export function setWelcomeScreenLoadingState(els) {
     if (els.welcomeMessage) els.welcomeMessage.textContent = COPY.loading.message;
     if (els.welcomeLoader) els.welcomeLoader.classList.remove("hidden");
     if (els.welcomeReady) els.welcomeReady.classList.add("hidden");
+    if (els.welcomeProgressText) {
+        els.welcomeProgressText.textContent = "Validando acceso…";
+    }
 
     document.body.classList.remove("bg-ready");
 }
@@ -25,6 +28,12 @@ export function setWelcomeScreenReadyState(els, invitation) {
     if (els.welcomeReady) els.welcomeReady.classList.remove("hidden");
 
     document.body.classList.add("bg-ready");
+}
+
+export function setWelcomeScreenProgress(els, text) {
+    if (els.welcomeProgressText) {
+        els.welcomeProgressText.textContent = text;
+    }
 }
 
 export async function hideWelcomeScreen(els) {

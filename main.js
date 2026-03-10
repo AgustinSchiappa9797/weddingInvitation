@@ -9,7 +9,8 @@ import {
     showWelcomeScreen,
     setWelcomeScreenLoadingState,
     setWelcomeScreenReadyState,
-    hideWelcomeScreen
+    hideWelcomeScreen,
+    setWelcomeScreenProgress
 } from "./ui/welcomeScreen.js";
 import { hideError, showError } from "./ui/errorView.js";
 import { renderHero } from "./ui/heroView.js";
@@ -43,8 +44,16 @@ function resetInvitationState() {
         els.gallerySection,
         els.playlistSection,
         els.countdownSection,
-        els.mobileStickyBar
+        els.mobileStickyBar,
+        els.timelineSection,
+        els.errorSection,
+        els.lightbox
     );
+
+    if (els.lightboxImage) {
+        els.lightboxImage.removeAttribute("src");
+        els.lightboxImage.alt = "";
+    }
 
     els.gallery?.replaceChildren();
     els.guestTags?.replaceChildren();
@@ -69,6 +78,7 @@ function renderInvitationSections(viewData) {
 async function renderInvitation(data) {
     const viewData = getInvitationViewData(data);
 
+    document.body.dataset.eventPhase = viewData.eventPhase || "upcoming";
     showInvitationShell();
     renderInvitationSections(viewData);
     revealContentAnimations();
@@ -108,6 +118,7 @@ async function loadInvitationFlow() {
     showWelcomeScreen(els);
     resetInvitationState();
     setWelcomeScreenLoadingState(els);
+    setWelcomeScreenProgress(els, "Validando acceso…");
 
     const token = getToken();
 
@@ -115,10 +126,13 @@ async function loadInvitationFlow() {
         return showInvitationError(COPY.errors.missingToken);
     }
 
+    setWelcomeScreenProgress(els, "Preparando invitación…");
+
     try {
         const invitation = await getInvitationData(token);
 
         await renderInvitation(invitation);
+        setWelcomeScreenProgress(els, "Todo listo.");
 
         setWelcomeScreenReadyState(els, invitation);
 
@@ -136,6 +150,18 @@ async function init() {
     initialized = true;
 
     setupAnimations();
+
+    els.lightboxClose?.addEventListener("click", () => {
+        els.lightbox?.classList.add("hidden");
+        els.lightbox?.setAttribute("aria-hidden", "true");
+    });
+
+    els.lightbox?.addEventListener("click", (event) => {
+        if (event.target === els.lightbox) {
+            els.lightbox.classList.add("hidden");
+            els.lightbox.setAttribute("aria-hidden", "true");
+        }
+    });
 
     els.retryButton?.addEventListener("click", () => {
         els.retryButton.disabled = true;
