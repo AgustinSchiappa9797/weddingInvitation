@@ -1,3 +1,5 @@
+import { DEFAULT_EVENT_DURATION_MS } from "../config.js";
+
 function pad(value) {
     return String(value).padStart(2, "0");
 }
@@ -24,7 +26,7 @@ export function buildGoogleCalendarUrl(data) {
     const startDate = new Date(data.eventIsoDate);
     if (!isValidDate(startDate)) return null;
 
-    const endDate = new Date(startDate.getTime() + 4 * 60 * 60 * 1000);
+    const endDate = new Date(startDate.getTime() + DEFAULT_EVENT_DURATION_MS);
 
     const title = data.heroTitle || data.mainTitle || "Evento";
     const location = [data.venueName, data.venueAddress].filter(Boolean).join(", ");

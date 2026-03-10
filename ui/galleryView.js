@@ -1,6 +1,6 @@
 function isSafeImageUrl(value) {
     try {
-        const url = new URL(value, window.location.origin);
+        const url = new URL(value);
         return url.protocol === "http:" || url.protocol === "https:";
     } catch {
         return false;
@@ -9,15 +9,11 @@ function isSafeImageUrl(value) {
 
 function createGalleryImage(src, index) {
     const img = document.createElement("img");
-    img.alt = `Foto ${index + 1}`;
+    img.src = src;
+    img.alt = `Foto de la invitación ${index + 1}`;
     img.loading = "lazy";
     img.decoding = "async";
     img.referrerPolicy = "no-referrer";
-
-    if (isSafeImageUrl(src)) {
-        img.src = src;
-    }
-
     return img;
 }
 
@@ -26,20 +22,21 @@ export function renderGallery(els, data) {
 
     els.gallery.replaceChildren();
 
-    if (Array.isArray(data.gallery) && data.gallery.length > 0) {
-        const fragment = document.createDocumentFragment();
+    const validImages = Array.isArray(data.gallery)
+        ? data.gallery.filter(isSafeImageUrl)
+        : [];
 
-        data.gallery.forEach((src, index) => {
-            if (!isSafeImageUrl(src)) return;
-            fragment.appendChild(createGalleryImage(src, index));
-        });
-
-        if (fragment.childNodes.length > 0) {
-            els.gallery.appendChild(fragment);
-            els.gallerySection.classList.remove("hidden");
-            return;
-        }
+    if (validImages.length === 0) {
+        els.gallerySection.classList.add("hidden");
+        return;
     }
 
-    els.gallerySection.classList.add("hidden");
+    const fragment = document.createDocumentFragment();
+
+    validImages.forEach((src, index) => {
+        fragment.appendChild(createGalleryImage(src, index));
+    });
+
+    els.gallery.appendChild(fragment);
+    els.gallerySection.classList.remove("hidden");
 }

@@ -1,4 +1,8 @@
-import { API_URL, FETCH_TIMEOUT_MS } from "../config.js";
+import {
+    API_URL,
+    FETCH_TIMEOUT_MS,
+    INVITATION_CACHE_TTL_MS
+} from "../config.js";
 
 const CACHE_PREFIX = "wedding-invitation:";
 
@@ -10,7 +14,7 @@ function getCachedInvitation(token) {
         const parsed = JSON.parse(raw);
         if (!parsed || !parsed.timestamp || !parsed.data) return null;
 
-        const isFresh = Date.now() - parsed.timestamp < 5 * 60 * 1000;
+        const isFresh = Date.now() - parsed.timestamp < INVITATION_CACHE_TTL_MS;
         return isFresh ? parsed.data : null;
     } catch {
         return null;

@@ -1,4 +1,5 @@
 import { COPY } from "../constants/copy.js";
+import { WELCOME_SCREEN_HIDE_DELAY_MS } from "../config.js";
 import { wait } from "../utils/wait.js";
 
 export function showWelcomeScreen(els) {
@@ -30,7 +31,7 @@ export async function hideWelcomeScreen(els) {
     if (!els.welcomeScreen) return;
 
     els.welcomeScreen.classList.add("is-leaving");
-    await wait(700);
+    await wait(WELCOME_SCREEN_HIDE_DELAY_MS);
     els.welcomeScreen.classList.add("hidden");
     els.welcomeScreen.classList.remove("is-leaving");
 }

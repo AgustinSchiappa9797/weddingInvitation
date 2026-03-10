@@ -1,4 +1,8 @@
 import { COPY } from "../constants/copy.js";
+import {
+    HERO_TEXT_SWAP_DELAY_MS,
+    HERO_TEXT_SWAP_CLEANUP_DELAY_MS
+} from "../config.js";
 import { wait } from "../utils/wait.js";
 
 async function swapText(el, newText) {
@@ -6,7 +10,7 @@ async function swapText(el, newText) {
 
     el.classList.add("fade-swap", "out");
 
-    await wait(250);
+    await wait(HERO_TEXT_SWAP_DELAY_MS);
 
     el.textContent = newText;
 
@@ -15,7 +19,7 @@ async function swapText(el, newText) {
 
     setTimeout(() => {
         el.classList.remove("fade-swap", "in");
-    }, 500);
+    }, HERO_TEXT_SWAP_CLEANUP_DELAY_MS);
 }
 
 export async function renderHero(els, data) {

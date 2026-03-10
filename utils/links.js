@@ -12,9 +12,15 @@ export function setOptionalLink(element, url) {
 
     if (isValid) {
         element.href = url;
+        element.target = "_blank";
+        element.rel = "noopener noreferrer";
+        element.removeAttribute("aria-disabled");
         element.classList.remove("hidden");
     } else {
         element.removeAttribute("href");
+        element.removeAttribute("target");
+        element.removeAttribute("rel");
+        element.setAttribute("aria-disabled", "true");
         element.classList.add("hidden");
     }
 }

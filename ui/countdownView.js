@@ -33,10 +33,9 @@ export function renderCountdown(els, state, data) {
     );
 }
 
-export function updateCountdown(els, state) {
+export function updateCountdown(els, state, now = new Date()) {
     if (!state.eventDate) return;
 
-    const now = new Date();
     const diff = state.eventDate.getTime() - now.getTime();
 
     if (diff <= 0) {

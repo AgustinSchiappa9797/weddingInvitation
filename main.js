@@ -57,18 +57,20 @@ function showInvitationShell() {
     els.detailsBtn?.classList.remove("hidden");
 }
 
-async function renderInvitation(data) {
-    const viewData = getInvitationViewData(data);
-
-    showInvitationShell();
-
+function renderInvitationSections(viewData) {
     renderDetails(els, viewData);
     renderAccess(els, viewData);
     renderGallery(els, viewData);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
     renderStickyBar(els, viewData);
+}
 
+async function renderInvitation(data) {
+    const viewData = getInvitationViewData(data);
+
+    showInvitationShell();
+    renderInvitationSections(viewData);
     revealContentAnimations();
     await renderHero(els, viewData);
 }
@@ -127,7 +129,12 @@ async function loadInvitationFlow() {
     }
 }
 
+let initialized = false;
+
 async function init() {
+    if (initialized) return;
+    initialized = true;
+
     setupAnimations();
 
     els.retryButton?.addEventListener("click", () => {
