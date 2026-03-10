@@ -28,9 +28,9 @@ export function buildGoogleCalendarUrl(data) {
 
     const endDate = new Date(startDate.getTime() + DEFAULT_EVENT_DURATION_MS);
 
-    const title = data.heroTitle || data.mainTitle || "Evento";
+    const title = data.coupleTitle || "Evento";
+    const details = data.heroText || "Te esperamos para compartir este momento especial.";
     const location = [data.venueName, data.venueAddress].filter(Boolean).join(", ");
-    const details = data.heroSubtitle || "Te esperamos para compartir este momento especial.";
 
     const params = new URLSearchParams({
         action: "TEMPLATE",
