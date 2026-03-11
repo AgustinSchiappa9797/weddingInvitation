@@ -81,8 +81,8 @@
                 </div>
             </div>
 
-            <a id="detailsBtn" class="btn primary hidden" href="#details">
-                Ver detalles
+            <a id="detailsBtn" class="btn primary hidden" href="#contentPanel">
+                Explorar invitación
             </a>
 
         </div>
@@ -90,109 +90,117 @@
     </header>
 
     <main id="invitationContent" class="hidden">
+        <section class="section compact-shell">
+            <div class="container">
+                <nav class="section-nav" aria-label="Secciones de la invitación">
+                    <button id="tabDetails" class="section-tab is-active" type="button" data-section="details">
+                        Detalles
+                    </button>
 
-        <section id="details" class="section">
+                    <button id="tabAccess" class="section-tab" type="button" data-section="access">
+                        Tu acceso
+                    </button>
 
-            <div class="container grid-2">
+                    <button id="tabGallery" class="section-tab" type="button" data-section="gallery">
+                        Fotos
+                    </button>
 
-                <div class="card fade-up">
-                    <h3>Cuándo</h3>
+                    <button id="tabRsvp" class="section-tab" type="button" data-section="rsvp">
+                        RSVP
+                    </button>
 
-                    <p id="eventDateText">-</p>
-                    <p id="eventTimeText">-</p>
+                    <button id="tabPlaylist" class="section-tab" type="button" data-section="playlist">
+                        Playlist
+                    </button>
+                </nav>
 
-                    <a id="calendarButton" class="btn secondary hidden" href="#" target="_blank"
-                        rel="noopener noreferrer">
-                        Agendar evento
-                    </a>
-                </div>
+                <section id="contentPanel" class="card fade-up content-panel visible">
+                    <div id="panelDetails" class="panel-section is-active" data-panel="details">
+                        <div class="panel-grid">
+                            <div class="panel-block">
+                                <p class="section-kicker">Cuándo</p>
+                                <h3>Detalles del evento</h3>
+                                <p id="eventDateText">-</p>
+                                <p id="eventTimeText">-</p>
 
-                <div class="card fade-up">
+                                <a id="calendarButton" class="btn secondary hidden" href="#" target="_blank"
+                                    rel="noopener noreferrer">
+                                    Agendar evento
+                                </a>
+                            </div>
 
-                    <h3>Dónde</h3>
+                            <div class="panel-block">
+                                <p class="section-kicker">Dónde</p>
+                                <h3>Lugar</h3>
+                                <p id="venueName">-</p>
+                                <p id="venueAddress">-</p>
 
-                    <p id="venueName">-</p>
-                    <p id="venueAddress">-</p>
+                                <a id="mapButton" class="btn secondary" href="#" target="_blank"
+                                    rel="noopener noreferrer">
+                                    Abrir mapa
+                                </a>
+                            </div>
+                        </div>
 
-                    <a id="mapButton" class="btn secondary" href="#" target="_blank" rel="noopener noreferrer">
-                        Abrir mapa
-                    </a>
+                        <div id="timelineSection" class="panel-subsection hidden">
+                            <p class="section-kicker">Agenda del día</p>
+                            <div id="timeline" class="timeline"></div>
+                        </div>
+                    </div>
 
-                </div>
+                    <div id="panelAccess" class="panel-section" data-panel="access">
+                        <p class="section-kicker">Información para vos</p>
+                        <h3>Tu acceso</h3>
 
+                        <div class="personal-message-box">
+                            <p id="personalMessage" class="personal-message">-</p>
+                        </div>
+
+                        <div id="guestTags" class="tags"></div>
+                    </div>
+
+                    <div id="panelGallery" class="panel-section" data-panel="gallery">
+                        <p class="section-kicker">Recuerdos</p>
+                        <h3>Galería</h3>
+
+                        <div id="gallerySection" class="panel-subsection hidden">
+                            <div id="gallery" class="gallery gallery-horizontal"></div>
+                        </div>
+                    </div>
+
+                    <div id="panelRsvp" class="panel-section" data-panel="rsvp">
+                        <p class="section-kicker">Acción importante</p>
+                        <h3>Confirmación</h3>
+
+                        <p class="rsvp-text">
+                            Ayudanos confirmando tu asistencia antes del
+                            <strong id="rsvpDeadline">-</strong>.
+                        </p>
+
+                        <p id="rsvpHelperText" class="rsvp-helper-text">
+                            Nos ayuda muchísimo para organizar cada detalle.
+                        </p>
+
+                        <a id="rsvpButton" class="btn primary" href="#" target="_blank" rel="noopener noreferrer">
+                            Confirmar asistencia
+                        </a>
+                    </div>
+
+                    <div id="panelPlaylist" class="panel-section" data-panel="playlist">
+                        <div id="playlistSection" class="panel-subsection hidden">
+                            <p class="section-kicker">Ambientación</p>
+                            <h3>Playlist</h3>
+                            <p>Entrá en clima con una selección que nos encanta.</p>
+
+                            <a id="playlistButton" class="btn secondary" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                                Escuchar playlist
+                            </a>
+                        </div>
+                    </div>
+                </section>
             </div>
-
         </section>
-
-        <section id="timelineSection" class="section hidden">
-            <div class="container card fade-up">
-                <p class="section-kicker">Agenda del día</p>
-                <h3>Momentos importantes</h3>
-                <div id="timeline" class="timeline"></div>
-            </div>
-        </section>
-
-        <section class="section alt">
-            <div class="container card fade-up center-text access-card">
-                <p class="section-kicker">Información para vos</p>
-                <h3>Tu acceso</h3>
-
-                <div class="personal-message-box">
-                    <p id="personalMessage" class="personal-message">-</p>
-                </div>
-
-                <div id="guestTags" class="tags"></div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container card fade-up center-text rsvp-card">
-                <p class="section-kicker">Acción importante</p>
-                <h3>Confirmación</h3>
-
-                <p class="rsvp-text">
-                    Ayudanos confirmando tu asistencia antes del
-                    <strong id="rsvpDeadline">-</strong>.
-                </p>
-
-                <p id="rsvpHelperText" class="rsvp-helper-text">
-                    Nos ayuda muchísimo para organizar cada detalle.
-                </p>
-
-                <a id="rsvpButton" class="btn primary" href="#" target="_blank" rel="noopener noreferrer">
-                    Confirmar asistencia
-                </a>
-            </div>
-        </section>
-
-        <section id="gallerySection" class="section alt hidden">
-
-            <div class="container fade-up">
-
-                <h3 class="center-text">Galería</h3>
-
-                <div id="gallery" class="gallery"></div>
-
-            </div>
-
-        </section>
-
-        <section id="playlistSection" class="section hidden">
-
-            <div class="container card fade-up center-text">
-
-                <h3>Playlist</h3>
-
-                <p>Entrá en clima con una selección que nos encanta.</p>
-
-                <a id="playlistButton" class="btn secondary" href="#" target="_blank" rel="noopener noreferrer">
-                    Escuchar playlist
-                </a>
-
-            </div>
-
-        </section>
-
     </main>
 
     <section id="errorSection" class="section hidden">

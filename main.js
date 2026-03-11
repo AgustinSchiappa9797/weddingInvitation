@@ -12,6 +12,10 @@ import {
     hideWelcomeScreen,
     setWelcomeScreenProgress
 } from "./ui/welcomeScreen.js";
+import {
+    setupContentPanelNavigation,
+    renderActivePanel
+} from "./ui/contentPanelView.js";
 import { hideError, showError } from "./ui/errorView.js";
 import { renderHero } from "./ui/heroView.js";
 import { renderDetails } from "./ui/detailsView.js";
@@ -59,6 +63,7 @@ function resetInvitationState() {
     els.guestTags?.replaceChildren();
 
     state.reset();
+    renderActivePanel(els, state);
 }
 
 function showInvitationShell() {
@@ -78,11 +83,16 @@ function renderInvitationSections(viewData) {
 async function renderInvitation(data) {
     const viewData = getInvitationViewData(data);
 
+    state.setActiveSection("details");
+
     document.body.dataset.eventPhase = viewData.eventPhase || "upcoming";
+
+    await renderHero(els, viewData);
+
     showInvitationShell();
     renderInvitationSections(viewData);
+    renderActivePanel(els, state);
     revealContentAnimations();
-    await renderHero(els, viewData);
 }
 
 async function showInvitationError(copy) {
@@ -168,6 +178,7 @@ async function init() {
         window.location.reload();
     });
 
+    setupContentPanelNavigation(els, state);
     await loadInvitationFlow();
 }
 

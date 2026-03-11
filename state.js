@@ -1,6 +1,7 @@
 export const state = {
     eventDate: null,
     countdownInterval: null,
+    activeSection: "details",
 
     setEventDate(date) {
         this.eventDate = date;
@@ -8,6 +9,10 @@ export const state = {
 
     setCountdownInterval(interval) {
         this.countdownInterval = interval;
+    },
+
+    setActiveSection(section) {
+        this.activeSection = section || "details";
     },
 
     clearCountdown() {
@@ -20,5 +25,6 @@ export const state = {
     reset() {
         this.clearCountdown();
         this.eventDate = null;
+        this.activeSection = "details";
     }
 };

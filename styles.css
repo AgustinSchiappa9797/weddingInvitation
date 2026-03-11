@@ -684,7 +684,12 @@ button:focus-visible {
     border-radius: 50%;
     cursor: pointer;
     background: rgba(255, 255, 255, 0.9);
-    font-size: 1.6rem;
+    color: #1f1f1f;
+    font-size: 1.8rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .timeline {
