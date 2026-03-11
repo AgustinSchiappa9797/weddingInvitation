@@ -534,36 +534,54 @@ body[data-event-phase="today"] .btn.primary {
 }
 
 .section-tab {
+    position: relative;
     border: 0;
     padding: 10px 16px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.72);
     color: var(--text);
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease,
+        opacity 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .section-tab:hover {
     transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .section-tab.is-active {
     background: var(--primary);
     color: var(--white);
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 24px rgba(143, 111, 90, 0.28);
+}
+
+.section-tab.hidden {
+    display: none !important;
 }
 
 .content-panel {
     min-height: 340px;
     padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .panel-section {
     display: none;
+    opacity: 0;
+    transform: translateY(8px);
 }
 
 .panel-section.is-active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: panelFadeIn 0.28s ease;
 }
 
 .panel-grid {
@@ -618,6 +636,18 @@ body[data-event-phase="today"] .btn.primary {
 
 .hidden {
     display: none !important;
+}
+
+@keyframes panelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes welcomeFloatIn {

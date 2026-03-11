@@ -92,30 +92,36 @@
     <main id="invitationContent" class="hidden">
         <section class="section compact-shell">
             <div class="container">
-                <nav class="section-nav" aria-label="Secciones de la invitación">
-                    <button id="tabDetails" class="section-tab is-active" type="button" data-section="details">
+                <nav class="section-nav" aria-label="Secciones de la invitación" role="tablist">
+                    <button id="tabDetails" class="section-tab is-active" type="button" data-section="details"
+                        role="tab" aria-selected="true">
                         Detalles
                     </button>
 
-                    <button id="tabAccess" class="section-tab" type="button" data-section="access">
+                    <button id="tabAccess" class="section-tab" type="button" data-section="access" role="tab"
+                        aria-selected="false">
                         Tu acceso
                     </button>
 
-                    <button id="tabGallery" class="section-tab" type="button" data-section="gallery">
+                    <button id="tabGallery" class="section-tab" type="button" data-section="gallery" role="tab"
+                        aria-selected="false">
                         Fotos
                     </button>
 
-                    <button id="tabRsvp" class="section-tab" type="button" data-section="rsvp">
+                    <button id="tabRsvp" class="section-tab" type="button" data-section="rsvp" role="tab"
+                        aria-selected="false">
                         RSVP
                     </button>
 
-                    <button id="tabPlaylist" class="section-tab" type="button" data-section="playlist">
+                    <button id="tabPlaylist" class="section-tab" type="button" data-section="playlist" role="tab"
+                        aria-selected="false">
                         Playlist
                     </button>
                 </nav>
 
                 <section id="contentPanel" class="card fade-up content-panel visible">
-                    <div id="panelDetails" class="panel-section is-active" data-panel="details">
+                    <div id="panelDetails" class="panel-section is-active" data-panel="details" role="tabpanel"
+                        aria-hidden="false">
                         <div class="panel-grid">
                             <div class="panel-block">
                                 <p class="section-kicker">Cuándo</p>
@@ -148,7 +154,7 @@
                         </div>
                     </div>
 
-                    <div id="panelAccess" class="panel-section" data-panel="access">
+                    <div id="panelAccess" class="panel-section" data-panel="access" role="tabpanel" aria-hidden="true">
                         <p class="section-kicker">Información para vos</p>
                         <h3>Tu acceso</h3>
 
@@ -159,7 +165,8 @@
                         <div id="guestTags" class="tags"></div>
                     </div>
 
-                    <div id="panelGallery" class="panel-section" data-panel="gallery">
+                    <div id="panelGallery" class="panel-section" data-panel="gallery" role="tabpanel"
+                        aria-hidden="true">
                         <p class="section-kicker">Recuerdos</p>
                         <h3>Galería</h3>
 
@@ -168,7 +175,7 @@
                         </div>
                     </div>
 
-                    <div id="panelRsvp" class="panel-section" data-panel="rsvp">
+                    <div id="panelRsvp" class="panel-section" data-panel="rsvp" role="tabpanel" aria-hidden="true">
                         <p class="section-kicker">Acción importante</p>
                         <h3>Confirmación</h3>
 
@@ -186,7 +193,8 @@
                         </a>
                     </div>
 
-                    <div id="panelPlaylist" class="panel-section" data-panel="playlist">
+                    <div id="panelPlaylist" class="panel-section" data-panel="playlist" role="tabpanel"
+                        aria-hidden="true">
                         <div id="playlistSection" class="panel-subsection hidden">
                             <p class="section-kicker">Ambientación</p>
                             <h3>Playlist</h3>

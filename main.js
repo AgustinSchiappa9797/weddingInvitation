@@ -5,17 +5,8 @@ import { state } from "./state.js";
 import { fetchInvitation } from "./api/invitationApi.js";
 import { wait } from "./utils/wait.js";
 import { renderStickyBar } from "./ui/stickyBarView.js";
-import {
-    showWelcomeScreen,
-    setWelcomeScreenLoadingState,
-    setWelcomeScreenReadyState,
-    hideWelcomeScreen,
-    setWelcomeScreenProgress
-} from "./ui/welcomeScreen.js";
-import {
-    setupContentPanelNavigation,
-    renderActivePanel
-} from "./ui/contentPanelView.js";
+import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./ui/welcomeScreen.js";
+import { setupContentPanelNavigation, renderActivePanel, syncContentPanelVisibility } from "./ui/contentPanelView.js";
 import { hideError, showError } from "./ui/errorView.js";
 import { renderHero } from "./ui/heroView.js";
 import { renderDetails } from "./ui/detailsView.js";
@@ -63,7 +54,27 @@ function resetInvitationState() {
     els.guestTags?.replaceChildren();
 
     state.reset();
-    renderActivePanel(els, state);
+
+    [
+        els.tabDetails,
+        els.tabAccess,
+        els.tabGallery,
+        els.tabRsvp,
+        els.tabPlaylist,
+        els.panelDetails,
+        els.panelAccess,
+        els.panelGallery,
+        els.panelRsvp,
+        els.panelPlaylist
+    ].forEach((element) => {
+        element?.classList.remove("hidden");
+    });
+
+    renderActivePanel(els, state, {
+        hasGallery: true,
+        hasRsvp: true,
+        hasPlaylist: true
+    });
 }
 
 function showInvitationShell() {
@@ -91,7 +102,7 @@ async function renderInvitation(data) {
 
     showInvitationShell();
     renderInvitationSections(viewData);
-    renderActivePanel(els, state);
+    syncContentPanelVisibility(els, state, viewData);
     revealContentAnimations();
 }
 
