@@ -5,22 +5,13 @@ function buildTags(data) {
     const tags = [];
 
     if (data.companionsText) {
-        tags.push({
-            label: data.companionsText,
-            icon: "👥"
-        });
+        tags.push(data.companionsText);
     }
 
-    tags.push({
-        label: data.kidsAllowed ? COPY.tags.kidsAllowed : COPY.tags.adultsOnly,
-        icon: data.kidsAllowed ? "🧒" : "✨"
-    });
+    tags.push(data.kidsAllowed ? COPY.tags.kidsAllowed : COPY.tags.adultsOnly);
 
     if (data.dressCode) {
-        tags.push({
-            label: `Dress code: ${data.dressCode}`,
-            icon: "👔"
-        });
+        tags.push(`Dress code: ${data.dressCode}`);
     }
 
     return tags;
@@ -33,22 +24,22 @@ function renderTags(container, tags) {
 
     const fragment = document.createDocumentFragment();
 
-    tags.forEach(({ label, icon }) => {
+    tags.forEach((tag) => {
         const span = document.createElement("span");
         span.className = "tag";
-
-        const iconNode = document.createElement("span");
-        iconNode.className = "tag-icon";
-        iconNode.textContent = icon;
-
-        const textNode = document.createElement("span");
-        textNode.textContent = label;
-
-        span.append(iconNode, textNode);
+        span.textContent = tag;
         fragment.appendChild(span);
     });
 
     container.appendChild(fragment);
+}
+
+function getDaysUntil(dateString) {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return null;
+
+    const diff = date.getTime() - Date.now();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
 export function renderAccess(els, data) {
@@ -66,7 +57,9 @@ export function renderAccess(els, data) {
     }
 
     if (els.rsvpHelperText) {
-        if (typeof data.rsvpDaysLeft === "number" && data.rsvpDaysLeft >= 0 && data.rsvpDaysLeft <= 3) {
+        const daysLeft = getDaysUntil(data.rsvpDeadlineIso);
+
+        if (typeof daysLeft === "number" && daysLeft >= 0 && daysLeft <= 3) {
             els.rsvpHelperText.textContent = "La fecha de confirmación está muy cerca.";
         } else {
             els.rsvpHelperText.textContent = "Nos ayuda muchísimo para organizar cada detalle.";
