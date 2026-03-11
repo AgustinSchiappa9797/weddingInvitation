@@ -38,10 +38,12 @@ img {
 a {
     text-decoration: none;
     color: inherit;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button {
     font: inherit;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .container {
@@ -196,10 +198,13 @@ button {
 }
 
 .btn:focus-visible,
-a:focus-visible,
-button:focus-visible {
+a:focus-visible {
     outline: 3px solid rgba(143, 111, 90, 0.35);
     outline-offset: 3px;
+}
+
+button:focus-visible {
+    outline: none;
 }
 
 .btn.primary {
@@ -653,6 +658,23 @@ body[data-event-phase="today"] .btn.primary {
         transform 0.2s ease,
         opacity 0.2s ease,
         color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.section-tab:focus {
+    outline: none;
+}
+
+.section-tab:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.section-tab:focus-visible .hub-tab-icon {
+    box-shadow:
+        0 0 0 3px rgba(143, 111, 90, 0.22),
+        0 8px 20px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .section-tab.hidden {
@@ -771,38 +793,7 @@ body[data-event-phase="today"] .btn.primary {
 }
 
 .mobile-sticky-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 40;
-    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
-    pointer-events: none;
-}
-
-.mobile-sticky-inner {
-    width: min(100%, 560px);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    padding: 10px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
-    pointer-events: auto;
-}
-
-.mobile-sticky-btn {
-    margin-top: 0;
-    text-align: center;
-    width: 100%;
-}
-
-.mobile-sticky-btn.is-full {
-    grid-column: 1 / -1;
+    display: none !important;
 }
 
 .hidden {
@@ -969,10 +960,6 @@ body[data-event-phase="today"] .btn.primary {
             linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
     }
 
-    body {
-        padding-bottom: 92px;
-    }
-
     .hero {
         padding: 20px 0;
     }
@@ -1029,9 +1016,6 @@ body[data-event-phase="today"] .btn.primary {
         height: 320px;
     }
 
-    .mobile-sticky-bar {
-        display: none !important;
-    }
 }
 
 @media (min-width: 1200px) {

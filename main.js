@@ -4,7 +4,6 @@ import { getElements } from "./dom/elements.js";
 import { state } from "./state.js";
 import { fetchInvitation } from "./api/invitationApi.js";
 import { wait } from "./utils/wait.js";
-import { renderStickyBar } from "./ui/stickyBarView.js";
 import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./ui/welcomeScreen.js";
 import { setupContentPanelNavigation, renderActivePanel, syncContentPanelVisibility } from "./ui/contentPanelView.js";
 import { hideError, showError } from "./ui/errorView.js";
@@ -88,7 +87,6 @@ function renderInvitationSections(viewData) {
     renderGallery(els, viewData);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
-    renderStickyBar(els, viewData);
 }
 
 async function renderInvitation(data) {
