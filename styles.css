@@ -525,50 +525,221 @@ body[data-event-phase="today"] .btn.primary {
     padding-top: 10px;
 }
 
+.heart-stage {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 18px;
+    pointer-events: none;
+}
+
+.heart-scene {
+    position: relative;
+    width: 180px;
+    height: 150px;
+    display: grid;
+    place-items: center;
+    perspective: 900px;
+}
+
+.heart-glow {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(143, 111, 90, 0.22) 0%, rgba(143, 111, 90, 0.08) 42%, transparent 72%);
+    filter: blur(10px);
+    transform: translateY(8px);
+    animation: heartGlowPulse 4.2s ease-in-out infinite;
+}
+
+.heart-ornament {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    transform: rotate(-45deg);
+    border-radius: 22px 0 0 0;
+    background:
+        linear-gradient(145deg, rgba(173, 137, 115, 0.95), rgba(143, 111, 90, 1));
+    box-shadow:
+        0 18px 34px rgba(143, 111, 90, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset -8px -10px 16px rgba(88, 62, 49, 0.14);
+    animation: heartFloat 4.8s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+.heart-ornament::before,
+.heart-ornament::after {
+    content: "";
+    position: absolute;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background:
+        linear-gradient(145deg, rgba(173, 137, 115, 0.98), rgba(143, 111, 90, 1));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset -8px -10px 16px rgba(88, 62, 49, 0.12);
+}
+
+.heart-ornament::before {
+    top: -48px;
+    left: 0;
+}
+
+.heart-ornament::after {
+    top: 0;
+    left: 48px;
+}
+
+.heart-core {
+    position: absolute;
+    inset: 18px;
+    border-radius: 18px 0 0 0;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    opacity: 0.72;
+}
+
+.heart-core::before,
+.heart-core::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02));
+}
+
+.heart-core::before {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: 0;
+}
+
+.heart-core::after {
+    width: 60px;
+    height: 60px;
+    top: 0;
+    left: 30px;
+}
+
 .section-nav {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
+}
+
+.hub-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(88px, 1fr));
+    gap: 14px;
+    width: min(100%, 560px);
+    margin: 0 auto 22px;
 }
 
 .section-tab {
-    position: relative;
     border: 0;
-    padding: 10px 16px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.72);
+    background: transparent;
     color: var(--text);
     cursor: pointer;
     transition:
         transform 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease,
-        color 0.2s ease,
-        opacity 0.2s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-}
-
-.section-tab:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-}
-
-.section-tab.is-active {
-    background: var(--primary);
-    color: var(--white);
-    box-shadow: 0 10px 24px rgba(143, 111, 90, 0.28);
+        opacity 0.2s ease,
+        color 0.2s ease;
 }
 
 .section-tab.hidden {
     display: none !important;
 }
 
+.hub-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    text-align: center;
+}
+
+.hub-tab:hover {
+    transform: translateY(-2px);
+}
+
+.hub-tab-icon {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    font-size: 1.35rem;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.hub-tab-label {
+    font-size: 0.88rem;
+    color: var(--muted);
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.hub-tab.is-active .hub-tab-icon {
+    background: var(--primary);
+    color: var(--white);
+    box-shadow:
+        0 12px 26px rgba(143, 111, 90, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: scale(1.04);
+}
+
+.hub-tab.is-active .hub-tab-label {
+    color: var(--text);
+    font-weight: 600;
+}
+
+@media (max-width: 420px) {
+    .hub-nav {
+        grid-template-columns: repeat(3, minmax(80px, 1fr));
+        gap: 12px;
+    }
+
+    .hub-tab-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.2rem;
+    }
+
+    .hub-tab-label {
+        font-size: 0.82rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .hub-nav {
+        grid-template-columns: repeat(5, minmax(90px, 1fr));
+        width: min(100%, 760px);
+    }
+}
+
 .content-panel {
     min-height: 340px;
     padding: 24px;
     border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .panel-section {
@@ -636,6 +807,37 @@ body[data-event-phase="today"] .btn.primary {
 
 .hidden {
     display: none !important;
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: rotate(-45deg) translateY(0) scale(1);
+    }
+
+    50% {
+        transform: rotate(-45deg) translateY(-6px) scale(1.02);
+    }
+
+    100% {
+        transform: rotate(-45deg) translateY(0) scale(1);
+    }
+}
+
+@keyframes heartGlowPulse {
+    0% {
+        opacity: 0.72;
+        transform: translateY(8px) scale(0.96);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(8px) scale(1.05);
+    }
+
+    100% {
+        opacity: 0.72;
+        transform: translateY(8px) scale(0.96);
+    }
 }
 
 @keyframes panelFadeIn {
@@ -711,6 +913,53 @@ body[data-event-phase="today"] .btn.primary {
             linear-gradient(rgba(247, 242, 238, 0.42), rgba(247, 242, 238, 0.84)),
             url("assets/img/Fondo.JPG") center 10% / cover no-repeat,
             linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    }
+
+    .heart-stage {
+        margin-bottom: 16px;
+    }
+
+    .heart-scene {
+        width: 150px;
+        height: 126px;
+    }
+
+    .heart-glow {
+        width: 126px;
+        height: 126px;
+    }
+
+    .heart-ornament,
+    .heart-ornament::before,
+    .heart-ornament::after {
+        width: 80px;
+        height: 80px;
+    }
+
+    .heart-ornament::before {
+        top: -40px;
+    }
+
+    .heart-ornament::after {
+        left: 40px;
+    }
+
+    .heart-core {
+        inset: 15px;
+    }
+
+    .heart-core::before,
+    .heart-core::after {
+        width: 50px;
+        height: 50px;
+    }
+
+    .heart-core::before {
+        top: -25px;
+    }
+
+    .heart-core::after {
+        left: 25px;
     }
 
     .screen-overlay {
