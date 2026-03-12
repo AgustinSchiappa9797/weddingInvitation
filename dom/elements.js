@@ -72,6 +72,10 @@ export function getElements() {
         errorMessage: document.getElementById("errorMessage"),
         retryButton: document.getElementById("retryButton"),
 
+        heartScene: document.getElementById("heartScene"),
+        heartGlow: document.getElementById("heartGlow"),
+        heartOrnament: document.getElementById("heartOrnament"),
+
         lightbox: document.getElementById("lightbox"),
         lightboxImage: document.getElementById("lightboxImage"),
         lightboxClose: document.getElementById("lightboxClose")

@@ -61,6 +61,11 @@ export function syncContentPanelVisibility(els, state, viewData) {
     renderActivePanel(els, state, viewData);
 }
 
+function syncHeartMode(els, activeSection) {
+    if (!els.heartScene) return;
+    els.heartScene.dataset.heartMode = activeSection || "details";
+}
+
 export function renderActivePanel(els, state, viewData) {
     const tabs = getTabMap(els);
     const panels = getPanelMap(els);
@@ -81,6 +86,8 @@ export function renderActivePanel(els, state, viewData) {
         panels[key]?.classList.toggle("is-active", isActive);
         panels[key]?.setAttribute("aria-hidden", String(!isActive));
     });
+
+    syncHeartMode(els, state.activeSection);
 }
 
 export function setupContentPanelNavigation(els, state) {
