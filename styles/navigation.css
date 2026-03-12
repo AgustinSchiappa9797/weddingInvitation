@@ -1,0 +1,116 @@
+.section-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.section-tab {
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease, filter 0.2s ease;
+}
+
+.section-tab:focus,
+.section-tab:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.section-tab.hidden {
+    display: none !important;
+}
+
+.hub-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    width: min(100%, 760px);
+    margin: 0 auto 18px;
+}
+
+.hub-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.64);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.hub-tab:hover {
+    transform: translateY(-1px);
+}
+
+.hub-tab-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78));
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.section-tab:focus-visible .hub-tab-icon {
+    box-shadow:
+        0 0 0 3px rgba(127, 138, 99, 0.22),
+        0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.hub-tab-icon-image {
+    padding: 4px;
+}
+
+.hub-tab-icon-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.hub-tab-icon img,
+.hub-tab-icon svg {
+    display: block;
+}
+
+.hub-tab-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.hub-tab.is-active {
+    background: rgba(255, 255, 255, 0.84);
+    border-color: rgba(127, 138, 99, 0.16);
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(127, 138, 99, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.hub-tab.is-active .hub-tab-icon {
+    transform: scale(1.03);
+    background: linear-gradient(180deg, rgba(127, 138, 99, 0.22), rgba(127, 138, 99, 0.12));
+    color: var(--accent-olive-dark);
+    box-shadow: 0 10px 22px rgba(102, 112, 77, 0.16);
+}
+
+.hub-tab.is-active .hub-tab-label {
+    color: var(--accent-olive-dark);
+}
+
+
+.section-tab.is-active {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}

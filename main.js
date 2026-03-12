@@ -5,7 +5,7 @@ import { state } from "./state.js";
 import { fetchInvitation } from "./api/invitationApi.js";
 import { wait } from "./utils/wait.js";
 import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./ui/welcomeScreen.js";
-import { setupContentPanelNavigation, renderActivePanel, syncContentPanelVisibility } from "./ui/contentPanelView.js";
+import { setupNavigation, renderActiveNavigation, syncNavigationVisibility } from "./ui/navigation.js";
 import { hideError, showError } from "./ui/errorView.js";
 import { renderHero } from "./ui/heroView.js";
 import { renderDetails } from "./ui/detailsView.js";
@@ -14,9 +14,9 @@ import { renderGallery } from "./ui/galleryView.js";
 import { renderPlaylist } from "./ui/playlistView.js";
 import { renderCountdown } from "./ui/countdownView.js";
 import { setupAnimations, revealContentAnimations } from "./ui/animations.js";
+import { setupLightbox, closeLightbox } from "./ui/lightboxView.js";
 import { getInvitationViewData } from "./ui/viewData.js";
-import { setupHeartNavigator, syncHeartHotspots, syncHeartHotspotVisibility } from "./ui/heartNavigatorView.js";
-import { setupHeartTilt } from "./ui/heartTiltView.js";
+import { renderBackground } from "./ui/backgroundView.js";
 
 const els = Object.freeze(getElements());
 
@@ -36,20 +36,15 @@ function resetInvitationState() {
 
     hideElements(
         els.invitationContent,
-        els.detailsBtn,
         els.gallerySection,
         els.playlistSection,
         els.countdownSection,
-        els.mobileStickyBar,
         els.timelineSection,
         els.errorSection,
         els.lightbox
     );
 
-    if (els.lightboxImage) {
-        els.lightboxImage.removeAttribute("src");
-        els.lightboxImage.alt = "";
-    }
+    closeLightbox(els);
 
     els.gallery?.replaceChildren();
     els.guestTags?.replaceChildren();
@@ -71,7 +66,7 @@ function resetInvitationState() {
         element?.classList.remove("hidden");
     });
 
-    renderActivePanel(els, state, {
+    renderActiveNavigation(els, state, {
         hasGallery: true,
         hasRsvp: true,
         hasPlaylist: true
@@ -80,7 +75,6 @@ function resetInvitationState() {
 
 function showInvitationShell() {
     els.invitationContent?.classList.remove("hidden");
-    els.detailsBtn?.classList.remove("hidden");
 }
 
 function renderInvitationSections(viewData) {
@@ -98,11 +92,12 @@ async function renderInvitation(data) {
 
     document.body.dataset.eventPhase = viewData.eventPhase || "upcoming";
 
+    await renderBackground(els, viewData);
     await renderHero(els, viewData);
 
     showInvitationShell();
     renderInvitationSections(viewData);
-    syncContentPanelVisibility(els, state, viewData);
+    syncNavigationVisibility(els, state, viewData);
     revealContentAnimations();
 }
 
@@ -152,6 +147,7 @@ async function loadInvitationFlow() {
     try {
         const invitation = await getInvitationData(token);
 
+        setWelcomeScreenProgress(els, "Cargando portada…");
         await renderInvitation(invitation);
         setWelcomeScreenProgress(els, "Todo listo.");
 
@@ -172,28 +168,14 @@ async function init() {
 
     setupAnimations();
 
-    els.lightboxClose?.addEventListener("click", () => {
-        els.lightbox?.classList.add("hidden");
-        els.lightbox?.setAttribute("aria-hidden", "true");
-    });
-
-    els.lightbox?.addEventListener("click", (event) => {
-        if (event.target === els.lightbox) {
-            els.lightbox.classList.add("hidden");
-            els.lightbox.setAttribute("aria-hidden", "true");
-        }
-    });
+    setupLightbox(els);
 
     els.retryButton?.addEventListener("click", () => {
         els.retryButton.disabled = true;
         window.location.reload();
     });
 
-    setupContentPanelNavigation(els, state);
-    setupHeartNavigator(els);
-    setupHeartTilt(els);
-    syncHeartHotspotVisibility(els);
-    syncHeartHotspots(els, state.activeSection);
+    setupNavigation(els, state);
     await loadInvitationFlow();
 }
 

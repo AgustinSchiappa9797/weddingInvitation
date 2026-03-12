@@ -7,7 +7,13 @@
     <title>Invitación</title>
     <meta name="description" content="Una invitación especial." />
     <meta name="theme-color" content="#8f6f5a" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/hero.css" />
+    <link rel="stylesheet" href="styles/navigation.css" />
+    <link rel="stylesheet" href="styles/panels.css" />
+    <link rel="stylesheet" href="styles/gallery.css" />
+    <link rel="stylesheet" href="styles/overlays.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
 </head>
 
 <body>
@@ -41,7 +47,7 @@
         </div>
     </div>
 
-    <div class="bg-overlay"></div>
+    <div id="bgOverlay" class="bg-overlay"></div>
 
     <header class="hero">
 
@@ -57,62 +63,15 @@
                 Estamos preparando tu experiencia.
             </p>
 
-            <div class="hero-summary-layout">
+            <div class="guest-box">
 
-                <div class="guest-box">
+                <span class="label">Invitación para</span>
 
-                    <span class="label">Invitación para</span>
+                <h2 id="guestName">
+                    Aguardanos un instante
+                </h2>
 
-                    <h2 id="guestName">
-                        Aguardanos un instante
-                    </h2>
-
-                    <p id="guestExtra" class="guest-extra"></p>
-
-                </div>
-
-                <div class="heart-stage hero-heart-stage">
-                    <div id="heartScene" class="heart-scene" data-heart-mode="details">
-                        <div id="heartGlow" class="heart-glow"></div>
-
-                        <div id="heartOrnament" class="heart-ornament">
-                            <span class="heart-core"></span>
-                        </div>
-
-                        <button id="heartHotspotDetails" class="heart-hotspot heart-hotspot-details" type="button"
-                            aria-label="Detalles">
-                            <span class="heart-hotspot-icon">📍</span>
-                        </button>
-
-                        <button id="heartHotspotAccess" class="heart-hotspot heart-hotspot-access" type="button"
-                            aria-label="Ubicación y acceso">
-                            <span class="heart-hotspot-icon heart-hotspot-icon-image" aria-hidden="true">
-                                <img src="assets/icons/google-maps-mark.svg" alt="" />
-                            </span>
-                        </button>
-
-                        <button id="heartHotspotGallery" class="heart-hotspot heart-hotspot-gallery" type="button"
-                            aria-label="Fotos">
-                            <span class="heart-hotspot-icon">📸</span>
-                        </button>
-
-                        <button id="heartHotspotRsvp" class="heart-hotspot heart-hotspot-rsvp" type="button"
-                            aria-label="Confirmar">
-                            <span class="heart-hotspot-icon">✔</span>
-                        </button>
-
-                        <button id="heartHotspotPlaylist" class="heart-hotspot heart-hotspot-playlist" type="button"
-                            aria-label="Playlist">
-                            <span class="heart-hotspot-icon heart-hotspot-icon-image" aria-hidden="true">
-                                <img src="assets/icons/spotify-mark.svg" alt="" />
-                            </span>
-                        </button>
-                    </div>
-
-                    <p class="heart-hint">
-                        Tocá un punto del corazón para explorar la invitación
-                    </p>
-                </div>
+                <p id="guestExtra" class="guest-extra"></p>
 
             </div>
 
@@ -136,43 +95,41 @@
         <section class="section compact-shell">
             <div class="container">
 
-                <nav class="section-nav hub-nav" aria-label="Secciones de la invitación" role="tablist">
+                <nav id="sectionNav" class="section-nav hub-nav" aria-label="Secciones de la invitación" role="tablist">
                     <button id="tabDetails" class="section-tab hub-tab is-active" type="button" data-section="details"
-                        role="tab" aria-selected="true">
-                        <span class="hub-tab-icon" aria-hidden="true">📍</span>
+                        role="tab" aria-selected="true" aria-controls="panelDetails">
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img src="assets/icons/details-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Detalles</span>
                     </button>
 
                     <button id="tabAccess" class="section-tab hub-tab" type="button" data-section="access" role="tab"
-                        aria-selected="false">
-                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img
-                                src="assets/icons/google-maps-mark.svg" alt="" /></span>
-                        <span class="hub-tab-label">Acceso</span>
+                        aria-selected="false" aria-controls="panelAccess">
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img src="assets/icons/google-maps-mark.svg" alt="" /></span>
+                        <span class="hub-tab-label">Dirección</span>
                     </button>
 
                     <button id="tabGallery" class="section-tab hub-tab" type="button" data-section="gallery" role="tab"
-                        aria-selected="false">
-                        <span class="hub-tab-icon" aria-hidden="true">📸</span>
+                        aria-selected="false" aria-controls="panelGallery">
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img src="assets/icons/gallery-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Fotos</span>
                     </button>
 
                     <button id="tabRsvp" class="section-tab hub-tab" type="button" data-section="rsvp" role="tab"
-                        aria-selected="false">
-                        <span class="hub-tab-icon" aria-hidden="true">✔</span>
+                        aria-selected="false" aria-controls="panelRsvp">
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img src="assets/icons/rsvp-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">RSVP</span>
                     </button>
 
                     <button id="tabPlaylist" class="section-tab hub-tab" type="button" data-section="playlist"
-                        role="tab" aria-selected="false">
-                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img
-                                src="assets/icons/spotify-mark.svg" alt="" /></span>
+                        role="tab" aria-selected="false" aria-controls="panelPlaylist">
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img src="assets/icons/spotify-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Playlist</span>
                     </button>
                 </nav>
 
                 <section id="contentPanel" class="card fade-up content-panel visible">
                     <div id="panelDetails" class="panel-section is-active" data-panel="details" role="tabpanel"
-                        aria-hidden="false">
+                        aria-hidden="false" aria-labelledby="tabDetails">
                         <div class="panel-grid">
                             <div class="panel-block">
                                 <p class="section-kicker">Cuándo</p>
@@ -186,17 +143,6 @@
                                 </a>
                             </div>
 
-                            <div class="panel-block">
-                                <p class="section-kicker">Dónde</p>
-                                <h3>Lugar</h3>
-                                <p id="venueName">-</p>
-                                <p id="venueAddress">-</p>
-
-                                <a id="mapButton" class="btn secondary" href="#" target="_blank"
-                                    rel="noopener noreferrer">
-                                    Abrir mapa
-                                </a>
-                            </div>
                         </div>
 
                         <div id="timelineSection" class="panel-subsection hidden">
@@ -205,28 +151,62 @@
                         </div>
                     </div>
 
-                    <div id="panelAccess" class="panel-section" data-panel="access" role="tabpanel" aria-hidden="true">
-                        <p class="section-kicker">Información para vos</p>
-                        <h3>Tu acceso</h3>
+                    <div id="panelAccess" class="panel-section" data-panel="access" role="tabpanel" aria-hidden="true" aria-labelledby="tabAccess">
+                        <p class="section-kicker">Cómo llegar</p>
+                        <h3>Dirección</h3>
+
+                        <div class="panel-block venue-block">
+                            <p class="section-kicker">Dónde</p>
+                            <h4 class="venue-title">Lugar</h4>
+                            <p id="venueName">-</p>
+                            <p id="venueAddress">-</p>
+
+                            <a id="mapButton" class="btn secondary" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                                Abrir mapa
+                            </a>
+                        </div>
 
                         <div class="personal-message-box">
                             <p id="personalMessage" class="personal-message">-</p>
+                        </div>
+
+                        <div id="accessNotesSection" class="access-notes-grid hidden">
+                            <div id="parkingInfoBlock" class="panel-block info-block hidden">
+                                <p class="section-kicker">Logística</p>
+                                <h4>Estacionamiento</h4>
+                                <ul id="parkingInfoList" class="info-list"></ul>
+                            </div>
+
+                            <div id="entryInfoBlock" class="panel-block info-block hidden">
+                                <p class="section-kicker">Ingreso</p>
+                                <h4>Cómo entrar</h4>
+                                <ul id="entryInfoList" class="info-list"></ul>
+                            </div>
+
+                            <div id="recommendationsBlock" class="panel-block info-block hidden">
+                                <p class="section-kicker">A tener en cuenta</p>
+                                <h4>Recomendaciones</h4>
+                                <ul id="recommendationsList" class="info-list"></ul>
+                            </div>
                         </div>
 
                         <div id="guestTags" class="tags"></div>
                     </div>
 
                     <div id="panelGallery" class="panel-section" data-panel="gallery" role="tabpanel"
-                        aria-hidden="true">
+                        aria-hidden="true" aria-labelledby="tabGallery">
                         <p class="section-kicker">Recuerdos</p>
                         <h3>Galería</h3>
 
                         <div id="gallerySection" class="panel-subsection hidden">
-                            <div id="gallery" class="gallery gallery-horizontal"></div>
+                            <div class="gallery-wrapper">
+                                <div id="gallery" class="gallery gallery-horizontal"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="panelRsvp" class="panel-section" data-panel="rsvp" role="tabpanel" aria-hidden="true">
+                    <div id="panelRsvp" class="panel-section" data-panel="rsvp" role="tabpanel" aria-hidden="true" aria-labelledby="tabRsvp">
                         <p class="section-kicker">Acción importante</p>
                         <h3>Confirmación</h3>
 
@@ -245,7 +225,7 @@
                     </div>
 
                     <div id="panelPlaylist" class="panel-section" data-panel="playlist" role="tabpanel"
-                        aria-hidden="true">
+                        aria-hidden="true" aria-labelledby="tabPlaylist">
                         <div id="playlistSection" class="panel-subsection hidden">
                             <p class="section-kicker">Ambientación</p>
                             <h3>Playlist</h3>
@@ -274,32 +254,13 @@
         </div>
     </section>
 
-    <div id="mobileStickyBar" class="mobile-sticky-bar hidden">
-        <div class="mobile-sticky-inner">
-            <a id="stickyMapButton" class="btn secondary mobile-sticky-btn" href="#" target="_blank"
-                rel="noopener noreferrer">
-                Cómo llegar
-            </a>
-
-            <a id="stickyCalendarButton" class="btn secondary mobile-sticky-btn hidden" href="#" target="_blank"
-                rel="noopener noreferrer">
-                Agendar
-            </a>
-
-            <a id="stickyRsvpButton" class="btn primary mobile-sticky-btn" href="#" target="_blank"
-                rel="noopener noreferrer">
-                Confirmar
-            </a>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="container">
             <p id="footerText">Con amor</p>
         </div>
     </footer>
 
-    <div id="lightbox" class="lightbox hidden" aria-hidden="true">
+    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Visor de imágenes" aria-hidden="true">
         <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
         <img id="lightboxImage" class="lightbox-image" src="" alt="" />
     </div>

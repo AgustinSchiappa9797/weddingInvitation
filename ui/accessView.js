@@ -34,15 +34,40 @@ function renderTags(container, tags) {
     container.appendChild(fragment);
 }
 
-function getDaysUntil(dateString) {
-    const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return null;
+function renderInfoList(container, items) {
+    if (!container) return;
 
-    const diff = date.getTime() - Date.now();
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    container.replaceChildren();
+
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        fragment.appendChild(li);
+    });
+
+    container.appendChild(fragment);
 }
 
-export function renderAccess(els, data) {
+function toggleInfoBlock(block, list, items) {
+    if (!block || !list) return false;
+
+    const visibleItems = Array.isArray(items) ? items.filter(Boolean) : [];
+    const hasItems = visibleItems.length > 0;
+
+    block.classList.toggle("hidden", !hasItems);
+
+    if (hasItems) {
+        renderInfoList(list, visibleItems);
+    } else {
+        list.replaceChildren();
+    }
+
+    return hasItems;
+}
+
+function renderGuestMeta(els, data) {
     if (els.guestExtra) {
         els.guestExtra.textContent = data.companionsText;
     }
@@ -51,26 +76,56 @@ export function renderAccess(els, data) {
         els.personalMessage.textContent = data.message || "";
     }
 
+    renderTags(els.guestTags, buildTags(data));
+}
+
+function renderVenue(els, data) {
+    if (els.venueName) {
+        els.venueName.textContent = data.venueName || "-";
+    }
+
+    if (els.venueAddress) {
+        els.venueAddress.textContent = data.venueAddress || "-";
+    }
+
+    setOptionalLink(els.mapButton, data.mapUrl);
+}
+
+function renderAccessNotes(els, data) {
+    const hasParking = toggleInfoBlock(els.parkingInfoBlock, els.parkingInfoList, data.parkingInfo);
+    const hasEntry = toggleInfoBlock(els.entryInfoBlock, els.entryInfoList, data.entryInfo);
+    const hasRecommendations = toggleInfoBlock(els.recommendationsBlock, els.recommendationsList, data.recommendations);
+
+    els.accessNotesSection?.classList.toggle("hidden", !(hasParking || hasEntry || hasRecommendations));
+}
+
+function renderRsvpMeta(els, data) {
     if (els.rsvpDeadline) {
-        els.rsvpDeadline.textContent =
-            data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
+        els.rsvpDeadline.textContent = data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
     }
 
     if (els.rsvpHelperText) {
-        const daysLeft = getDaysUntil(data.rsvpDeadlineIso);
+        const daysLeft = data.rsvpDaysLeft;
 
-        if (typeof daysLeft === "number" && daysLeft >= 0 && daysLeft <= 3) {
-            els.rsvpHelperText.textContent = "La fecha de confirmación está muy cerca.";
-        } else {
-            els.rsvpHelperText.textContent = "Nos ayuda muchísimo para organizar cada detalle.";
-        }
-    }
-
-    if (els.footerText) {
-        els.footerText.textContent = data.footerText || COPY.defaults.footerText;
+        els.rsvpHelperText.textContent =
+            typeof daysLeft === "number" && daysLeft >= 0 && daysLeft <= 3
+                ? "La fecha de confirmación está muy cerca."
+                : "Nos ayuda muchísimo para organizar cada detalle.";
     }
 
     setOptionalLink(els.rsvpButton, data.rsvpUrl);
+}
 
-    renderTags(els.guestTags, buildTags(data));
+function renderFooter(els, data) {
+    if (els.footerText) {
+        els.footerText.textContent = data.footerText || COPY.defaults.footerText;
+    }
+}
+
+export function renderAccess(els, data) {
+    renderVenue(els, data);
+    renderGuestMeta(els, data);
+    renderAccessNotes(els, data);
+    renderRsvpMeta(els, data);
+    renderFooter(els, data);
 }

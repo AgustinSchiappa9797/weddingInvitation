@@ -1,0 +1,160 @@
+.screen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background:
+        linear-gradient(rgba(247, 242, 238, 0.78), rgba(247, 242, 238, 0.9)),
+        var(--bg-photo) center 18% / cover no-repeat,
+        linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+
+.screen-overlay.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.screen-card {
+    width: min(92%, 720px);
+    padding: 36px 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 24px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+    transform: translateY(10px);
+    animation: welcomeFloatIn 0.8s ease forwards;
+}
+
+.screen-title {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.1;
+}
+
+.screen-text {
+    margin: 18px auto 0;
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.welcome-status {
+    margin-top: 24px;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-loader {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid rgba(143, 111, 90, 0.18);
+    border-top-color: var(--primary);
+    animation: welcomeSpin 0.9s linear infinite;
+}
+
+.welcome-ready {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(143, 111, 90, 0.1);
+    color: var(--primary-dark);
+    font-size: 0.95rem;
+    animation: readyFadeIn 0.45s ease;
+}
+
+.welcome-ready-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.welcome-card {
+    animation-duration: 1s;
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(20, 14, 12, 0.86);
+}
+
+.lightbox-image {
+    max-width: min(92vw, 1100px);
+    max-height: 82vh;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1f1f1f;
+    font-size: 1.8rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+@keyframes welcomeFloatIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes welcomeSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes readyFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

@@ -51,17 +51,8 @@ export function renderDetails(els, data) {
         els.eventTimeText.textContent = data.eventTimeText || "-";
     }
 
-    if (els.venueName) {
-        els.venueName.textContent = data.venueName || "-";
-    }
-
-    if (els.venueAddress) {
-        els.venueAddress.textContent = data.venueAddress || "-";
-    }
-
     renderTimeline(els, data.timeline);
 
-    setOptionalLink(els.mapButton, data.mapUrl);
 
     const calendarUrl = buildGoogleCalendarUrl(data);
     setOptionalLink(els.calendarButton, calendarUrl);

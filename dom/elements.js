@@ -11,10 +11,11 @@ export function getElements() {
         mainTitle: document.getElementById("mainTitle"),
         mainSubtitle: document.getElementById("mainSubtitle"),
         guestName: document.getElementById("guestName"),
+        bgOverlay: document.getElementById("bgOverlay"),
         guestExtra: document.getElementById("guestExtra"),
-        detailsBtn: document.getElementById("detailsBtn"),
 
         invitationContent: document.getElementById("invitationContent"),
+        sectionNav: document.getElementById("sectionNav"),
         contentPanel: document.getElementById("contentPanel"),
 
         tabDetails: document.getElementById("tabDetails"),
@@ -48,6 +49,13 @@ export function getElements() {
         timeline: document.getElementById("timeline"),
 
         personalMessage: document.getElementById("personalMessage"),
+        accessNotesSection: document.getElementById("accessNotesSection"),
+        parkingInfoBlock: document.getElementById("parkingInfoBlock"),
+        parkingInfoList: document.getElementById("parkingInfoList"),
+        entryInfoBlock: document.getElementById("entryInfoBlock"),
+        entryInfoList: document.getElementById("entryInfoList"),
+        recommendationsBlock: document.getElementById("recommendationsBlock"),
+        recommendationsList: document.getElementById("recommendationsList"),
         guestTags: document.getElementById("guestTags"),
 
         rsvpDeadline: document.getElementById("rsvpDeadline"),
@@ -62,24 +70,11 @@ export function getElements() {
 
         footerText: document.getElementById("footerText"),
 
-        mobileStickyBar: document.getElementById("mobileStickyBar"),
-        stickyMapButton: document.getElementById("stickyMapButton"),
-        stickyCalendarButton: document.getElementById("stickyCalendarButton"),
-        stickyRsvpButton: document.getElementById("stickyRsvpButton"),
 
         errorSection: document.getElementById("errorSection"),
         errorTitle: document.getElementById("errorTitle"),
         errorMessage: document.getElementById("errorMessage"),
         retryButton: document.getElementById("retryButton"),
-
-        heartScene: document.getElementById("heartScene"),
-        heartGlow: document.getElementById("heartGlow"),
-        heartOrnament: document.getElementById("heartOrnament"),
-        heartHotspotDetails: document.getElementById("heartHotspotDetails"),
-        heartHotspotAccess: document.getElementById("heartHotspotAccess"),
-        heartHotspotGallery: document.getElementById("heartHotspotGallery"),
-        heartHotspotRsvp: document.getElementById("heartHotspotRsvp"),
-        heartHotspotPlaylist: document.getElementById("heartHotspotPlaylist"),
 
         lightbox: document.getElementById("lightbox"),
         lightboxImage: document.getElementById("lightboxImage"),
