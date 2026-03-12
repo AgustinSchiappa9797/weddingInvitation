@@ -41,8 +41,7 @@ function normalizeInfoItems(value) {
 
     if (typeof value === "string") {
         return value
-            .split(/?
-+/)
+            .split(/\r?\n+/)
             .map((item) => item.trim())
             .filter(Boolean);
     }
