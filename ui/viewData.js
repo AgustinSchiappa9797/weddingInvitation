@@ -91,6 +91,8 @@ export function getInvitationViewData(data) {
     const parkingInfo = normalizeInfoItems(pickFirstNonEmpty(data, ["parkingInfo", "parking", "estacionamiento"]));
     const entryInfo = normalizeInfoItems(pickFirstNonEmpty(data, ["entryInfo", "entry", "ingreso"]));
     const recommendations = normalizeInfoItems(pickFirstNonEmpty(data, ["recommendations", "recommendation", "recomendaciones"]));
+    const confirmationDeadlineText = pickFirstNonEmpty(data, ["confirmationDeadlineText", "rsvpDeadlineText"]);
+    const confirmationDeadlineIso = pickFirstNonEmpty(data, ["confirmationDeadlineIso", "rsvpDeadlineIso", "rsvpDeadline"]);
 
     return {
         ...data,
@@ -101,7 +103,9 @@ export function getInvitationViewData(data) {
         parkingInfo,
         entryInfo,
         recommendations,
-        rsvpDaysLeft: getDaysUntil(data.rsvpDeadlineIso || data.rsvpDeadline),
+        confirmationDeadlineText,
+        confirmationDeadlineIso,
+        rsvpDaysLeft: getDaysUntil(confirmationDeadlineIso),
         timeline,
         eventPhase: getEventPhase(data.eventIsoDate),
         hasTimeline: timeline.length > 0,

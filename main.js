@@ -13,6 +13,7 @@ import { renderAccess } from "./ui/accessView.js";
 import { renderGallery } from "./ui/galleryView.js";
 import { renderPlaylist } from "./ui/playlistView.js";
 import { renderCountdown } from "./ui/countdownView.js";
+import { renderConfirmation } from "./ui/confirmationView.js";
 import { setupAnimations, revealContentAnimations } from "./ui/animations.js";
 import { setupLightbox, closeLightbox } from "./ui/lightboxView.js";
 import { getInvitationViewData } from "./ui/viewData.js";
@@ -77,15 +78,16 @@ function showInvitationShell() {
     els.invitationContent?.classList.remove("hidden");
 }
 
-function renderInvitationSections(viewData) {
+function renderInvitationSections(viewData, options = {}) {
     renderDetails(els, viewData);
     renderAccess(els, viewData);
     renderGallery(els, viewData);
+    renderConfirmation(els, viewData, options);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
 }
 
-async function renderInvitation(data) {
+async function renderInvitation(data, options = {}) {
     const viewData = getInvitationViewData(data);
 
     state.setActiveSection("details");
@@ -96,7 +98,7 @@ async function renderInvitation(data) {
     await renderHero(els, viewData);
 
     showInvitationShell();
-    renderInvitationSections(viewData);
+    renderInvitationSections(viewData, options);
     syncNavigationVisibility(els, state, viewData);
     revealContentAnimations();
 }
@@ -148,7 +150,7 @@ async function loadInvitationFlow() {
         const invitation = await getInvitationData(token);
 
         setWelcomeScreenProgress(els, "Cargando portada…");
-        await renderInvitation(invitation);
+        await renderInvitation(invitation, { token });
         setWelcomeScreenProgress(els, "Todo listo.");
 
         setWelcomeScreenReadyState(els, invitation);

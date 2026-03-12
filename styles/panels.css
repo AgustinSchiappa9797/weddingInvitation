@@ -176,3 +176,107 @@
         grid-column: 1 / -1;
     }
 }
+
+.confirmation-closed-note {
+    margin: 18px 0 0;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(127, 138, 99, 0.16);
+    color: var(--text);
+}
+
+.confirmation-form {
+    display: grid;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.confirmation-fieldset {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.confirmation-fieldset legend,
+.confirmation-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.choice-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid rgba(127, 138, 99, 0.14);
+    cursor: pointer;
+}
+
+.choice-card input {
+    margin-top: 3px;
+    flex: 0 0 auto;
+}
+
+.choice-card span {
+    display: grid;
+    gap: 4px;
+}
+
+.choice-card small {
+    color: var(--muted);
+}
+
+.confirmation-field select,
+.confirmation-field textarea {
+    width: 100%;
+    border: 1px solid rgba(117, 88, 69, 0.16);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--text);
+    padding: 13px 15px;
+    font: inherit;
+    resize: vertical;
+}
+
+.confirmation-field textarea {
+    min-height: 96px;
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.confirmation-actions .btn {
+    margin-top: 0;
+}
+
+.confirmation-feedback {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: 0.96rem;
+    line-height: 1.5;
+}
+
+.confirmation-feedback[data-state="info"] {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--text);
+}
+
+.confirmation-feedback[data-state="success"] {
+    background: rgba(127, 138, 99, 0.14);
+    color: var(--accent-olive-dark);
+}
+
+.confirmation-feedback[data-state="error"] {
+    background: rgba(143, 111, 90, 0.12);
+    color: var(--primary-dark);
+}

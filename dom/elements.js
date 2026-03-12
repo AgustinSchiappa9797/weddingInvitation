@@ -60,7 +60,14 @@ export function getElements() {
 
         rsvpDeadline: document.getElementById("rsvpDeadline"),
         rsvpHelperText: document.getElementById("rsvpHelperText"),
-        rsvpButton: document.getElementById("rsvpButton"),
+        confirmationClosedNote: document.getElementById("confirmationClosedNote"),
+        confirmationForm: document.getElementById("confirmationForm"),
+        confirmationCountField: document.getElementById("confirmationCountField"),
+        confirmationCount: document.getElementById("confirmationCount"),
+        confirmationDietaryRestrictions: document.getElementById("confirmationDietaryRestrictions"),
+        confirmationComment: document.getElementById("confirmationComment"),
+        confirmationSubmitButton: document.getElementById("confirmationSubmitButton"),
+        confirmationFeedback: document.getElementById("confirmationFeedback"),
 
         gallerySection: document.getElementById("gallerySection"),
         gallery: document.getElementById("gallery"),

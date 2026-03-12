@@ -17,6 +17,32 @@ function centerGalleryItem(item, behavior = "smooth") {
     });
 }
 
+function updateActiveGalleryItem(container) {
+    if (!container) return;
+
+    const items = [...container.querySelectorAll(".gallery-item")];
+    if (!items.length) return;
+
+    const containerCenter = container.scrollLeft + (container.clientWidth / 2);
+
+    let closestItem = null;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    items.forEach((item) => {
+        const itemCenter = item.offsetLeft + (item.offsetWidth / 2);
+        const distance = Math.abs(containerCenter - itemCenter);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestItem = item;
+        }
+    });
+
+    items.forEach((item) => {
+        item.classList.toggle("is-active", item === closestItem);
+    });
+}
+
 function createGalleryItem(src, index, els) {
     const button = document.createElement("button");
     button.type = "button";
@@ -33,11 +59,16 @@ function createGalleryItem(src, index, els) {
     img.referrerPolicy = "no-referrer";
 
     button.appendChild(img);
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
         const gallery = els.gallery;
-        if (!gallery || gallery.dataset.justDragged === "true") return;
+        if (!gallery || gallery.dataset.justDragged === "true") {
+            event.preventDefault();
+            return;
+        }
 
         centerGalleryItem(button);
+        updateActiveGalleryItem(gallery);
+
         openLightbox(els, src, img.alt, {
             triggerElement: button,
             galleryIndex: index
@@ -115,7 +146,11 @@ function setupGalleryControls(container) {
     prevButton?.addEventListener('click', () => scrollGalleryByStep(container, 'prev'));
     nextButton?.addEventListener('click', () => scrollGalleryByStep(container, 'next'));
 
-    const refreshButtons = () => updateNavButtons(container, prevButton, nextButton);
+    const refreshButtons = () => {
+        updateNavButtons(container, prevButton, nextButton);
+        updateActiveGalleryItem(container);
+    };
+
     container.addEventListener('scroll', refreshButtons, { passive: true });
     window.addEventListener('resize', refreshButtons);
     requestAnimationFrame(refreshButtons);
@@ -145,6 +180,9 @@ function setupGalleryDrag(container) {
         }
 
         moved = false;
+        requestAnimationFrame(() => {
+            updateActiveGalleryItem(container);
+        });
     };
 
     container.addEventListener('mousedown', (event) => {
@@ -161,7 +199,7 @@ function setupGalleryDrag(container) {
         if (!isDragging) return;
 
         const deltaX = event.clientX - startX;
-        if (Math.abs(deltaX) > 6) {
+        if (Math.abs(deltaX) > 10) {
             moved = true;
         }
 
@@ -221,6 +259,11 @@ export function renderGallery(els, data) {
         requestAnimationFrame(() => {
             const firstItem = els.gallery.querySelector('[data-gallery-index="0"]');
             centerGalleryItem(firstItem, 'auto');
+            updateActiveGalleryItem(els.gallery);
+        });
+    } else {
+        requestAnimationFrame(() => {
+            updateActiveGalleryItem(els.gallery);
         });
     }
 

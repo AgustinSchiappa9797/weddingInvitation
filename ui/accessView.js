@@ -101,7 +101,7 @@ function renderAccessNotes(els, data) {
 
 function renderRsvpMeta(els, data) {
     if (els.rsvpDeadline) {
-        els.rsvpDeadline.textContent = data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
+        els.rsvpDeadline.textContent = data.confirmationDeadlineText || data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
     }
 
     if (els.rsvpHelperText) {
@@ -112,8 +112,6 @@ function renderRsvpMeta(els, data) {
                 ? "La fecha de confirmación está muy cerca."
                 : "Nos ayuda muchísimo para organizar cada detalle.";
     }
-
-    setOptionalLink(els.rsvpButton, data.rsvpUrl);
 }
 
 function renderFooter(els, data) {
