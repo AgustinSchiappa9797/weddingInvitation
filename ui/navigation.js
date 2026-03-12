@@ -25,7 +25,7 @@ function getSectionAvailability(viewData) {
         details: true,
         access: true,
         gallery: Boolean(viewData?.hasGallery),
-        rsvp: Boolean(viewData?.hasRsvp),
+        rsvp: Boolean(viewData?.hasConfirmation),
         playlist: Boolean(viewData?.hasPlaylist)
     };
 }
@@ -33,7 +33,7 @@ function getSectionAvailability(viewData) {
 function getCurrentUiAvailability(els) {
     return getSectionAvailability({
         hasGallery: !els.tabGallery?.classList.contains("hidden"),
-        hasRsvp: !els.tabRsvp?.classList.contains("hidden"),
+        hasConfirmation: !els.tabRsvp?.classList.contains("hidden"),
         hasPlaylist: !els.tabPlaylist?.classList.contains("hidden")
     });
 }
@@ -145,7 +145,7 @@ export function setupNavigation(els, state) {
 
     applyActiveState(els, state, getSectionAvailability({
         hasGallery: true,
-        hasRsvp: true,
+        hasConfirmation: true,
         hasPlaylist: true
     }));
 }

@@ -99,19 +99,31 @@ function renderAccessNotes(els, data) {
     els.accessNotesSection?.classList.toggle("hidden", !(hasParking || hasEntry || hasRecommendations));
 }
 
+function getDaysUntil(dateString) {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return null;
+
+    const diff = date.getTime() - Date.now();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 function renderRsvpMeta(els, data) {
     if (els.rsvpDeadline) {
-        els.rsvpDeadline.textContent = data.confirmationDeadlineText || data.rsvpDeadlineText || COPY.defaults.rsvpDeadline;
+        els.rsvpDeadline.textContent =
+            data.confirmationDeadlineText || COPY.defaults.rsvpDeadline;
     }
 
     if (els.rsvpHelperText) {
-        const daysLeft = data.rsvpDaysLeft;
+        const daysLeft = getDaysUntil(data.confirmationDeadlineIso);
 
-        els.rsvpHelperText.textContent =
-            typeof daysLeft === "number" && daysLeft >= 0 && daysLeft <= 3
-                ? "La fecha de confirmación está muy cerca."
-                : "Nos ayuda muchísimo para organizar cada detalle.";
+        if (typeof daysLeft === "number" && daysLeft >= 0 && daysLeft <= 3) {
+            els.rsvpHelperText.textContent = "La fecha de confirmación está muy cerca.";
+        } else {
+            els.rsvpHelperText.textContent = "Nos ayuda muchísimo para organizar cada detalle.";
+        }
     }
+
+    setOptionalLink(els.rsvpButton, data.confirmationUrl);
 }
 
 function renderFooter(els, data) {

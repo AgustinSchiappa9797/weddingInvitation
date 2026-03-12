@@ -153,7 +153,11 @@ function setupGalleryControls(container) {
 
     container.addEventListener('scroll', refreshButtons, { passive: true });
     window.addEventListener('resize', refreshButtons);
-    requestAnimationFrame(refreshButtons);
+
+    requestAnimationFrame(() => {
+        refreshButtons();
+        window.setTimeout(refreshButtons, 60);
+    });
 
     container.dataset.controlsReady = 'true';
 }

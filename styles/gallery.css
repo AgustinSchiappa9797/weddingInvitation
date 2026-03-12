@@ -26,7 +26,7 @@
 }
 
 .gallery-horizontal {
-    --gallery-card-width: clamp(260px, 62vw, 420px);
+    --gallery-card-width: clamp(240px, 52vw, 380px);
     --gallery-gap: clamp(12px, 2vw, 20px);
 
     display: flex;
@@ -72,13 +72,15 @@
 }
 
 .gallery-item.is-active {
-    transform: scale(1.03);
+    transform: scale(1.05);
     opacity: 1;
     z-index: 2;
 }
 
 .gallery-item:not(.is-active) {
-    filter: saturate(0.92);
+    filter: saturate(0.9) brightness(0.92);
+    opacity: 0.72;
+    transform: scale(0.92);
 }
 
 .gallery-item:hover {

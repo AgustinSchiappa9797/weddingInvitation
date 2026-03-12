@@ -3,17 +3,19 @@ import { COPY } from "../constants/copy.js";
 function normalizeCompanions(value) {
     const parsed = Number(value);
 
-    if (!Number.isFinite(parsed) || parsed < 1) {
-        return 1;
+    if (!Number.isFinite(parsed) || parsed < 0) {
+        return 0;
     }
 
     return Math.floor(parsed);
 }
 
 function getCompanionsText(companions) {
-    return companions === 1
-        ? COPY.companions.single
-        : COPY.companions.multiple(companions);
+    if (companions <= 1) {
+        return COPY.companions.single;
+    }
+
+    return COPY.companions.multiple(companions);
 }
 
 function normalizeGallery(gallery) {
@@ -84,38 +86,44 @@ function getDaysUntil(dateString) {
 
 export function getInvitationViewData(data) {
     const companions = normalizeCompanions(data.companions);
-    const allImages = normalizeGallery(data.gallery);
-    const backgroundImage = allImages[0] || "";
-    const gallery = allImages.slice(1);
+    const rawGallery = normalizeGallery(data.gallery);
+    const backgroundImage = rawGallery[0] || "";
+    const gallery = rawGallery.slice(1);
     const timeline = normalizeTimeline(data.timeline);
-    const parkingInfo = normalizeInfoItems(pickFirstNonEmpty(data, ["parkingInfo", "parking", "estacionamiento"]));
-    const entryInfo = normalizeInfoItems(pickFirstNonEmpty(data, ["entryInfo", "entry", "ingreso"]));
-    const recommendations = normalizeInfoItems(pickFirstNonEmpty(data, ["recommendations", "recommendation", "recomendaciones"]));
-    const confirmationDeadlineText = pickFirstNonEmpty(data, ["confirmationDeadlineText", "rsvpDeadlineText"]);
-    const confirmationDeadlineIso = pickFirstNonEmpty(data, ["confirmationDeadlineIso", "rsvpDeadlineIso", "rsvpDeadline"]);
+
+    const confirmationDeadlineIso =
+        data.confirmationDeadlineIso ||
+        data.rsvpDeadlineIso ||
+        data.rsvpDeadline ||
+        "";
+
+    const confirmationDeadlineText =
+        data.confirmationDeadlineText ||
+        data.rsvpDeadlineText ||
+        "";
+
+    const confirmationUrl =
+        data.confirmationUrl ||
+        data.rsvpUrl ||
+        "";
 
     return {
         ...data,
         companions,
         companionsText: getCompanionsText(companions),
-        gallery,
         backgroundImage,
-        parkingInfo,
-        entryInfo,
-        recommendations,
-        confirmationDeadlineText,
-        confirmationDeadlineIso,
-        rsvpDaysLeft: getDaysUntil(confirmationDeadlineIso),
+        gallery,
         timeline,
+        confirmationDeadlineIso,
+        confirmationDeadlineText,
+        confirmationUrl,
+        confirmationDaysLeft: getDaysUntil(confirmationDeadlineIso),
         eventPhase: getEventPhase(data.eventIsoDate),
         hasTimeline: timeline.length > 0,
         hasGallery: gallery.length > 0,
         hasCalendar: Boolean(data.eventIsoDate),
-        hasParkingInfo: parkingInfo.length > 0,
-        hasEntryInfo: entryInfo.length > 0,
-        hasRecommendations: recommendations.length > 0,
         hasPlaylist: typeof data.playlistUrl === "string" && data.playlistUrl.trim() !== "",
         hasMap: typeof data.mapUrl === "string" && data.mapUrl.trim() !== "",
-        hasRsvp: typeof data.rsvpUrl === "string" && data.rsvpUrl.trim() !== ""
+        hasConfirmation: true
     };
 }

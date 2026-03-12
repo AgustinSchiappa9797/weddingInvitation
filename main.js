@@ -69,7 +69,7 @@ function resetInvitationState() {
 
     renderActiveNavigation(els, state, {
         hasGallery: true,
-        hasRsvp: true,
+        hasConfirmation: true,
         hasPlaylist: true
     });
 }
