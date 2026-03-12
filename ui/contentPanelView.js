@@ -1,5 +1,13 @@
 const SECTION_KEYS = ["details", "access", "gallery", "rsvp", "playlist"];
 
+function focusContentPanel(els) {
+    els.contentPanel?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest"
+    });
+}
+
 function getTabMap(els) {
     return {
         details: els.tabDetails,
@@ -116,6 +124,7 @@ export function setupContentPanelNavigation(els, state) {
 
             state.setActiveSection(key);
             renderActivePanel(els, state, getAvailabilityFromCurrentUi(els));
+            focusContentPanel(els);
         });
     });
 
