@@ -561,39 +561,55 @@ body[data-event-phase="today"] .btn.primary {
     will-change: transform;
 }
 
+.heart-scene::before {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 118px;
+    height: 28px;
+    transform: translateX(-50%) translateZ(-30px);
+    border-radius: 50%;
+    background: rgba(60, 22, 30, 0.18);
+    filter: blur(12px);
+    z-index: 0;
+}
+
 .heart-glow {
     position: absolute;
-    z-index: 0;
-    width: 150px;
-    height: 150px;
+    width: 156px;
+    height: 156px;
     border-radius: 50%;
     background:
         radial-gradient(circle,
-            rgba(212, 106, 125, 0.32) 0%,
-            rgba(180, 69, 92, 0.18) 38%,
-            rgba(180, 69, 92, 0.08) 55%,
+            rgba(212, 106, 125, 0.30) 0%,
+            rgba(180, 69, 92, 0.18) 36%,
+            rgba(180, 69, 92, 0.08) 54%,
             transparent 74%);
-    filter: blur(12px);
-    transform: translateY(8px);
+    filter: blur(14px);
+    transform: translateY(10px) translateZ(-12px);
     animation: heartGlowPulse 4.2s ease-in-out infinite;
+    z-index: 0;
 }
 
 .heart-ornament {
     position: relative;
     width: 96px;
     height: 96px;
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) translateZ(16px);
     border-radius: 22px 0 0 0;
     background:
         linear-gradient(145deg,
-            var(--heart-red-soft),
-            var(--heart-red) 48%,
+            #e07a8f 0%,
+            var(--heart-red-soft) 18%,
+            var(--heart-red) 46%,
             var(--heart-red-dark) 76%,
-            var(--heart-red-deep));
+            var(--heart-red-deep) 100%);
     box-shadow:
-        0 18px 34px rgba(143, 48, 71, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.24),
-        inset -8px -10px 16px rgba(82, 20, 34, 0.18);
+        0 22px 34px rgba(143, 48, 71, 0.26),
+        0 8px 14px rgba(82, 20, 34, 0.16),
+        inset 0 2px 2px rgba(255, 255, 255, 0.24),
+        inset -10px -12px 18px rgba(82, 20, 34, 0.2);
     animation: heartFloat 4.8s ease-in-out infinite;
     transform-style: preserve-3d;
     backface-visibility: hidden;
@@ -608,13 +624,14 @@ body[data-event-phase="today"] .btn.primary {
     border-radius: 50%;
     background:
         linear-gradient(145deg,
-            #d96f84,
-            var(--heart-red) 46%,
+            #e48798 0%,
+            var(--heart-red-soft) 16%,
+            var(--heart-red) 44%,
             var(--heart-red-dark) 74%,
-            var(--heart-red-deep));
+            var(--heart-red-deep) 100%);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset -8px -10px 16px rgba(82, 20, 34, 0.15);
+        inset 0 2px 2px rgba(255, 255, 255, 0.22),
+        inset -9px -11px 16px rgba(82, 20, 34, 0.18);
 }
 
 .heart-ornament::before {
@@ -633,12 +650,15 @@ body[data-event-phase="today"] .btn.primary {
     border-radius: 18px 0 0 0;
     background:
         linear-gradient(145deg,
-            rgba(255, 255, 255, 0.22),
-            rgba(255, 255, 255, 0.05));
+            rgba(255, 255, 255, 0.28),
+            rgba(255, 255, 255, 0.08) 42%,
+            rgba(255, 255, 255, 0.02));
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -6px 10px rgba(255, 255, 255, 0.03),
         0 0 0 1px rgba(255, 255, 255, 0.06);
-    opacity: 0.78;
+    opacity: 0.82;
+    transform: translateZ(10px);
 }
 
 .heart-core::before,
@@ -727,8 +747,8 @@ body[data-event-phase="today"] .btn.primary {
 }
 
 .hub-tab:hover {
-    transform: translateY(-1px);
-    opacity: 1;
+    transform: none;
+    opacity: 0.94;
 }
 
 .hub-tab-icon {
@@ -910,8 +930,42 @@ body[data-event-phase="today"] .btn.primary {
     backface-visibility: hidden;
 }
 
+.heart-hotspot-icon {
+    pointer-events: none;
+}
+
+.heart-hotspot-label {
+
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--text);
+
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    padding: 4px 8px;
+    border-radius: 999px;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.08);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+
+}
+
 .heart-hotspot:hover {
-    transform: translateY(-2px) scale(1.04);
+    transform: scale(1.03);
     box-shadow:
         0 14px 26px rgba(0, 0, 0, 0.12),
         0 0 0 1px rgba(255, 255, 255, 0.24),
@@ -964,6 +1018,7 @@ body[data-event-phase="today"] .btn.primary {
 .heart-glow,
 .heart-ornament,
 .heart-core {
+    pointer-events: none;
     transition:
         transform 0.35s ease,
         opacity 0.35s ease,
