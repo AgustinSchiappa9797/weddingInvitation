@@ -32,72 +32,136 @@ function createGalleryItem(src, index, els) {
     img.draggable = false;
     img.referrerPolicy = "no-referrer";
 
-    const handleOpen = () => {
-        if (button.dataset.dragSuppressed === "true") return;
+    button.appendChild(img);
+    button.addEventListener("click", () => {
+        const gallery = els.gallery;
+        if (!gallery || gallery.dataset.justDragged === "true") return;
 
         centerGalleryItem(button);
         openLightbox(els, src, img.alt, {
             triggerElement: button,
             galleryIndex: index
         });
-    };
-
-    button.appendChild(img);
-    button.addEventListener("click", handleOpen);
+    });
 
     return button;
 }
 
-function setupGalleryDrag(container) {
-    if (!container || container.dataset.dragReady === "true") return;
+function createNavButton(direction) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `gallery-nav-button gallery-nav-button-${direction}`;
+    button.dataset.direction = direction;
+    button.setAttribute("aria-label", direction === "prev" ? "Ver foto anterior" : "Ver foto siguiente");
+    button.innerHTML = direction === "prev" ? "&#8249;" : "&#8250;";
+    return button;
+}
 
-    let pointerId = null;
+function ensureGalleryControls(container) {
+    const wrapper = container?.closest(".gallery-wrapper");
+    if (!wrapper) return { wrapper: null, prevButton: null, nextButton: null };
+
+    let prevButton = wrapper.querySelector('.gallery-nav-button-prev');
+    let nextButton = wrapper.querySelector('.gallery-nav-button-next');
+
+    if (!prevButton) {
+        prevButton = createNavButton("prev");
+        wrapper.appendChild(prevButton);
+    }
+
+    if (!nextButton) {
+        nextButton = createNavButton("next");
+        wrapper.appendChild(nextButton);
+    }
+
+    return { wrapper, prevButton, nextButton };
+}
+
+function getScrollStep(container) {
+    const firstItem = container?.querySelector('.gallery-item');
+    if (!firstItem) return 320;
+
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    const styles = window.getComputedStyle(container);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
+    return itemWidth + gap;
+}
+
+function updateNavButtons(container, prevButton, nextButton) {
+    if (!container || !prevButton || !nextButton) return;
+
+    const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth - 2);
+    prevButton.disabled = container.scrollLeft <= 2;
+    nextButton.disabled = container.scrollLeft >= maxScrollLeft;
+
+    const hideButtons = container.scrollWidth <= container.clientWidth + 8;
+    prevButton.classList.toggle('hidden', hideButtons);
+    nextButton.classList.toggle('hidden', hideButtons);
+}
+
+function scrollGalleryByStep(container, direction) {
+    const step = getScrollStep(container);
+    container.scrollBy({
+        left: direction === 'prev' ? -step : step,
+        behavior: 'smooth'
+    });
+}
+
+function setupGalleryControls(container) {
+    if (!container || container.dataset.controlsReady === 'true') return;
+
+    const { prevButton, nextButton } = ensureGalleryControls(container);
+
+    prevButton?.addEventListener('click', () => scrollGalleryByStep(container, 'prev'));
+    nextButton?.addEventListener('click', () => scrollGalleryByStep(container, 'next'));
+
+    const refreshButtons = () => updateNavButtons(container, prevButton, nextButton);
+    container.addEventListener('scroll', refreshButtons, { passive: true });
+    window.addEventListener('resize', refreshButtons);
+    requestAnimationFrame(refreshButtons);
+
+    container.dataset.controlsReady = 'true';
+}
+
+function setupGalleryDrag(container) {
+    if (!container || container.dataset.dragReady === 'true') return;
+
+    let isDragging = false;
     let startX = 0;
     let startScrollLeft = 0;
     let moved = false;
 
-    const suppressClicksTemporarily = () => {
-        const items = container.querySelectorAll(".gallery-item");
-        items.forEach((item) => {
-            item.dataset.dragSuppressed = "true";
-        });
+    const stopDrag = () => {
+        if (!isDragging) return;
 
-        window.setTimeout(() => {
-            items.forEach((item) => {
-                delete item.dataset.dragSuppressed;
-            });
-        }, 220);
-    };
-
-    const endDrag = (event) => {
-        if (pointerId !== null && event?.pointerId != null && event.pointerId !== pointerId) return;
+        isDragging = false;
+        container.classList.remove('is-dragging');
 
         if (moved) {
-            suppressClicksTemporarily();
+            container.dataset.justDragged = 'true';
+            window.setTimeout(() => {
+                delete container.dataset.justDragged;
+            }, 260);
         }
 
-        pointerId = null;
         moved = false;
-        container.classList.remove("is-dragging");
     };
 
-    container.addEventListener("pointerdown", (event) => {
-        if (event.pointerType === "mouse" && event.button !== 0) return;
+    container.addEventListener('mousedown', (event) => {
+        if (event.button !== 0) return;
 
-        pointerId = event.pointerId;
+        isDragging = true;
         startX = event.clientX;
         startScrollLeft = container.scrollLeft;
         moved = false;
-        container.classList.add("is-dragging");
-        container.setPointerCapture?.(event.pointerId);
+        container.classList.add('is-dragging');
     });
 
-    container.addEventListener("pointermove", (event) => {
-        if (pointerId !== event.pointerId) return;
+    window.addEventListener('mousemove', (event) => {
+        if (!isDragging) return;
 
         const deltaX = event.clientX - startX;
-
-        if (Math.abs(deltaX) > 8) {
+        if (Math.abs(deltaX) > 6) {
             moved = true;
         }
 
@@ -107,11 +171,14 @@ function setupGalleryDrag(container) {
         container.scrollLeft = startScrollLeft - deltaX;
     });
 
-    container.addEventListener("pointerup", endDrag);
-    container.addEventListener("pointercancel", endDrag);
-    container.addEventListener("lostpointercapture", endDrag);
+    window.addEventListener('mouseup', stopDrag);
+    container.addEventListener('mouseleave', stopDrag);
 
-    container.dataset.dragReady = "true";
+    container.addEventListener('dragstart', (event) => {
+        event.preventDefault();
+    });
+
+    container.dataset.dragReady = 'true';
 }
 
 function restoreCenteredItem(container, index) {
@@ -136,32 +203,32 @@ export function renderGallery(els, data) {
         : [];
 
     if (validImages.length === 0) {
-        els.gallerySection.classList.add("hidden");
+        els.gallerySection.classList.add('hidden');
         return;
     }
 
     const fragment = document.createDocumentFragment();
-
     validImages.forEach((src, index) => {
         fragment.appendChild(createGalleryItem(src, index, els));
     });
 
     els.gallery.appendChild(fragment);
+    setupGalleryControls(els.gallery);
     setupGalleryDrag(els.gallery);
-    els.gallerySection.classList.remove("hidden");
+    els.gallerySection.classList.remove('hidden');
 
     if (validImages.length > 1) {
         requestAnimationFrame(() => {
             const firstItem = els.gallery.querySelector('[data-gallery-index="0"]');
-            centerGalleryItem(firstItem, "auto");
+            centerGalleryItem(firstItem, 'auto');
         });
     }
 
-    if (els.gallery.dataset.restoreListenerReady !== "true") {
-        document.addEventListener("lightbox:closed", (event) => {
+    if (els.gallery.dataset.restoreListenerReady !== 'true') {
+        document.addEventListener('lightbox:closed', (event) => {
             restoreCenteredItem(els.gallery, event.detail?.galleryIndex);
         });
 
-        els.gallery.dataset.restoreListenerReady = "true";
+        els.gallery.dataset.restoreListenerReady = 'true';
     }
 }

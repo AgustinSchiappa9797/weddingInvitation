@@ -32,7 +32,7 @@
     border-radius: 20px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.44));
     border: 1px solid rgba(127, 138, 99, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .personal-message-box {
@@ -108,19 +108,17 @@
     color: var(--muted);
 }
 
-
-
-.panel-section > .section-kicker:first-child {
+.panel-section>.section-kicker:first-child {
     margin-bottom: 8px;
 }
 
-.panel-section > p:not(.section-kicker):not(.rsvp-text):not(.rsvp-helper-text),
+.panel-section>p:not(.section-kicker):not(.rsvp-text):not(.rsvp-helper-text),
 .panel-section li,
 .timeline-content p {
     font-family: Inter, "Segoe UI", sans-serif;
 }
 
-.panel-section h3 + p,
+.panel-section h3+p,
 .panel-block p,
 .rsvp-text,
 .rsvp-helper-text {
@@ -174,7 +172,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .access-notes-grid > :last-child:nth-child(odd) {
+    .access-notes-grid> :last-child:nth-child(odd) {
         grid-column: 1 / -1;
     }
 }

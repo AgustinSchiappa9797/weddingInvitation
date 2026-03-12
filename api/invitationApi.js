@@ -1,8 +1,4 @@
-import {
-    API_URL,
-    FETCH_TIMEOUT_MS,
-    INVITATION_CACHE_TTL_MS
-} from "../config.js";
+import { API_URL, FETCH_TIMEOUT_MS, INVITATION_CACHE_TTL_MS } from "../config.js";
 
 const CACHE_PREFIX = "wedding-invitation:";
 

@@ -271,6 +271,7 @@ body:not(.has-dynamic-bg) .bg-overlay {
 }
 
 
-p, li {
+p,
+li {
     text-wrap: pretty;
 }

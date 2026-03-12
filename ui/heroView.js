@@ -1,8 +1,5 @@
 import { COPY } from "../constants/copy.js";
-import {
-    HERO_TEXT_SWAP_DELAY_MS,
-    HERO_TEXT_SWAP_CLEANUP_DELAY_MS
-} from "../config.js";
+import { HERO_TEXT_SWAP_DELAY_MS, HERO_TEXT_SWAP_CLEANUP_DELAY_MS } from "../config.js";
 import { wait } from "../utils/wait.js";
 
 async function swapText(el, newText) {

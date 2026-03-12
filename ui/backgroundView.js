@@ -11,19 +11,25 @@ function normalizeImageUrl(value) {
 
 function ensureImagePreloadLink(url) {
     const head = document.head;
-    if (!head || !url) return;
+    if (!head) return;
 
+    const normalizedUrl = normalizeImageUrl(url);
     let link = document.querySelector('link[data-dynamic-bg-preload="true"]');
+
+    if (!normalizedUrl) {
+        if (link) link.remove();
+        return;
+    }
+
     if (!link) {
         link = document.createElement("link");
         link.rel = "preload";
         link.as = "image";
         link.setAttribute("data-dynamic-bg-preload", "true");
+        link.setAttribute("href", normalizedUrl);
         head.appendChild(link);
+        return;
     }
-
-    const normalizedUrl = normalizeImageUrl(url);
-    if (!normalizedUrl) return;
 
     if (link.getAttribute("href") !== normalizedUrl) {
         link.setAttribute("href", normalizedUrl);
@@ -66,7 +72,7 @@ function preloadImage(url, timeoutMs = BACKGROUND_IMAGE_PRELOAD_TIMEOUT_MS) {
         img.src = normalizedUrl;
 
         if (typeof img.decode === "function") {
-            img.decode().then(() => finish(true)).catch(() => {});
+            img.decode().then(() => finish(true)).catch(() => { });
         }
     });
 }
