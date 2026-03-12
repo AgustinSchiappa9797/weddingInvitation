@@ -1417,3 +1417,371 @@ body[data-event-phase="today"] .btn.primary {
             linear-gradient(135deg, #f7f2ee 0%, #efe6df 100%);
     }
 }
+
+.hero-summary-layout {
+    align-items: start;
+    gap: 28px;
+}
+
+.hero-heart-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 290px;
+}
+
+.heart-stage {
+    margin-bottom: 8px;
+}
+
+.heart-scene {
+    width: 282px;
+    height: 232px;
+}
+
+.heart-scene::before {
+    width: 182px;
+    height: 38px;
+    bottom: 14px;
+    background: rgba(60, 22, 30, 0.2);
+}
+
+.heart-glow {
+    width: 236px;
+    height: 236px;
+    background: radial-gradient(circle,
+            rgba(212, 106, 125, 0.34) 0%,
+            rgba(180, 69, 92, 0.22) 36%,
+            rgba(180, 69, 92, 0.08) 58%,
+            transparent 78%);
+}
+
+.heart-ornament {
+    width: 148px;
+    height: 148px;
+    border-radius: 38px 0 0 0;
+    background: linear-gradient(145deg,
+            #ef6d87 0%,
+            #df5573 18%,
+            var(--heart-red) 42%,
+            var(--heart-red-dark) 72%,
+            #5f1227 100%);
+    box-shadow:
+        0 34px 56px rgba(143, 48, 71, 0.34),
+        0 16px 24px rgba(82, 20, 34, 0.2),
+        inset 0 5px 8px rgba(255, 207, 219, 0.22),
+        inset -18px -18px 28px rgba(82, 20, 34, 0.34),
+        inset 16px 14px 22px rgba(255, 255, 255, 0.05);
+}
+
+.heart-ornament::before,
+.heart-ornament::after {
+    width: 148px;
+    height: 148px;
+    background: linear-gradient(145deg,
+            #ff7f99 0%,
+            #eb6480 16%,
+            var(--heart-red) 42%,
+            var(--heart-red-dark) 74%,
+            #5f1227 100%);
+    box-shadow:
+        inset 0 4px 8px rgba(255, 209, 222, 0.2),
+        inset -16px -16px 22px rgba(82, 20, 34, 0.26),
+        inset 12px 10px 18px rgba(255, 255, 255, 0.04);
+}
+
+.heart-ornament::before {
+    top: -74px;
+}
+
+.heart-ornament::after {
+    left: 74px;
+}
+
+.heart-core {
+    inset: 18px;
+    border-radius: 30px 0 0 0;
+    background: linear-gradient(145deg,
+            rgba(255, 168, 186, 0.22) 0%,
+            rgba(255, 120, 150, 0.16) 28%,
+            rgba(197, 54, 84, 0.18) 48%,
+            rgba(125, 22, 47, 0.24) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 225, 232, 0.16),
+        inset 0 -10px 14px rgba(90, 14, 34, 0.16),
+        inset 10px 10px 18px rgba(255, 182, 198, 0.05),
+        0 0 0 1px rgba(255, 150, 175, 0.08);
+    opacity: 0.95;
+}
+
+.heart-core::before,
+.heart-core::after {
+    background: linear-gradient(145deg,
+            rgba(255, 173, 191, 0.18),
+            rgba(183, 46, 76, 0.16) 58%,
+            rgba(120, 18, 42, 0.18));
+}
+
+.heart-core::before {
+    width: 96px;
+    height: 96px;
+    top: -48px;
+}
+
+.heart-core::after {
+    width: 96px;
+    height: 96px;
+    left: 48px;
+}
+
+.heart-hotspot {
+    width: 50px;
+    height: 50px;
+}
+
+.heart-hotspot-icon {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1.35rem;
+    text-shadow:
+        0 8px 14px rgba(82, 20, 34, 0.3),
+        0 2px 3px rgba(82, 20, 34, 0.24),
+        0 0 10px rgba(255, 222, 228, 0.18);
+}
+
+.heart-hotspot-icon-image img,
+.hub-tab-icon-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.heart-hotspot-icon-image {
+    width: 28px;
+    height: 28px;
+}
+
+.heart-hotspot-label {
+    display: none;
+}
+
+.heart-hotspot.is-active {
+    transform: scale(1.14);
+    filter: drop-shadow(0 0 10px rgba(255, 214, 221, 0.24)) drop-shadow(0 0 18px rgba(127, 138, 99, 0.2));
+}
+
+.heart-hotspot-details {
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.heart-hotspot-access {
+    top: 86px;
+    left: 24px;
+}
+
+.heart-hotspot-gallery {
+    top: 86px;
+    right: 24px;
+}
+
+.heart-hotspot-rsvp {
+    bottom: 26px;
+    left: 68px;
+}
+
+.heart-hotspot-playlist {
+    bottom: 26px;
+    right: 68px;
+}
+
+.heart-hotspot-details:hover {
+    transform: translateX(-50%) scale(1.08);
+}
+
+.heart-hotspot-details.is-active {
+    transform: translateX(-50%) scale(1.14);
+}
+
+.heart-hint {
+    margin: 10px auto 0;
+    font-size: 0.9rem;
+    max-width: 280px;
+}
+
+.hub-nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    width: min(100%, 780px);
+    margin: 0 auto 18px;
+}
+
+.hub-tab {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    min-height: 0;
+    padding: 10px 12px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.045),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.hub-tab-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    font-size: 1rem;
+    flex: 0 0 auto;
+}
+
+.hub-tab-icon-image {
+    padding: 5px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.7));
+}
+
+.hub-tab-label {
+    font-size: 0.92rem;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.hub-tab.is-active .hub-tab-icon {
+    transform: scale(1.02);
+}
+
+@media (max-width: 767px) {
+    .hero-summary-layout {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 10px;
+    }
+
+    .hero-heart-stage {
+        min-width: 0;
+    }
+
+    .heart-scene {
+        width: 222px;
+        height: 184px;
+    }
+
+    .heart-glow {
+        width: 176px;
+        height: 176px;
+    }
+
+    .heart-ornament,
+    .heart-ornament::before,
+    .heart-ornament::after {
+        width: 116px;
+        height: 116px;
+    }
+
+    .heart-ornament::before {
+        top: -58px;
+    }
+
+    .heart-ornament::after {
+        left: 58px;
+    }
+
+    .heart-core::before,
+    .heart-core::after {
+        width: 74px;
+        height: 74px;
+    }
+
+    .heart-core::before {
+        top: -37px;
+    }
+
+    .heart-core::after {
+        left: 37px;
+    }
+
+    .heart-hotspot {
+        width: 42px;
+        height: 42px;
+    }
+
+    .heart-hotspot-icon {
+        font-size: 1.12rem;
+    }
+
+    .heart-hotspot-icon-image {
+        width: 24px;
+        height: 24px;
+    }
+
+    .heart-hotspot-details {
+        top: 16px;
+    }
+
+    .heart-hotspot-access {
+        top: 68px;
+        left: 16px;
+    }
+
+    .heart-hotspot-gallery {
+        top: 68px;
+        right: 16px;
+    }
+
+    .heart-hotspot-rsvp {
+        bottom: 20px;
+        left: 48px;
+    }
+
+    .heart-hotspot-playlist {
+        bottom: 20px;
+        right: 48px;
+    }
+
+    .heart-hint {
+        margin-top: 8px;
+        max-width: 250px;
+        font-size: 0.84rem;
+    }
+
+    .hub-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        width: min(100%, 420px);
+    }
+
+    .hub-tab {
+        justify-content: flex-start;
+        padding: 9px 10px;
+        border-radius: 16px;
+        gap: 7px;
+    }
+
+    .hub-tab-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+    }
+
+    .hub-tab-label {
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .hub-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .guest-box {
+        margin-bottom: 8px;
+    }
+}

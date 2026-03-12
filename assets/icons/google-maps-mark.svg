@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-hidden="true">
+  <defs>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <g filter="url(#s)">
+    <path d="M32 6c-10.8 0-19.5 8.7-19.5 19.5 0 14.7 16.6 29.9 18.5 31.5a1.5 1.5 0 0 0 2 0c1.9-1.6 18.5-16.8 18.5-31.5C51.5 14.7 42.8 6 32 6Z" fill="#4285F4"/>
+    <path d="M24.6 14.2a19.4 19.4 0 0 0-7.2 15c0 9.1 8.2 19.4 14.6 26 0 0-2.4-16.6-2.4-24 0-6.8-1.9-12.9-5-17Z" fill="#34A853" opacity=".96"/>
+    <path d="M39.3 14.3c3.1 4.1 5 9.4 5 15.1 0 7.3-2.4 25.8-2.4 25.8 6.4-6.6 14.7-17 14.7-26.1 0-5.7-2.5-10.9-7.3-14.8Z" fill="#FBBC04" opacity=".98"/>
+    <circle cx="32" cy="25.5" r="9.8" fill="#fff"/>
+    <circle cx="32" cy="25.5" r="5.4" fill="#EA4335"/>
+  </g>
+</svg>

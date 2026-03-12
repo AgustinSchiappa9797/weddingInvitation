@@ -81,44 +81,37 @@
 
                         <button id="heartHotspotDetails" class="heart-hotspot heart-hotspot-details" type="button"
                             aria-label="Detalles">
-
                             <span class="heart-hotspot-icon">📍</span>
-                            <span class="heart-hotspot-label">Detalles</span>
-
                         </button>
 
                         <button id="heartHotspotAccess" class="heart-hotspot heart-hotspot-access" type="button"
-                            aria-label="Tu acceso">
-
-                            <span class="heart-hotspot-icon">💌</span>
-                            <span class="heart-hotspot-label">Tu acceso</span>
-
+                            aria-label="Ubicación y acceso">
+                            <span class="heart-hotspot-icon heart-hotspot-icon-image" aria-hidden="true">
+                                <img src="assets/icons/google-maps-mark.svg" alt="" />
+                            </span>
                         </button>
 
                         <button id="heartHotspotGallery" class="heart-hotspot heart-hotspot-gallery" type="button"
                             aria-label="Fotos">
-
                             <span class="heart-hotspot-icon">📸</span>
-                            <span class="heart-hotspot-label">Fotos</span>
-
                         </button>
 
                         <button id="heartHotspotRsvp" class="heart-hotspot heart-hotspot-rsvp" type="button"
                             aria-label="Confirmar">
-
                             <span class="heart-hotspot-icon">✔</span>
-                            <span class="heart-hotspot-label">Confirmar</span>
-
                         </button>
 
                         <button id="heartHotspotPlaylist" class="heart-hotspot heart-hotspot-playlist" type="button"
                             aria-label="Playlist">
-
-                            <span class="heart-hotspot-icon">🎵</span>
-                            <span class="heart-hotspot-label">Playlist</span>
-
+                            <span class="heart-hotspot-icon heart-hotspot-icon-image" aria-hidden="true">
+                                <img src="assets/icons/spotify-mark.svg" alt="" />
+                            </span>
                         </button>
                     </div>
+
+                    <p class="heart-hint">
+                        Tocá un punto del corazón para explorar la invitación
+                    </p>
                 </div>
 
             </div>
@@ -143,10 +136,6 @@
         <section class="section compact-shell">
             <div class="container">
 
-                <p class="heart-hint">
-                    Tocá un punto del corazón para explorar la invitación
-                </p>
-
                 <nav class="section-nav hub-nav" aria-label="Secciones de la invitación" role="tablist">
                     <button id="tabDetails" class="section-tab hub-tab is-active" type="button" data-section="details"
                         role="tab" aria-selected="true">
@@ -156,7 +145,8 @@
 
                     <button id="tabAccess" class="section-tab hub-tab" type="button" data-section="access" role="tab"
                         aria-selected="false">
-                        <span class="hub-tab-icon" aria-hidden="true">💌</span>
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img
+                                src="assets/icons/google-maps-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Acceso</span>
                     </button>
 
@@ -174,7 +164,8 @@
 
                     <button id="tabPlaylist" class="section-tab hub-tab" type="button" data-section="playlist"
                         role="tab" aria-selected="false">
-                        <span class="hub-tab-icon" aria-hidden="true">🎵</span>
+                        <span class="hub-tab-icon hub-tab-icon-image" aria-hidden="true"><img
+                                src="assets/icons/spotify-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Playlist</span>
                     </button>
                 </nav>
