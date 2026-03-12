@@ -75,6 +75,11 @@ export function getElements() {
         heartScene: document.getElementById("heartScene"),
         heartGlow: document.getElementById("heartGlow"),
         heartOrnament: document.getElementById("heartOrnament"),
+        heartHotspotDetails: document.getElementById("heartHotspotDetails"),
+        heartHotspotAccess: document.getElementById("heartHotspotAccess"),
+        heartHotspotGallery: document.getElementById("heartHotspotGallery"),
+        heartHotspotRsvp: document.getElementById("heartHotspotRsvp"),
+        heartHotspotPlaylist: document.getElementById("heartHotspotPlaylist"),
 
         lightbox: document.getElementById("lightbox"),
         lightboxImage: document.getElementById("lightboxImage"),

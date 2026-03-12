@@ -15,6 +15,7 @@ import { renderPlaylist } from "./ui/playlistView.js";
 import { renderCountdown } from "./ui/countdownView.js";
 import { setupAnimations, revealContentAnimations } from "./ui/animations.js";
 import { getInvitationViewData } from "./ui/viewData.js";
+import { setupHeartNavigator, syncHeartHotspots, syncHeartHotspotVisibility } from "./ui/heartNavigatorView.js";
 
 const els = Object.freeze(getElements());
 
@@ -188,6 +189,9 @@ async function init() {
     });
 
     setupContentPanelNavigation(els, state);
+    setupHeartNavigator(els);
+    syncHeartHotspotVisibility(els);
+    syncHeartHotspots(els, state.activeSection);
     await loadInvitationFlow();
 }
 

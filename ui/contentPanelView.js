@@ -63,7 +63,22 @@ export function syncContentPanelVisibility(els, state, viewData) {
 
 function syncHeartMode(els, activeSection) {
     if (!els.heartScene) return;
+
     els.heartScene.dataset.heartMode = activeSection || "details";
+
+    const hotspotMap = {
+        details: els.heartHotspotDetails,
+        access: els.heartHotspotAccess,
+        gallery: els.heartHotspotGallery,
+        rsvp: els.heartHotspotRsvp,
+        playlist: els.heartHotspotPlaylist
+    };
+
+    Object.entries(hotspotMap).forEach(([key, element]) => {
+        const isActive = key === activeSection;
+        element?.classList.toggle("is-active", isActive);
+        element?.setAttribute("aria-pressed", String(isActive));
+    });
 }
 
 export function renderActivePanel(els, state, viewData) {
