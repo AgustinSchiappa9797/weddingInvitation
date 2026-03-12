@@ -546,7 +546,6 @@ body[data-event-phase="today"] .btn.primary {
     display: flex;
     justify-content: center;
     margin: 0 auto 18px;
-    pointer-events: none;
 }
 
 .heart-scene {
@@ -556,10 +555,13 @@ body[data-event-phase="today"] .btn.primary {
     display: grid;
     place-items: center;
     perspective: 900px;
+    pointer-events: auto;
+    transition: transform 0.35s ease;
 }
 
 .heart-glow {
     position: absolute;
+    z-index: 0;
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -576,6 +578,7 @@ body[data-event-phase="today"] .btn.primary {
 
 .heart-ornament {
     position: relative;
+    z-index: 1;
     width: 96px;
     height: 96px;
     transform: rotate(-45deg);
@@ -904,10 +907,6 @@ body[data-event-phase="today"] .btn.primary {
 .heart-hotspot-playlist {
     bottom: 6px;
     left: 24px;
-}
-
-.heart-scene {
-    transition: transform 0.35s ease;
 }
 
 .heart-glow,
