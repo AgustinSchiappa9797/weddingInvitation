@@ -75,6 +75,10 @@
 
             </div>
 
+            <div class="hero-actions">
+                <button id="heroPrimaryAction" class="btn primary hidden" type="button"></button>
+            </div>
+
             <div id="countdownSection" class="countdown-section hidden">
                 <p id="countdownLabel" class="label">Faltan</p>
                 <p id="countdownMessage" class="countdown-message hidden"></p>
@@ -225,6 +229,8 @@
                             Nos ayuda muchísimo para organizar cada detalle.
                         </p>
 
+                        <div id="confirmationSummary" class="confirmation-summary hidden" aria-live="polite"></div>
+
                         <div id="confirmationClosedNote" class="confirmation-closed-note hidden">
                             La confirmación ya se encuentra cerrada.
                         </div>
@@ -273,7 +279,8 @@
                                 </button>
                             </div>
 
-                            <p id="confirmationFeedback" class="confirmation-feedback hidden" aria-live="polite"></p>
+                            <p id="confirmationFeedback" class="confirmation-feedback hidden" aria-live="polite"
+                                tabindex="-1"></p>
                         </form>
                     </div>
 

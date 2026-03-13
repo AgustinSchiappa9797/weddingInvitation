@@ -30,6 +30,9 @@ export function getElements() {
         panelRsvp: document.getElementById("panelRsvp"),
         panelPlaylist: document.getElementById("panelPlaylist"),
 
+        confirmationSummary: document.getElementById("confirmationSummary"),
+        heroPrimaryAction: document.getElementById("heroPrimaryAction"),
+
         countdownSection: document.getElementById("countdownSection"),
         countdownLabel: document.getElementById("countdownLabel"),
         countdownMessage: document.getElementById("countdownMessage"),

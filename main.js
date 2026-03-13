@@ -5,7 +5,7 @@ import { state } from "./state.js";
 import { fetchInvitation } from "./api/invitationApi.js";
 import { wait } from "./utils/wait.js";
 import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./ui/welcomeScreen.js";
-import { setupNavigation, renderActiveNavigation, syncNavigationVisibility } from "./ui/navigation.js";
+import { renderActiveNavigation, syncNavigationVisibility, setupNavigation, syncSectionFromHash } from "./ui/navigation.js";
 import { hideError, showError } from "./ui/errorView.js";
 import { renderHero } from "./ui/heroView.js";
 import { renderDetails } from "./ui/detailsView.js";
@@ -95,11 +95,13 @@ async function renderInvitation(data, options = {}) {
     document.body.dataset.eventPhase = viewData.eventPhase || "upcoming";
 
     await renderBackground(els, viewData);
-    await renderHero(els, viewData);
+    await renderHero(els, viewData, state);
 
     showInvitationShell();
     renderInvitationSections(viewData, options);
     syncNavigationVisibility(els, state, viewData);
+    syncSectionFromHash(els, state);
+    renderActiveNavigation(els, state, viewData);
     revealContentAnimations();
 }
 

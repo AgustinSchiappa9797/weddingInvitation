@@ -23,6 +23,29 @@ function normalizeGallery(gallery) {
     return gallery.filter((item) => typeof item === "string" && item.trim() !== "");
 }
 
+function normalizeExistingConfirmation(value) {
+    if (!value || typeof value !== "object") return null;
+
+    const status = value.status === "no" ? "no" : value.status === "yes" ? "yes" : null;
+    if (!status) return null;
+
+    const attendingCount = Number.isFinite(Number(value.attendingCount))
+        ? Math.max(0, Math.floor(Number(value.attendingCount)))
+        : 0;
+
+    return {
+        status,
+        attendingCount,
+        dietaryRestrictions: typeof value.dietaryRestrictions === "string"
+            ? value.dietaryRestrictions
+            : "",
+        comment: typeof value.comment === "string"
+            ? value.comment
+            : "",
+        updatedAt: typeof value.updatedAt === "string" ? value.updatedAt : ""
+    };
+}
+
 function normalizeTimeline(timeline) {
     if (!Array.isArray(timeline)) return [];
 
@@ -32,33 +55,6 @@ function normalizeTimeline(timeline) {
         item.title &&
         item.time
     );
-}
-
-function normalizeInfoItems(value) {
-    if (Array.isArray(value)) {
-        return value
-            .map((item) => typeof item === "string" ? item.trim() : "")
-            .filter(Boolean);
-    }
-
-    if (typeof value === "string") {
-        return value
-            .split(/\r?\n+/)
-            .map((item) => item.trim())
-            .filter(Boolean);
-    }
-
-    return [];
-}
-
-function pickFirstNonEmpty(data, keys) {
-    for (const key of keys) {
-        const value = data?.[key];
-        if (Array.isArray(value) && value.length) return value;
-        if (typeof value === "string" && value.trim() !== "") return value;
-    }
-
-    return "";
 }
 
 function getEventPhase(eventIsoDate) {
@@ -87,9 +83,14 @@ function getDaysUntil(dateString) {
 export function getInvitationViewData(data) {
     const companions = normalizeCompanions(data.companions);
     const rawGallery = normalizeGallery(data.gallery);
-    const backgroundImage = rawGallery[0] || "";
-    const gallery = rawGallery.slice(1);
+    const coverImage =
+        typeof data.coverImage === "string" && data.coverImage.trim() !== ""
+            ? data.coverImage
+            : rawGallery[0] || "";
+
+    const gallery = rawGallery;
     const timeline = normalizeTimeline(data.timeline);
+    const existingConfirmation = normalizeExistingConfirmation(data.existingConfirmation);
 
     const confirmationDeadlineIso =
         data.confirmationDeadlineIso ||
@@ -111,9 +112,11 @@ export function getInvitationViewData(data) {
         ...data,
         companions,
         companionsText: getCompanionsText(companions),
-        backgroundImage,
+        backgroundImage: coverImage,
         gallery,
         timeline,
+        existingConfirmation,
+        hasExistingConfirmation: Boolean(existingConfirmation),
         confirmationDeadlineIso,
         confirmationDeadlineText,
         confirmationUrl,

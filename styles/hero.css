@@ -30,6 +30,12 @@ body[data-event-phase="today"] .hero-card {
     font-weight: 600;
 }
 
+.hero-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
 .title {
     margin: 0 auto;
     max-width: 12ch;

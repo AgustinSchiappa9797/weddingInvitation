@@ -2,9 +2,13 @@ import { API_URL, FETCH_TIMEOUT_MS, INVITATION_CACHE_TTL_MS } from "../config.js
 
 const CACHE_PREFIX = "wedding-invitation:";
 
+function getCacheKey(token) {
+    return `${CACHE_PREFIX}${token}`;
+}
+
 function getCachedInvitation(token) {
     try {
-        const raw = sessionStorage.getItem(`${CACHE_PREFIX}${token}`);
+        const raw = sessionStorage.getItem(getCacheKey(token));
         if (!raw) return null;
 
         const parsed = JSON.parse(raw);
@@ -20,7 +24,7 @@ function getCachedInvitation(token) {
 function setCachedInvitation(token, data) {
     try {
         sessionStorage.setItem(
-            `${CACHE_PREFIX}${token}`,
+            getCacheKey(token),
             JSON.stringify({
                 timestamp: Date.now(),
                 data
@@ -28,6 +32,26 @@ function setCachedInvitation(token, data) {
         );
     } catch {
     }
+}
+
+export function clearInvitationCache(token) {
+    try {
+        sessionStorage.removeItem(getCacheKey(token));
+    } catch {
+    }
+}
+
+export function mergeInvitationConfirmationCache(token, confirmation) {
+    const cached = getCachedInvitation(token);
+    if (!cached?.invitation) return;
+
+    setCachedInvitation(token, {
+        ...cached,
+        invitation: {
+            ...cached.invitation,
+            existingConfirmation: confirmation
+        }
+    });
 }
 
 export async function fetchInvitation(token) {

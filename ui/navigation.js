@@ -1,5 +1,10 @@
 const SECTION_KEYS = ["details", "access", "gallery", "rsvp", "playlist"];
 
+function getSectionFromHash() {
+    const hash = window.location.hash.replace("#", "").trim().toLowerCase();
+    return SECTION_KEYS.includes(hash) ? hash : null;
+}
+
 function getTabMap(els) {
     return {
         details: els.tabDetails,
@@ -106,6 +111,13 @@ export function goToSection(els, state, sectionKey, options = {}) {
         focusContentPanel(els);
     }
 
+    if (options.updateHash !== false) {
+        const nextHash = `#${sectionKey}`;
+        if (window.location.hash !== nextHash) {
+            history.replaceState(null, "", nextHash);
+        }
+    }
+
     return true;
 }
 
@@ -148,4 +160,14 @@ export function setupNavigation(els, state) {
         hasConfirmation: true,
         hasPlaylist: true
     }));
+}
+
+export function syncSectionFromHash(els, state) {
+    const sectionFromHash = getSectionFromHash();
+    if (!sectionFromHash) return false;
+
+    return goToSection(els, state, sectionFromHash, {
+        focusPanel: false,
+        updateHash: false
+    });
 }
