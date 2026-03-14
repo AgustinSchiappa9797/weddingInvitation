@@ -268,7 +268,6 @@ function setupConfirmationForm(els) {
 export function renderConfirmation(els, data, options = {}) {
     if (!els.confirmationForm) return;
 
-    const companions = Number.isFinite(Number(data?.companions)) ? Math.max(1, Number(data.companions)) : 1;
     const closed = isConfirmationClosed(data);
 
     els.confirmationForm.dataset.token = options.token || "";
@@ -282,18 +281,14 @@ export function renderConfirmation(els, data, options = {}) {
     els.confirmationForm.classList.toggle("hidden", closed);
 
     if (closed) {
+        if (els.confirmationClosedNote) {
+            els.confirmationClosedNote.textContent = "La confirmación ya se encuentra cerrada. Si necesitás avisarnos un cambio, escribinos directamente.";
+        }
+
         setFeedback(els, "", "info");
         setFormDisabled(els, true);
         return;
     }
-
-    populateCountOptions(
-        els.confirmationCount,
-        companions,
-        data?.existingConfirmation?.status === "yes"
-            ? Math.min(companions, Math.max(1, Number(data.existingConfirmation.attendingCount) || 1))
-            : Number.parseInt(els.confirmationCount?.value || "1", 10)
-    );
 
     syncCountFieldVisibility(els);
     setFeedback(els, "", "info");

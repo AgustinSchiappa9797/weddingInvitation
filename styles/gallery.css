@@ -36,8 +36,7 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 50%;
-    padding:
-        10px max(20px, calc((100% - var(--gallery-card-width)) / 2)) 18px;
+    padding: 10px max(20px, calc((100% - var(--gallery-card-width)) / 2)) 18px;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
     user-select: none;
@@ -51,11 +50,14 @@
 }
 
 .gallery-item {
+    appearance: none;
+    -webkit-appearance: none;
     flex: 0 0 var(--gallery-card-width);
     display: block;
     width: var(--gallery-card-width);
     border: 0;
     padding: 0;
+    margin: 0;
     background: transparent;
     cursor: pointer;
     scroll-snap-align: center;
@@ -68,7 +70,7 @@
 }
 
 .gallery-item:hover {
-    transform: translateY(-4px) scale(1.015);
+    transform: translateY(-3px) scale(1.01);
 }
 
 .gallery-item.is-active {
@@ -81,10 +83,6 @@
     filter: saturate(0.9) brightness(0.92);
     opacity: 0.72;
     transform: scale(0.92);
-}
-
-.gallery-item:hover {
-    transform: translateY(-3px) scale(1.01);
 }
 
 .gallery-item img,
@@ -111,6 +109,8 @@
 }
 
 .gallery-nav-button {
+    appearance: none;
+    -webkit-appearance: none;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -151,17 +151,46 @@
     display: none;
 }
 
-.gallery-horizontal.is-dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
+.gallery-dots {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.55rem;
 }
 
-.gallery-horizontal.is-dragging .gallery-item {
-    pointer-events: none;
-    transform: none;
+.gallery-dot {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(123, 72, 60, 0.28);
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+    padding: 0;
+    margin: 0;
 }
 
-.gallery-item:focus-visible {
+.gallery-dot:hover {
+    transform: scale(1.08);
+    background: rgba(123, 72, 60, 0.45);
+}
+
+.gallery-dot.is-active {
+    background: rgba(123, 72, 60, 0.9);
+    transform: scale(1.15);
+}
+
+.gallery-dot.hidden,
+.gallery-dots.hidden {
+    display: none;
+}
+
+.gallery-item:focus-visible,
+.gallery-dot:focus-visible,
+.gallery-nav-button:focus-visible {
     outline: 2px solid rgba(123, 72, 60, 0.45);
     outline-offset: 4px;
 }
