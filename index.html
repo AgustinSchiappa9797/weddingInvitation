@@ -134,6 +134,12 @@
                                 src="assets/icons/spotify-mark.svg" alt="" /></span>
                         <span class="hub-tab-label">Playlist</span>
                     </button>
+
+                    <button id="tabGift" class="section-tab hub-tab" type="button" data-section="gift" role="tab"
+                        aria-selected="false" aria-controls="panelGift">
+                        <span class="hub-tab-icon" aria-hidden="true">🎁</span>
+                        <span class="hub-tab-label">Luna de miel</span>
+                    </button>
                 </nav>
 
                 <section id="contentPanel" class="card fade-up content-panel visible">
@@ -221,7 +227,7 @@
                         <h3>Confirmación</h3>
 
                         <p class="rsvp-text">
-                            Ayudanos confirmando tu asistencia antes del
+                            <span id="rsvpIntroText">Ayudanos confirmando tu asistencia antes del</span>
                             <strong id="rsvpDeadline">-</strong>.
                         </p>
 
@@ -237,38 +243,50 @@
 
                         <form id="confirmationForm" class="confirmation-form" novalidate>
                             <fieldset class="confirmation-fieldset">
-                                <legend>¿Podrán acompañarnos?</legend>
+                                <legend id="confirmationLegend">¿Podrán acompañarnos?</legend>
 
                                 <label class="choice-card">
                                     <input type="radio" name="confirmationStatus" value="yes" checked />
                                     <span>
-                                        <strong>Sí, asistiremos</strong>
-                                        <small>Así podremos reservar su lugar.</small>
+                                        <strong id="confirmationYesTitle">Sí, asistiremos</strong>
+                                        <small id="confirmationYesHint">Así podremos reservar su lugar.</small>
                                     </span>
                                 </label>
 
                                 <label class="choice-card">
                                     <input type="radio" name="confirmationStatus" value="no" />
                                     <span>
-                                        <strong>No podremos asistir</strong>
-                                        <small>Igualmente nos encantará saber de ustedes.</small>
+                                        <strong id="confirmationNoTitle">No podremos asistir</strong>
+                                        <small id="confirmationNoHint">Igualmente nos encantará saber de
+                                            ustedes.</small>
                                     </span>
                                 </label>
                             </fieldset>
 
                             <div id="confirmationCountField" class="confirmation-field">
-                                <label for="confirmationCount">¿Cuántas personas asistirán?</label>
+                                <label id="confirmationCountLabel" for="confirmationCount">¿Cuántas personas
+                                    asistirán?</label>
                                 <select id="confirmationCount" name="attendingCount"></select>
                             </div>
 
                             <div class="confirmation-field">
-                                <label for="confirmationDietaryRestrictions">Restricciones alimentarias</label>
+                                <label id="confirmationDietaryLabel" for="confirmationDietaryRestrictions">Restricciones
+                                    alimentarias</label>
                                 <textarea id="confirmationDietaryRestrictions" name="dietaryRestrictions" rows="3"
                                     maxlength="500" placeholder="Ej.: 1 vegetariano, 1 celíaco"></textarea>
                             </div>
 
+                            <div id="confirmationKidsInfoField" class="confirmation-field hidden">
+                                <label id="confirmationKidsInfoLabel" for="confirmationKidsInfo">
+                                    Si vienen con chicos, contanos edades o algo importante
+                                </label>
+                                <textarea id="confirmationKidsInfo" name="kidsInfo" rows="3" maxlength="500"
+                                    placeholder="Ej.: Olivia (3) y Benja (6), una necesita menú sin TACC, llevamos cochecito">
+                                </textarea>
+                            </div>
+
                             <div class="confirmation-field">
-                                <label for="confirmationComment">Comentario</label>
+                                <label id="confirmationCommentLabel" for="confirmationComment">Comentario</label>
                                 <textarea id="confirmationComment" name="comment" rows="3" maxlength="500"
                                     placeholder="Podés dejarnos una nota si lo necesitás."></textarea>
                             </div>
@@ -287,14 +305,28 @@
                     <div id="panelPlaylist" class="panel-section" data-panel="playlist" role="tabpanel"
                         aria-hidden="true" aria-labelledby="tabPlaylist">
                         <div id="playlistSection" class="panel-subsection hidden">
-                            <p class="section-kicker">Ambientación</p>
-                            <h3>Playlist</h3>
-                            <p>Entrá en clima con una selección que nos encanta.</p>
+                            <p id="playlistKicker" class="section-kicker">La música también la armamos entre todos</p>
+                            <h3 id="playlistTitle">Playlist</h3>
+                            <p id="playlistDescription">Sumá esa canción que no puede faltar 🎶</p>
 
                             <a id="playlistButton" class="btn secondary" href="#" target="_blank"
                                 rel="noopener noreferrer">
-                                Escuchar playlist
+                                Agregar canción
                             </a>
+                        </div>
+                    </div>
+
+                    <div id="panelGift" class="panel-section" data-panel="gift" role="tabpanel" aria-hidden="true"
+                        aria-labelledby="tabGift">
+                        <p class="section-kicker">Regalo</p>
+                        <h3 id="giftTitle">Luna de miel</h3>
+
+                        <div class="panel-block">
+                            <p id="giftIntro">
+                                Si querés hacernos un regalo, podés colaborar con nuestra luna de miel.
+                            </p>
+
+                            <pre id="giftBankData" class="gift-bank-data hidden"></pre>
                         </div>
                     </div>
                 </section>
@@ -324,6 +356,48 @@
         aria-hidden="true">
         <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
         <img id="lightboxImage" class="lightbox-image" src="" alt="" />
+    </div>
+
+    <div id="catStage" class="cat-stage" aria-hidden="true">
+        <div id="orangeCat" class="orange-cat" data-mode="walk">
+            <svg class="cat-svg" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
+                <g class="cat-root">
+                    <g class="cat-tail-group">
+                        <path class="cat-tail"
+                            d="M171 74 C194 56, 203 43, 198 26 C194 13, 178 14, 178 28 C178 40, 185 48, 191 52" />
+                    </g>
+
+                    <g class="cat-legs cat-legs-back">
+                        <path class="leg leg-back-1" d="M106 94 C101 106, 100 117, 102 129" />
+                        <path class="leg leg-back-2" d="M144 92 C142 104, 142 117, 145 129" />
+                    </g>
+
+                    <ellipse class="cat-body" cx="118" cy="78" rx="56" ry="24" />
+                    <ellipse class="cat-belly" cx="101" cy="86" rx="22" ry="9" />
+
+                    <g class="cat-head-group">
+                        <polygon class="cat-ear cat-ear-left" points="43,52 50,33 58,54" />
+                        <polygon class="cat-ear cat-ear-right" points="61,51 69,32 77,53" />
+                        <ellipse class="cat-head" cx="60" cy="68" rx="22" ry="20" />
+
+                        <g class="cat-face">
+                            <circle cx="52" cy="66" r="2.6" class="cat-eye" />
+                            <circle cx="66" cy="66" r="2.6" class="cat-eye" />
+                            <path d="M57 72 Q59 75 61 72" class="cat-mouth" />
+                            <path d="M46 72 C39 71, 34 70, 28 68" class="cat-whisker" />
+                            <path d="M69 72 C76 71, 81 70, 87 68" class="cat-whisker" />
+                            <path d="M46 77 C39 78, 34 79, 28 81" class="cat-whisker" />
+                            <path d="M69 77 C76 78, 81 79, 87 81" class="cat-whisker" />
+                        </g>
+                    </g>
+
+                    <g class="cat-legs cat-legs-front">
+                        <path class="leg leg-front-1" d="M72 92 C69 104, 68 116, 69 128" />
+                        <path class="leg leg-front-2" d="M88 93 C85 105, 84 116, 85 128" />
+                    </g>
+                </g>
+            </svg>
+        </div>
     </div>
 
     <script type="module" src="main.js"></script>

@@ -1,6 +1,89 @@
 import { submitConfirmation } from "../api/confirmationApi.js";
 import { mergeInvitationConfirmationCache } from "../api/invitationApi.js";
 import { updateHeroPrimaryAction } from "./heroView.js";
+import { COPY } from "../constants/copy.js";
+
+function syncKidsInfoFieldVisibility(els, data = null) {
+    const status = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
+    const isAttending = status === "yes";
+
+    const kidsAllowedFromData = Boolean(data?.grammar?.kidsAllowed);
+    const kidsAllowedFromForm = els.confirmationForm?.dataset.kidsAllowed === "true";
+    const kidsAllowed = kidsAllowedFromData || kidsAllowedFromForm;
+
+    const shouldShow = isAttending && kidsAllowed;
+
+    els.confirmationKidsInfoField?.classList.toggle("hidden", !shouldShow);
+
+    if (els.confirmationKidsInfo) {
+        els.confirmationKidsInfo.disabled = !shouldShow;
+    }
+}
+
+function renderConfirmationCopy(els, data) {
+    if (els.rsvpIntroText) {
+        els.rsvpIntroText.textContent =
+            data.rsvpIntro || COPY.rsvp.intro({ isPlural: false });
+    }
+
+    if (els.confirmationLegend) {
+        els.confirmationLegend.textContent = data.rsvpLegend || "¿Podrás acompañarnos?";
+    }
+
+    if (els.confirmationKidsInfoLabel) {
+        els.confirmationKidsInfoLabel.textContent =
+            data.rsvpKidsInfoLabel || "Si vienen con chicos, contanos sus edades o cualquier dato útil";
+    }
+
+    if (els.confirmationKidsInfo) {
+        els.confirmationKidsInfo.placeholder =
+            data.rsvpKidsInfoPlaceholder || "Ej.: Olivia (3) y Benja (6), una necesita menú especial";
+    }
+
+    if (els.confirmationYesTitle) {
+        els.confirmationYesTitle.textContent = data.rsvpYesTitle || "Sí, asistiré";
+    }
+
+    if (els.confirmationYesHint) {
+        els.confirmationYesHint.textContent = data.rsvpYesHint || "Así podremos reservar tu lugar.";
+    }
+
+    if (els.confirmationNoTitle) {
+        els.confirmationNoTitle.textContent = data.rsvpNoTitle || "No podré asistir";
+    }
+
+    if (els.confirmationNoHint) {
+        els.confirmationNoHint.textContent = data.rsvpNoHint || "Igualmente nos encantará saber de vos.";
+    }
+
+    if (els.confirmationCountLabel) {
+        els.confirmationCountLabel.textContent = data.rsvpCountLabel || "¿Cuántas personas asistirán?";
+    }
+
+    if (els.confirmationDietaryLabel) {
+        els.confirmationDietaryLabel.textContent = data.rsvpDietaryLabel || "Restricciones alimentarias";
+    }
+
+    if (els.confirmationDietaryRestrictions) {
+        els.confirmationDietaryRestrictions.placeholder =
+            data.rsvpDietaryPlaceholder || "Ej.: 1 vegetariano, 1 celíaco";
+    }
+
+    if (els.confirmationCommentLabel) {
+        els.confirmationCommentLabel.textContent = data.rsvpCommentLabel || "Comentario";
+    }
+
+    if (els.confirmationComment) {
+        els.confirmationComment.placeholder =
+            data.rsvpCommentPlaceholder || "Podés dejarnos una nota si lo necesitás.";
+    }
+}
+
+function getGrammarFromForm(els) {
+    return {
+        isPlural: els.confirmationForm?.dataset.isPlural === "true"
+    };
+}
 
 function isConfirmationClosed(data) {
     const raw = data?.confirmationDeadlineIso || data?.rsvpDeadlineIso || "";
@@ -45,11 +128,13 @@ function setFormDisabled(els, disabled) {
 function syncCountFieldVisibility(els) {
     const status = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
     const isAttending = status === "yes";
+    const companions = Number.parseInt(els.confirmationForm?.dataset.companions || "1", 10);
+    const shouldShowCount = isAttending && companions > 1;
 
-    els.confirmationCountField?.classList.toggle("hidden", !isAttending);
+    els.confirmationCountField?.classList.toggle("hidden", !shouldShowCount);
 
     if (els.confirmationCount) {
-        els.confirmationCount.disabled = !isAttending;
+        els.confirmationCount.disabled = !shouldShowCount;
     }
 }
 
@@ -90,16 +175,27 @@ function getFriendlyErrorMessage(errorCode) {
 
 function buildPayload(els) {
     const status = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
+    const companions = Number.parseInt(els.confirmationForm?.dataset.companions || "1", 10);
+
     const attendingCount = status === "yes"
-        ? Number.parseInt(els.confirmationCount?.value || "0", 10)
+        ? (companions <= 1
+            ? 1
+            : Number.parseInt(els.confirmationCount?.value || "0", 10))
         : 0;
+
+    const comment = els.confirmationComment?.value?.trim() || "";
+    const kidsInfo = els.confirmationKidsInfo?.value?.trim() || "";
+
+    const mergedComment = [comment, kidsInfo ? `Info chicos: ${kidsInfo}` : ""]
+        .filter(Boolean)
+        .join("\n\n");
 
     return {
         token: els.confirmationForm?.dataset.token || "",
         status,
         attendingCount,
         dietaryRestrictions: els.confirmationDietaryRestrictions?.value?.trim() || "",
-        comment: els.confirmationComment?.value?.trim() || ""
+        comment: mergedComment
     };
 }
 
@@ -107,19 +203,32 @@ function setSubmitButtonLabel(els, hasExistingConfirmation) {
     if (!els.confirmationSubmitButton) return;
 
     els.confirmationSubmitButton.textContent = hasExistingConfirmation
-        ? "Actualizar confirmación"
-        : "Enviar confirmación";
+        ? COPY.rsvp.submitUpdate
+        : COPY.rsvp.submitNew;
 }
 
 function setHelperText(els, data) {
     if (!els.rsvpHelperText) return;
 
     if (data?.existingConfirmation) {
-        els.rsvpHelperText.textContent = "Ya habíamos recibido tu respuesta. Si querés, podés actualizarla.";
+        els.rsvpHelperText.textContent = COPY.rsvp.helperExisting;
         return;
     }
 
-    els.rsvpHelperText.textContent = "Nos ayuda muchísimo para organizar cada detalle.";
+    const raw = data?.confirmationDeadlineIso || data?.rsvpDeadlineIso || "";
+    const deadline = new Date(raw);
+
+    if (!Number.isNaN(deadline.getTime())) {
+        const diff = deadline.getTime() - Date.now();
+        const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+        if (daysLeft >= 0 && daysLeft <= 3) {
+            els.rsvpHelperText.textContent = COPY.rsvp.helperUrgent;
+            return;
+        }
+    }
+
+    els.rsvpHelperText.textContent = COPY.rsvp.helperDefault;
 }
 
 function hydrateConfirmationForm(els, data) {
@@ -137,6 +246,10 @@ function hydrateConfirmationForm(els, data) {
         if (els.confirmationComment) els.confirmationComment.value = "";
         populateCountOptions(els.confirmationCount, companions, 1);
         return;
+    }
+
+    if (els.confirmationKidsInfo) {
+        els.confirmationKidsInfo.value = "";
     }
 
     const isAttending = existing.status === "yes";
@@ -182,7 +295,7 @@ function renderConfirmationSummary(els, existingConfirmation) {
     }
 
     if (existingConfirmation.comment) {
-        parts.push(`Comentario: ${existingConfirmation.comment}.`);
+        parts.push(`Datos adicionales: ${existingConfirmation.comment}.`);
     }
 
     if (existingConfirmation.updatedAt) {
@@ -203,6 +316,7 @@ function setupConfirmationForm(els) {
     statusInputs.forEach((input) => {
         input.addEventListener("change", () => {
             syncCountFieldVisibility(els);
+            syncKidsInfoFieldVisibility(els);
             setFeedback(els, "", "info");
         });
     });
@@ -245,8 +359,8 @@ function setupConfirmationForm(els) {
             setFeedback(
                 els,
                 result.updated
-                    ? "Actualizamos su confirmación correctamente."
-                    : "La confirmación quedó registrada. ¡Gracias!",
+                    ? COPY.rsvp.successUpdate(getGrammarFromForm(els))
+                    : COPY.rsvp.successNew,
                 "success"
             );
 
@@ -271,7 +385,12 @@ export function renderConfirmation(els, data, options = {}) {
     const closed = isConfirmationClosed(data);
 
     els.confirmationForm.dataset.token = options.token || "";
+    els.confirmationForm.dataset.companions = String(
+        Number.isFinite(Number(data?.companions)) ? Math.max(1, Number(data.companions)) : 1
+    );
+    els.confirmationForm.dataset.kidsAllowed = data?.grammar?.kidsAllowed ? "true" : "false";
 
+    renderConfirmationCopy(els, data);
     hydrateConfirmationForm(els, data);
     setSubmitButtonLabel(els, Boolean(data?.existingConfirmation));
     setHelperText(els, data);
@@ -282,7 +401,7 @@ export function renderConfirmation(els, data, options = {}) {
 
     if (closed) {
         if (els.confirmationClosedNote) {
-            els.confirmationClosedNote.textContent = "La confirmación ya se encuentra cerrada. Si necesitás avisarnos un cambio, escribinos directamente.";
+            els.confirmationClosedNote.textContent = COPY.rsvp.closed;
         }
 
         setFeedback(els, "", "info");
@@ -291,8 +410,10 @@ export function renderConfirmation(els, data, options = {}) {
     }
 
     syncCountFieldVisibility(els);
+    syncKidsInfoFieldVisibility(els, data);
     setFeedback(els, "", "info");
     setFormDisabled(els, false);
 
+    els.confirmationForm.dataset.isPlural = data?.grammar?.isPlural ? "true" : "false";
     setupConfirmationForm(els);
 }

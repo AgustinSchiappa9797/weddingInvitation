@@ -24,6 +24,14 @@ export function getElements() {
         tabRsvp: document.getElementById("tabRsvp"),
         tabPlaylist: document.getElementById("tabPlaylist"),
 
+        playlistKicker: document.getElementById("playlistKicker"),
+        playlistTitle: document.getElementById("playlistTitle"),
+        playlistDescription: document.getElementById("playlistDescription"),
+
+        confirmationKidsInfoField: document.getElementById("confirmationKidsInfoField"),
+        confirmationKidsInfoLabel: document.getElementById("confirmationKidsInfoLabel"),
+        confirmationKidsInfo: document.getElementById("confirmationKidsInfo"),
+
         panelDetails: document.getElementById("panelDetails"),
         panelAccess: document.getElementById("panelAccess"),
         panelGallery: document.getElementById("panelGallery"),
@@ -85,6 +93,23 @@ export function getElements() {
         errorTitle: document.getElementById("errorTitle"),
         errorMessage: document.getElementById("errorMessage"),
         retryButton: document.getElementById("retryButton"),
+
+        tabGift: document.getElementById("tabGift"),
+        panelGift: document.getElementById("panelGift"),
+
+        giftTitle: document.getElementById("giftTitle"),
+        giftIntro: document.getElementById("giftIntro"),
+        giftBankData: document.getElementById("giftBankData"),
+
+        rsvpIntroText: document.getElementById("rsvpIntroText"),
+        confirmationLegend: document.getElementById("confirmationLegend"),
+        confirmationYesTitle: document.getElementById("confirmationYesTitle"),
+        confirmationYesHint: document.getElementById("confirmationYesHint"),
+        confirmationNoTitle: document.getElementById("confirmationNoTitle"),
+        confirmationNoHint: document.getElementById("confirmationNoHint"),
+        confirmationCountLabel: document.getElementById("confirmationCountLabel"),
+        confirmationDietaryLabel: document.getElementById("confirmationDietaryLabel"),
+        confirmationCommentLabel: document.getElementById("confirmationCommentLabel"),
 
         lightbox: document.getElementById("lightbox"),
         lightboxImage: document.getElementById("lightboxImage"),

@@ -49,7 +49,7 @@ export async function renderHero(els, data, state) {
         ),
         swapText(
             els.mainSubtitle,
-            data.heroText || COPY.defaults.heroSubtitle
+            data.heroSubtitle || COPY.defaults.heroSubtitle(data.grammar || { isPlural: false })
         ),
         swapText(
             els.guestName,

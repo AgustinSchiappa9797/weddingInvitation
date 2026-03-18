@@ -14,12 +14,16 @@ import { renderGallery } from "./ui/galleryView.js";
 import { renderPlaylist } from "./ui/playlistView.js";
 import { renderCountdown } from "./ui/countdownView.js";
 import { renderConfirmation } from "./ui/confirmationView.js";
-import { setupAnimations, revealContentAnimations } from "./ui/animations.js";
+import { createOrangeCatApi, setupAnimations, revealContentAnimations } from "./ui/animations.js";
+import { setupCatBehavior } from "./ui/catBehavior.js";
 import { setupLightbox, closeLightbox } from "./ui/lightboxView.js";
 import { getInvitationViewData } from "./ui/viewData.js";
 import { renderBackground } from "./ui/backgroundView.js";
+import { renderGift } from "./ui/giftView.js";
 
 const els = Object.freeze(getElements());
+
+let catBehaviorInitialized = false;
 
 function getToken() {
     const params = new URLSearchParams(window.location.search);
@@ -62,7 +66,9 @@ function resetInvitationState() {
         els.panelAccess,
         els.panelGallery,
         els.panelRsvp,
-        els.panelPlaylist
+        els.panelPlaylist,
+        els.tabGift,
+        els.panelGift
     ].forEach((element) => {
         element?.classList.remove("hidden");
     });
@@ -70,7 +76,8 @@ function resetInvitationState() {
     renderActiveNavigation(els, state, {
         hasGallery: true,
         hasConfirmation: true,
-        hasPlaylist: true
+        hasPlaylist: true,
+        hasGift: true
     });
 }
 
@@ -85,6 +92,7 @@ function renderInvitationSections(viewData, options = {}) {
     renderConfirmation(els, viewData, options);
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
+    renderGift(els, viewData);
 }
 
 async function renderInvitation(data, options = {}) {
@@ -98,6 +106,15 @@ async function renderInvitation(data, options = {}) {
     await renderHero(els, viewData, state);
 
     showInvitationShell();
+
+    if (!catBehaviorInitialized) {
+        const catApi = createOrangeCatApi();
+        if (catApi) {
+            setupCatBehavior(catApi);
+            catBehaviorInitialized = true;
+        }
+    }
+
     renderInvitationSections(viewData, options);
     syncNavigationVisibility(els, state, viewData);
     syncSectionFromHash(els, state);
@@ -171,7 +188,6 @@ async function init() {
     initialized = true;
 
     setupAnimations();
-
     setupLightbox(els);
 
     els.retryButton?.addEventListener("click", () => {

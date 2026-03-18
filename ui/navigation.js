@@ -1,4 +1,4 @@
-const SECTION_KEYS = ["details", "access", "gallery", "rsvp", "playlist"];
+const SECTION_KEYS = ["details", "access", "gallery", "rsvp", "playlist", "gift"];
 
 function getSectionFromHash() {
     const hash = window.location.hash.replace("#", "").trim().toLowerCase();
@@ -11,7 +11,8 @@ function getTabMap(els) {
         access: els.tabAccess,
         gallery: els.tabGallery,
         rsvp: els.tabRsvp,
-        playlist: els.tabPlaylist
+        playlist: els.tabPlaylist,
+        gift: els.tabGift
     };
 }
 
@@ -21,7 +22,8 @@ function getPanelMap(els) {
         access: els.panelAccess,
         gallery: els.panelGallery,
         rsvp: els.panelRsvp,
-        playlist: els.panelPlaylist
+        playlist: els.panelPlaylist,
+        gift: els.panelGift
     };
 }
 
@@ -31,7 +33,8 @@ function getSectionAvailability(viewData) {
         access: true,
         gallery: Boolean(viewData?.hasGallery),
         rsvp: Boolean(viewData?.hasConfirmation),
-        playlist: Boolean(viewData?.hasPlaylist)
+        playlist: Boolean(viewData?.hasPlaylist),
+        gift: Boolean(viewData?.hasGift)
     };
 }
 
@@ -39,7 +42,8 @@ function getCurrentUiAvailability(els) {
     return getSectionAvailability({
         hasGallery: !els.tabGallery?.classList.contains("hidden"),
         hasConfirmation: !els.tabRsvp?.classList.contains("hidden"),
-        hasPlaylist: !els.tabPlaylist?.classList.contains("hidden")
+        hasPlaylist: !els.tabPlaylist?.classList.contains("hidden"),
+        hasGift: !els.tabGift?.classList.contains("hidden")
     });
 }
 
@@ -158,7 +162,8 @@ export function setupNavigation(els, state) {
     applyActiveState(els, state, getSectionAvailability({
         hasGallery: true,
         hasConfirmation: true,
-        hasPlaylist: true
+        hasPlaylist: true,
+        hasGift: true
     }));
 }
 

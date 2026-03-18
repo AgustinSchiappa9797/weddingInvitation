@@ -54,15 +54,19 @@
     }
 
     .hub-nav {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
-        width: min(100%, 420px);
+        width: 100%;
     }
 
     .hub-tab {
-        justify-content: flex-start;
-        min-height: 50px;
-        padding: 9px 11px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 6px;
+        min-height: 84px;
+        padding: 12px 8px;
         border-radius: 14px;
     }
 
@@ -74,7 +78,9 @@
     }
 
     .hub-tab-label {
-        font-size: 0.84rem;
+        font-size: 0.8rem;
+        line-height: 1.15;
+        text-align: center;
     }
 
     .confirmation-actions {

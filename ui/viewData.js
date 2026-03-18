@@ -10,12 +10,60 @@ function normalizeCompanions(value) {
     return Math.floor(parsed);
 }
 
+function getGuestGrammarContext(data, companions) {
+    const isPlural = companions > 1;
+
+    return {
+        isPlural,
+        isSingular: !isPlural,
+        kidsAllowed: Boolean(data.kidsAllowed),
+        companions
+    };
+}
+
+function buildDynamicCopy(data, companions) {
+    const grammar = getGuestGrammarContext(data, companions);
+
+    return {
+        grammar,
+        heroSubtitle: normalizeText(data.heroText) || COPY.defaults.heroSubtitle(grammar),
+        companionsText: getCompanionsText(companions),
+        kidsTag: data.kidsAllowed
+            ? COPY.tags.kidsAllowed(grammar)
+            : COPY.tags.adultsOnly,
+
+        rsvpIntro: COPY.rsvp.intro(grammar),
+        rsvpLegend: COPY.rsvp.legend(grammar),
+        rsvpYesTitle: COPY.rsvp.yesOptionTitle(grammar),
+        rsvpYesHint: COPY.rsvp.yesOptionHint(grammar),
+        rsvpNoTitle: COPY.rsvp.noOptionTitle(grammar),
+        rsvpNoHint: COPY.rsvp.noOptionHint(grammar),
+        rsvpCountLabel: COPY.rsvp.countLabel(grammar),
+        rsvpDietaryLabel: COPY.rsvp.dietaryLabel(grammar),
+        rsvpDietaryPlaceholder: COPY.rsvp.dietaryPlaceholder(grammar),
+        rsvpCommentLabel: COPY.rsvp.commentLabel(grammar),
+        rsvpCommentPlaceholder: COPY.rsvp.commentPlaceholder(grammar),
+
+        playlistKicker: COPY.playlist.kicker,
+        playlistTitle: COPY.playlist.title,
+        playlistDescription: COPY.playlist.description(grammar),
+        playlistButtonLabel: COPY.playlist.buttonLabel(grammar),
+
+        rsvpKidsInfoLabel: COPY.rsvp.kidsInfoLabel(grammar),
+        rsvpKidsInfoPlaceholder: COPY.rsvp.kidsInfoPlaceholder(grammar)
+    };
+}
+
 function getCompanionsText(companions) {
     if (companions <= 1) {
         return COPY.companions.single;
     }
 
     return COPY.companions.multiple(companions);
+}
+
+function normalizeText(value) {
+    return typeof value === "string" ? value.trim() : "";
 }
 
 function normalizeGallery(gallery) {
@@ -83,6 +131,9 @@ function getDaysUntil(dateString) {
 export function getInvitationViewData(data) {
     const companions = normalizeCompanions(data.companions);
     const rawGallery = normalizeGallery(data.gallery);
+    const giftTitle = normalizeText(data.giftTitle) || "Aporte para luna de miel";
+    const giftIntro = normalizeText(data.giftIntro);
+    const giftBankData = typeof data.giftBankData === "string" ? data.giftBankData.trim() : "";
     const coverImage =
         typeof data.coverImage === "string" && data.coverImage.trim() !== ""
             ? data.coverImage
@@ -108,10 +159,12 @@ export function getInvitationViewData(data) {
         data.rsvpUrl ||
         "";
 
+    const dynamicCopy = buildDynamicCopy(data, companions);
+
     return {
         ...data,
+        ...dynamicCopy,
         companions,
-        companionsText: getCompanionsText(companions),
         backgroundImage: coverImage,
         gallery,
         timeline,
@@ -127,6 +180,10 @@ export function getInvitationViewData(data) {
         hasCalendar: Boolean(data.eventIsoDate),
         hasPlaylist: typeof data.playlistUrl === "string" && data.playlistUrl.trim() !== "",
         hasMap: typeof data.mapUrl === "string" && data.mapUrl.trim() !== "",
-        hasConfirmation: true
+        hasConfirmation: true,
+        giftTitle,
+        giftIntro,
+        giftBankData,
+        hasGift: Boolean(giftIntro || giftBankData)
     };
 }

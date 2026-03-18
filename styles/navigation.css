@@ -26,9 +26,9 @@
 
 .hub-nav {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 10px;
-    width: min(100%, 760px);
+    width: min(100%, 980px);
     margin: 0 auto 18px;
 }
 
@@ -37,7 +37,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 12px;
+    min-width: 0;
+    min-height: 58px;
+    padding: 10px 10px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.64);
     border: 1px solid rgba(255, 255, 255, 0.32);
@@ -84,10 +86,12 @@
 }
 
 .hub-tab-label {
-    font-size: 0.88rem;
+    font-size: 0.84rem;
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.15;
     text-align: left;
+    min-width: 0;
+    text-wrap: balance;
 }
 
 .hub-tab.is-active {

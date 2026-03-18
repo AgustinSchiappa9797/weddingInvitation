@@ -8,7 +8,9 @@ function buildTags(data) {
         tags.push(data.companionsText);
     }
 
-    tags.push(data.kidsAllowed ? COPY.tags.kidsAllowed : COPY.tags.adultsOnly);
+    if (data.kidsTag) {
+        tags.push(data.kidsTag);
+    }
 
     if (data.dressCode) {
         tags.push(`Dress code: ${data.dressCode}`);

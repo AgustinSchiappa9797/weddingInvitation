@@ -223,6 +223,422 @@ body[data-event-phase="today"] .btn.primary {
     transform: scale(1.01);
 }
 
+.cat-stage {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    overflow: hidden;
+}
+
+.orange-cat {
+    --cat-x: 0px;
+    --cat-y: 0px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 118px;
+    height: 76px;
+    transform: translate(var(--cat-x), var(--cat-y));
+    transform-origin: center center;
+    transition: transform 2200ms linear;
+    will-change: transform;
+    opacity: 0.82;
+    filter: drop-shadow(0 6px 8px rgba(73, 45, 18, 0.11));
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.orange-cat.is-flipped {
+    transform: translate(var(--cat-x), var(--cat-y)) scaleX(-1);
+}
+
+.cat-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.cat-body {
+    fill: #d98538;
+}
+
+.cat-belly {
+    fill: #efc091;
+    opacity: 0.5;
+}
+
+.cat-head {
+    fill: #de8b3d;
+}
+
+.cat-head-group .cat-ear {
+    fill: #cf7a2d;
+}
+
+.cat-ear-left,
+.cat-ear-right {
+    transform-origin: center bottom;
+}
+
+.cat-eye {
+    fill: #3f2a1b;
+}
+
+.cat-mouth,
+.cat-whisker,
+.cat-tail,
+.leg {
+    fill: none;
+    stroke: #8c4f22;
+    stroke-width: 4.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cat-tail {
+    stroke-width: 6;
+}
+
+.leg {
+    stroke-width: 5;
+}
+
+.cat-legs-back .leg {
+    opacity: 0.92;
+}
+
+.cat-legs-front .leg {
+    opacity: 1;
+}
+
+.orange-cat[data-mode="walk"] .cat-tail-group {
+    animation: catTailWalk 900ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="trot"] .cat-tail-group {
+    animation: catTailTrot 500ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="scratch"] .cat-tail-group {
+    animation: catTailScratch 520ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="climb"] .cat-tail-group {
+    animation: catTailClimb 650ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="sit"] .cat-tail-group,
+.orange-cat[data-mode="loaf"] .cat-tail-group {
+    animation: catTailSit 1800ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="look"] .cat-head-group {
+    animation: catHeadLook 900ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="look"] .cat-tail-group {
+    animation: catTailSit 1600ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="walk"] .leg-front-1,
+.orange-cat[data-mode="walk"] .leg-back-2 {
+    animation: catLegSwingA 700ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="walk"] .leg-front-2,
+.orange-cat[data-mode="walk"] .leg-back-1 {
+    animation: catLegSwingB 700ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="trot"] .leg-front-1,
+.orange-cat[data-mode="trot"] .leg-back-2 {
+    animation: catLegSwingA 380ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="trot"] .leg-front-2,
+.orange-cat[data-mode="trot"] .leg-back-1 {
+    animation: catLegSwingB 380ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="scratch"] .leg-front-1,
+.orange-cat[data-mode="scratch"] .leg-front-2 {
+    animation: catScratchPaw 120ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="scratch"] .cat-head-group {
+    animation: catHeadScratch 180ms ease-in-out infinite alternate;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="climb"] .cat-root {
+    transform: rotate(-90deg);
+    transform-origin: 110px 75px;
+}
+
+.orange-cat[data-mode="climb"] .leg-front-1,
+.orange-cat[data-mode="climb"] .leg-back-2 {
+    animation: catClimbA 320ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="climb"] .leg-front-2,
+.orange-cat[data-mode="climb"] .leg-back-1 {
+    animation: catClimbB 320ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="sit"] .cat-root {
+    transform: translateY(4px) scaleY(0.96);
+    transform-origin: center bottom;
+}
+
+.orange-cat[data-mode="loaf"] .cat-root {
+    transform: translateY(6px) scaleY(0.88) scaleX(1.03);
+    transform-origin: center bottom;
+}
+
+.orange-cat[data-mode="stretch"] .cat-root {
+    animation: catStretch 900ms ease-in-out infinite alternate;
+    transform-origin: center center;
+}
+
+.orange-cat[data-mode="walk"] .cat-root {
+    animation: catBodyWalk 700ms ease-in-out infinite;
+    transform-origin: 110px 82px;
+}
+
+.orange-cat[data-mode="trot"] .cat-root {
+    animation: catBodyTrot 380ms ease-in-out infinite;
+    transform-origin: 110px 82px;
+}
+
+.orange-cat[data-mode="walk"] .cat-head-group {
+    animation: catHeadWalk 700ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="trot"] .cat-head-group {
+    animation: catHeadTrot 380ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+@keyframes catLegSwingA {
+    0% {
+        transform: rotate(9deg);
+    }
+
+    50% {
+        transform: rotate(-7deg);
+    }
+
+    100% {
+        transform: rotate(9deg);
+    }
+}
+
+@keyframes catLegSwingB {
+    0% {
+        transform: rotate(-7deg);
+    }
+
+    50% {
+        transform: rotate(9deg);
+    }
+
+    100% {
+        transform: rotate(-7deg);
+    }
+}
+
+@keyframes catScratchPaw {
+    from {
+        transform: translateX(0) rotate(8deg);
+    }
+
+    to {
+        transform: translateX(3px) rotate(-10deg);
+    }
+}
+
+@keyframes catHeadScratch {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(1.5px);
+    }
+}
+
+@keyframes catClimbA {
+    from {
+        transform: translateY(-1px) rotate(8deg);
+    }
+
+    to {
+        transform: translateY(3px) rotate(-8deg);
+    }
+}
+
+@keyframes catClimbB {
+    from {
+        transform: translateY(3px) rotate(-8deg);
+    }
+
+    to {
+        transform: translateY(-1px) rotate(8deg);
+    }
+}
+
+@keyframes catTailWalk {
+
+    0%,
+    100% {
+        transform: rotate(8deg);
+    }
+
+    50% {
+        transform: rotate(-10deg);
+    }
+}
+
+@keyframes catTailTrot {
+
+    0%,
+    100% {
+        transform: rotate(14deg);
+    }
+
+    50% {
+        transform: rotate(-15deg);
+    }
+}
+
+@keyframes catTailScratch {
+
+    0%,
+    100% {
+        transform: rotate(10deg);
+    }
+
+    50% {
+        transform: rotate(-6deg);
+    }
+}
+
+@keyframes catTailClimb {
+
+    0%,
+    100% {
+        transform: rotate(18deg);
+    }
+
+    50% {
+        transform: rotate(-8deg);
+    }
+}
+
+@keyframes catTailSit {
+
+    0%,
+    100% {
+        transform: rotate(5deg);
+    }
+
+    50% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes catBodyWalk {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0.4deg);
+    }
+
+    50% {
+        transform: translateY(1.5px) rotate(-0.4deg);
+    }
+}
+
+@keyframes catBodyTrot {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0.8deg);
+    }
+
+    50% {
+        transform: translateY(2.5px) rotate(-0.8deg);
+    }
+}
+
+@keyframes catHeadWalk {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(0.8px) rotate(-1deg);
+    }
+}
+
+@keyframes catHeadTrot {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(1.2px) rotate(-1.4deg);
+    }
+}
+
+@keyframes catHeadLook {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(-4deg) translateY(0.5px);
+    }
+}
+
+@keyframes catStretch {
+    from {
+        transform: scaleX(1) scaleY(1);
+    }
+
+    to {
+        transform: scaleX(1.04) scaleY(0.96);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cat-stage {
+        display: none;
+    }
+}
+
 @keyframes panelFadeIn {
     from {
         opacity: 0;
@@ -261,7 +677,6 @@ body.has-dynamic-bg .bg-overlay {
     background-position: center center;
 }
 
-
 body.bg-image-loaded .bg-overlay {
     opacity: 1;
 }
@@ -269,7 +684,6 @@ body.bg-image-loaded .bg-overlay {
 body:not(.has-dynamic-bg) .bg-overlay {
     opacity: 1;
 }
-
 
 p,
 li {
