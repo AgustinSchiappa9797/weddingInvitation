@@ -19,6 +19,40 @@ function buildTags(data) {
     return tags;
 }
 
+function buildQuickFacts(data) {
+    const facts = [];
+
+    if (data.eventDateText) {
+        facts.push({
+            label: "Fecha",
+            value: data.eventDateText
+        });
+    }
+
+    if (data.eventTimeText) {
+        facts.push({
+            label: "Horario",
+            value: data.eventTimeText
+        });
+    }
+
+    if (data.dressCode) {
+        facts.push({
+            label: "Dress code",
+            value: data.dressCode
+        });
+    }
+
+    if (data.confirmationDeadlineText) {
+        facts.push({
+            label: "RSVP",
+            value: `Confirmar antes del ${data.confirmationDeadlineText}`
+        });
+    }
+
+    return facts.slice(0, 4);
+}
+
 function renderTags(container, tags) {
     if (!container) return;
 
@@ -31,6 +65,37 @@ function renderTags(container, tags) {
         span.className = "tag";
         span.textContent = tag;
         fragment.appendChild(span);
+    });
+
+    container.appendChild(fragment);
+}
+
+function renderQuickFacts(container, facts) {
+    if (!container) return;
+
+    container.replaceChildren();
+
+    const visibleFacts = Array.isArray(facts) ? facts.filter(Boolean) : [];
+    container.classList.toggle("hidden", visibleFacts.length === 0);
+
+    if (!visibleFacts.length) return;
+
+    const fragment = document.createDocumentFragment();
+
+    visibleFacts.forEach((fact) => {
+        const article = document.createElement("article");
+        article.className = "access-fact-card";
+
+        const label = document.createElement("p");
+        label.className = "access-fact-label";
+        label.textContent = fact.label || "";
+
+        const value = document.createElement("p");
+        value.className = "access-fact-value";
+        value.textContent = fact.value || "";
+
+        article.append(label, value);
+        fragment.appendChild(article);
     });
 
     container.appendChild(fragment);
@@ -75,10 +140,12 @@ function renderGuestMeta(els, data) {
     }
 
     if (els.personalMessage) {
-        els.personalMessage.textContent = data.message || "";
+        const fallbackMessage = "Queremos que disfrutes cada momento. Acá vas a encontrar todo lo necesario para llegar sin complicaciones.";
+        els.personalMessage.textContent = data.message || fallbackMessage;
     }
 
     renderTags(els.guestTags, buildTags(data));
+    renderQuickFacts(els.accessQuickFacts, buildQuickFacts(data));
 }
 
 function renderVenue(els, data) {
@@ -124,8 +191,6 @@ function renderRsvpMeta(els, data) {
             els.rsvpHelperText.textContent = "Nos ayuda muchísimo para organizar cada detalle.";
         }
     }
-
-    setOptionalLink(els.rsvpButton, data.confirmationUrl);
 }
 
 function renderFooter(els, data) {

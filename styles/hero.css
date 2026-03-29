@@ -36,6 +36,11 @@ body[data-event-phase="today"] .hero-card {
     justify-content: center;
 }
 
+.hero-actions-split {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
 .title {
     margin: 0 auto;
     max-width: 12ch;
@@ -96,6 +101,78 @@ body[data-event-phase="today"] .hero-card {
     font-family: Inter, "Segoe UI", sans-serif;
     font-size: 0.96rem;
     line-height: 1.6;
+}
+
+.hero-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    margin: 0 auto 18px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(127, 138, 99, 0.18);
+    box-shadow: 0 12px 28px rgba(44, 29, 21, 0.06);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.hero-status-pill[data-state="confirmed"] {
+    color: var(--accent-olive-dark);
+    background: rgba(127, 138, 99, 0.14);
+}
+
+.hero-status-pill[data-state="declined"] {
+    color: var(--primary-dark);
+    background: rgba(143, 111, 90, 0.1);
+}
+
+.hero-status-pill[data-state="pending"] {
+    color: var(--text);
+}
+
+.hero-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.hero-highlight-card {
+    padding: 18px 18px 16px;
+    text-align: left;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.48));
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow:
+        0 12px 32px rgba(44, 29, 21, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.hero-highlight-label {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.hero-highlight-value {
+    margin: 0;
+    font-family: "Cormorant Garamond", "Palatino Linotype", Georgia, serif;
+    font-size: clamp(1.35rem, 2vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.02;
+    text-wrap: balance;
+}
+
+.hero-highlight-meta {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.5;
 }
 
 .countdown-section {

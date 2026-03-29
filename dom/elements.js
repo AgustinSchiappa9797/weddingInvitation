@@ -14,6 +14,15 @@ export function getElements() {
         bgOverlay: document.getElementById("bgOverlay"),
         guestExtra: document.getElementById("guestExtra"),
 
+        heroStatusPill: document.getElementById("heroStatusPill"),
+        heroEventDate: document.getElementById("heroEventDate"),
+        heroEventTime: document.getElementById("heroEventTime"),
+        heroVenueName: document.getElementById("heroVenueName"),
+        heroVenueAddress: document.getElementById("heroVenueAddress"),
+        heroRsvpDeadline: document.getElementById("heroRsvpDeadline"),
+        heroRsvpHint: document.getElementById("heroRsvpHint"),
+        heroSecondaryAction: document.getElementById("heroSecondaryAction"),
+
         invitationContent: document.getElementById("invitationContent"),
         sectionNav: document.getElementById("sectionNav"),
         contentPanel: document.getElementById("contentPanel"),
@@ -60,6 +69,7 @@ export function getElements() {
         timeline: document.getElementById("timeline"),
 
         personalMessage: document.getElementById("personalMessage"),
+        accessQuickFacts: document.getElementById("accessQuickFacts"),
         accessNotesSection: document.getElementById("accessNotesSection"),
         parkingInfoBlock: document.getElementById("parkingInfoBlock"),
         parkingInfoList: document.getElementById("parkingInfoList"),
@@ -79,15 +89,20 @@ export function getElements() {
         confirmationComment: document.getElementById("confirmationComment"),
         confirmationSubmitButton: document.getElementById("confirmationSubmitButton"),
         confirmationFeedback: document.getElementById("confirmationFeedback"),
+        confirmationProgress: document.getElementById("confirmationProgress"),
+        progressStepStatus: document.getElementById("progressStepStatus"),
+        progressStepCount: document.getElementById("progressStepCount"),
+        progressStepDetails: document.getElementById("progressStepDetails"),
 
         gallerySection: document.getElementById("gallerySection"),
         gallery: document.getElementById("gallery"),
+        galleryIntroText: document.getElementById("galleryIntroText"),
+        galleryCounter: document.getElementById("galleryCounter"),
 
         playlistSection: document.getElementById("playlistSection"),
         playlistButton: document.getElementById("playlistButton"),
 
         footerText: document.getElementById("footerText"),
-
 
         errorSection: document.getElementById("errorSection"),
         errorTitle: document.getElementById("errorTitle"),
@@ -99,7 +114,12 @@ export function getElements() {
 
         giftTitle: document.getElementById("giftTitle"),
         giftIntro: document.getElementById("giftIntro"),
+        giftDataCard: document.getElementById("giftDataCard"),
+        giftBankStructured: document.getElementById("giftBankStructured"),
         giftBankData: document.getElementById("giftBankData"),
+        giftCopyButton: document.getElementById("giftCopyButton"),
+        giftShareButton: document.getElementById("giftShareButton"),
+        giftFeedback: document.getElementById("giftFeedback"),
 
         rsvpIntroText: document.getElementById("rsvpIntroText"),
         confirmationLegend: document.getElementById("confirmationLegend"),
@@ -113,6 +133,11 @@ export function getElements() {
 
         lightbox: document.getElementById("lightbox"),
         lightboxImage: document.getElementById("lightboxImage"),
-        lightboxClose: document.getElementById("lightboxClose")
+        lightboxClose: document.getElementById("lightboxClose"),
+
+        mobileStickyRsvp: document.getElementById("mobileStickyRsvp"),
+        mobileStickyRsvpTitle: document.getElementById("mobileStickyRsvpTitle"),
+        mobileStickyRsvpHint: document.getElementById("mobileStickyRsvpHint"),
+        mobileStickyRsvpButton: document.getElementById("mobileStickyRsvpButton")
     };
 }

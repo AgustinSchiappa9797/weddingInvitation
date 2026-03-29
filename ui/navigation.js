@@ -64,6 +64,59 @@ function focusContentPanel(els) {
     });
 }
 
+function broadcastSectionChange(sectionKey) {
+    document.body.dataset.activeSection = sectionKey || "details";
+
+    window.dispatchEvent(new CustomEvent("invitation:sectionchange", {
+        detail: { section: sectionKey || "details" }
+    }));
+}
+
+function centerActiveTabInView(tab, nav) {
+    if (!tab || !nav) return;
+
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const tabLeft = tab.offsetLeft;
+    const tabWidth = tab.offsetWidth;
+    const navWidth = nav.clientWidth;
+    const targetLeft = tabLeft - (navWidth / 2) + (tabWidth / 2);
+
+    nav.scrollTo({
+        left: Math.max(0, targetLeft),
+        behavior: prefersReducedMotion ? "auto" : "smooth"
+    });
+}
+
+function syncNavScrollableState(nav) {
+    if (!nav) return;
+
+    const hasOverflow = nav.scrollWidth > nav.clientWidth + 4;
+    nav.classList.toggle("is-scrollable", hasOverflow);
+
+    if (!hasOverflow) {
+        nav.classList.remove("is-scrolled-start", "is-scrolled-end");
+        return;
+    }
+
+    const atStart = nav.scrollLeft <= 6;
+    const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 6;
+
+    nav.classList.toggle("is-scrolled-start", !atStart);
+    nav.classList.toggle("is-scrolled-end", !atEnd);
+}
+
+function setupNavScrollTracking(nav) {
+    if (!nav || nav.dataset.scrollTrackingBound === "true") return;
+
+    const update = () => syncNavScrollableState(nav);
+
+    nav.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    requestAnimationFrame(update);
+    nav.dataset.scrollTrackingBound = "true";
+}
+
 function applyActiveState(els, state, availability) {
     const tabs = getTabMap(els);
     const panels = getPanelMap(els);
@@ -84,6 +137,11 @@ function applyActiveState(els, state, availability) {
         panels[key]?.setAttribute("aria-hidden", String(!isActive));
         panels[key]?.setAttribute("tabindex", isActive ? "0" : "-1");
     });
+
+    const activeTab = tabs[state.activeSection];
+    centerActiveTabInView(activeTab, els.sectionNav);
+    syncNavScrollableState(els.sectionNav);
+    broadcastSectionChange(state.activeSection);
 }
 
 export function syncNavigationVisibility(els, state, viewData) {
@@ -127,6 +185,8 @@ export function goToSection(els, state, sectionKey, options = {}) {
 
 export function setupNavigation(els, state) {
     const tabs = getTabMap(els);
+
+    setupNavScrollTracking(els.sectionNav);
 
     SECTION_KEYS.forEach((key) => {
         tabs[key]?.addEventListener("click", () => {

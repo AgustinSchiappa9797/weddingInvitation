@@ -104,7 +104,28 @@ function getActiveLogicalIndex(container) {
     return Number.isInteger(logicalIndex) ? logicalIndex : 0;
 }
 
-function updateActiveGalleryItem(container) {
+function formatGalleryCounter(index, total) {
+    const safeTotal = Math.max(1, total);
+    const safeIndex = Math.min(safeTotal, Math.max(1, index + 1));
+    return `${String(safeIndex).padStart(2, "0")} / ${String(safeTotal).padStart(2, "0")}`;
+}
+
+function updateGalleryCounter(els, container) {
+    if (!els.galleryCounter || !container) return;
+
+    const total = getRealGalleryItems(container).length;
+    if (!total) {
+        els.galleryCounter.textContent = "";
+        els.galleryCounter.classList.add("hidden");
+        return;
+    }
+
+    const activeIndex = getActiveLogicalIndex(container);
+    els.galleryCounter.textContent = formatGalleryCounter(activeIndex, total);
+    els.galleryCounter.classList.toggle("hidden", total <= 1);
+}
+
+function updateActiveGalleryItem(container, els = null) {
     if (!container) return;
 
     const items = getGalleryItems(container);
@@ -116,6 +137,10 @@ function updateActiveGalleryItem(container) {
         const isActive = item.dataset.galleryIndex === activeLogicalIndex && item.dataset.clone !== "true";
         item.classList.toggle("is-active", isActive);
     });
+
+    if (els) {
+        updateGalleryCounter(els, container);
+    }
 }
 
 function getRealItemByLogicalIndex(container, logicalIndex) {
@@ -156,6 +181,9 @@ function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, e
 
     button.setAttribute("aria-label", `Abrir foto ${logicalIndex + 1} de ${totalImages}`);
 
+    const frame = document.createElement("span");
+    frame.className = "gallery-item-frame";
+
     const img = document.createElement("img");
     img.src = src;
     img.alt = `Foto de la invitación ${logicalIndex + 1}`;
@@ -164,7 +192,13 @@ function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, e
     img.draggable = false;
     img.referrerPolicy = "no-referrer";
 
-    button.appendChild(img);
+    const meta = document.createElement("span");
+    meta.className = "gallery-item-meta";
+    meta.textContent = `Foto ${String(logicalIndex + 1).padStart(2, "0")}`;
+
+    frame.append(img, meta);
+    button.appendChild(frame);
+
     button.addEventListener("click", (event) => {
         const gallery = els.gallery;
         if (!gallery || gallery.dataset.justDragged === "true") {
@@ -174,7 +208,7 @@ function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, e
 
         const realItem = getRealItemByLogicalIndex(gallery, logicalIndex) || button;
         centerGalleryItem(gallery, realItem);
-        updateActiveGalleryItem(gallery);
+        updateActiveGalleryItem(gallery, els);
         updateGalleryDots(gallery);
 
         openLightbox(els, src, img.alt, {
@@ -197,7 +231,14 @@ function createNavButton(direction) {
 }
 
 function ensureGalleryControls(container) {
-    const wrapper = container?.closest(".gallery-wrapper");
+    let wrapper = container?.closest(".gallery-wrapper");
+    if (!wrapper && container?.parentElement) {
+        wrapper = document.createElement("div");
+        wrapper.className = "gallery-wrapper";
+        container.parentElement.insertBefore(wrapper, container);
+        wrapper.appendChild(container);
+    }
+
     if (!wrapper) {
         return {
             wrapper: null,
@@ -243,7 +284,7 @@ function updateNavButtons(container, prevButton, nextButton) {
     nextButton.classList.toggle("hidden", hideButtons);
 }
 
-function createDotButton(index, total, container) {
+function createDotButton(index, total, container, els) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery-dot";
@@ -255,14 +296,14 @@ function createDotButton(index, total, container) {
         if (!targetItem) return;
 
         centerGalleryItem(container, targetItem, "smooth");
-        updateActiveGalleryItem(container);
+        updateActiveGalleryItem(container, els);
         updateGalleryDots(container);
     });
 
     return button;
 }
 
-function renderGalleryDots(container, totalImages, dotsContainer) {
+function renderGalleryDots(container, totalImages, dotsContainer, els) {
     if (!container || !dotsContainer) return;
 
     dotsContainer.replaceChildren();
@@ -275,7 +316,7 @@ function renderGalleryDots(container, totalImages, dotsContainer) {
     const fragment = document.createDocumentFragment();
 
     for (let index = 0; index < totalImages; index += 1) {
-        fragment.appendChild(createDotButton(index, totalImages, container));
+        fragment.appendChild(createDotButton(index, totalImages, container, els));
     }
 
     dotsContainer.appendChild(fragment);
@@ -298,7 +339,7 @@ function updateGalleryDots(container) {
     });
 }
 
-function scrollGalleryByStep(container, direction) {
+function scrollGalleryByStep(container, direction, els) {
     const realItems = getRealGalleryItems(container);
     if (!container || realItems.length <= 1) return;
 
@@ -321,7 +362,7 @@ function scrollGalleryByStep(container, direction) {
     window.clearTimeout(container._galleryNormalizeTimeoutId);
     container._galleryNormalizeTimeoutId = window.setTimeout(() => {
         normalizeLoopPosition(container);
-        updateActiveGalleryItem(container);
+        updateActiveGalleryItem(container, els);
         updateGalleryDots(container);
     }, SCROLL_SETTLE_DELAY_MS + 120);
 }
@@ -333,26 +374,26 @@ function scheduleScrollSettle(container, callback) {
     }, SCROLL_SETTLE_DELAY_MS);
 }
 
-function setupGalleryControls(container, totalImages) {
+function setupGalleryControls(container, totalImages, els) {
     if (!container) return;
 
     const { prevButton, nextButton, dotsContainer } = ensureGalleryControls(container);
 
-    renderGalleryDots(container, totalImages, dotsContainer);
+    renderGalleryDots(container, totalImages, dotsContainer, els);
 
     if (container.dataset.controlsReady !== "true") {
-        prevButton?.addEventListener("click", () => scrollGalleryByStep(container, "prev"));
-        nextButton?.addEventListener("click", () => scrollGalleryByStep(container, "next"));
+        prevButton?.addEventListener("click", () => scrollGalleryByStep(container, "prev", els));
+        nextButton?.addEventListener("click", () => scrollGalleryByStep(container, "next", els));
 
         const refreshButtons = () => {
             updateNavButtons(container, prevButton, nextButton);
-            updateActiveGalleryItem(container);
+            updateActiveGalleryItem(container, els);
             updateGalleryDots(container);
 
             if (container.dataset.dragging !== "true") {
                 scheduleScrollSettle(container, () => {
                     normalizeLoopPosition(container);
-                    updateActiveGalleryItem(container);
+                    updateActiveGalleryItem(container, els);
                     updateGalleryDots(container);
                 });
             }
@@ -362,7 +403,7 @@ function setupGalleryControls(container, totalImages) {
         window.addEventListener("resize", () => {
             normalizeLoopPosition(container);
             updateNavButtons(container, prevButton, nextButton);
-            updateActiveGalleryItem(container);
+            updateActiveGalleryItem(container, els);
             updateGalleryDots(container);
         });
 
@@ -377,12 +418,12 @@ function setupGalleryControls(container, totalImages) {
 
     requestAnimationFrame(() => {
         updateNavButtons(container, prevButton, nextButton);
-        updateActiveGalleryItem(container);
+        updateActiveGalleryItem(container, els);
         updateGalleryDots(container);
     });
 }
 
-function setupGalleryDrag(container) {
+function setupGalleryDrag(container, els) {
     if (!container || container.dataset.dragReady === "true") return;
 
     let isDragging = false;
@@ -408,7 +449,7 @@ function setupGalleryDrag(container) {
 
         requestAnimationFrame(() => {
             normalizeLoopPosition(container);
-            updateActiveGalleryItem(container);
+            updateActiveGalleryItem(container, els);
             updateGalleryDots(container);
         });
     };
@@ -448,7 +489,7 @@ function setupGalleryDrag(container) {
     container.dataset.dragReady = "true";
 }
 
-function restoreCenteredItem(container, logicalIndex) {
+function restoreCenteredItem(container, logicalIndex, els) {
     if (!container || !Number.isInteger(logicalIndex)) return;
 
     const item = getRealItemByLogicalIndex(container, logicalIndex);
@@ -457,9 +498,21 @@ function restoreCenteredItem(container, logicalIndex) {
     requestAnimationFrame(() => {
         centerGalleryItem(container, item);
         item.focus?.({ preventScroll: true });
-        updateActiveGalleryItem(container);
+        updateActiveGalleryItem(container, els);
         updateGalleryDots(container);
     });
+}
+
+function getGalleryIntroText(data, totalImages) {
+    if (data?.galleryIntroText && typeof data.galleryIntroText === "string" && data.galleryIntroText.trim()) {
+        return data.galleryIntroText.trim();
+    }
+
+    if (totalImages <= 1) {
+        return "Un recuerdo especial que queremos compartir con vos.";
+    }
+
+    return "Algunos recuerdos que nos trajeron hasta acá.";
 }
 
 export function renderGallery(els, data) {
@@ -474,7 +527,14 @@ export function renderGallery(els, data) {
 
     if (validImages.length === 0) {
         els.gallerySection.classList.add("hidden");
+        if (els.galleryCounter) {
+            els.galleryCounter.classList.add("hidden");
+        }
         return;
+    }
+
+    if (els.galleryIntroText) {
+        els.galleryIntroText.textContent = getGalleryIntroText(data, validImages.length);
     }
 
     const cloneCount = getCloneCount(validImages.length);
@@ -494,8 +554,8 @@ export function renderGallery(els, data) {
     });
 
     els.gallery.appendChild(fragment);
-    setupGalleryControls(els.gallery, validImages.length);
-    setupGalleryDrag(els.gallery);
+    setupGalleryControls(els.gallery, validImages.length, els);
+    setupGalleryDrag(els.gallery, els);
     els.gallerySection.classList.remove("hidden");
 
     requestAnimationFrame(() => {
@@ -504,13 +564,13 @@ export function renderGallery(els, data) {
             centerGalleryItem(els.gallery, firstRealItem, "auto");
         }
 
-        updateActiveGalleryItem(els.gallery);
+        updateActiveGalleryItem(els.gallery, els);
         updateGalleryDots(els.gallery);
     });
 
     if (els.gallery.dataset.restoreListenerReady !== "true") {
         document.addEventListener("lightbox:closed", (event) => {
-            restoreCenteredItem(els.gallery, event.detail?.galleryIndex);
+            restoreCenteredItem(els.gallery, event.detail?.galleryIndex, els);
         });
 
         els.gallery.dataset.restoreListenerReady = "true";

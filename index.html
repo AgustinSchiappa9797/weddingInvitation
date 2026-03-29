@@ -75,8 +75,31 @@
 
             </div>
 
-            <div class="hero-actions">
+            <div id="heroStatusPill" class="hero-status-pill hidden" aria-live="polite"></div>
+
+            <div class="hero-highlights" aria-label="Información principal del evento">
+                <article class="hero-highlight-card">
+                    <p class="hero-highlight-label">Cuándo</p>
+                    <p id="heroEventDate" class="hero-highlight-value">-</p>
+                    <p id="heroEventTime" class="hero-highlight-meta">-</p>
+                </article>
+
+                <article class="hero-highlight-card">
+                    <p class="hero-highlight-label">Dónde</p>
+                    <p id="heroVenueName" class="hero-highlight-value">-</p>
+                    <p id="heroVenueAddress" class="hero-highlight-meta">-</p>
+                </article>
+
+                <article class="hero-highlight-card">
+                    <p class="hero-highlight-label">RSVP</p>
+                    <p id="heroRsvpDeadline" class="hero-highlight-value">-</p>
+                    <p id="heroRsvpHint" class="hero-highlight-meta">Confirmación pendiente</p>
+                </article>
+            </div>
+
+            <div class="hero-actions hero-actions-split">
                 <button id="heroPrimaryAction" class="btn primary hidden" type="button"></button>
+                <button id="heroSecondaryAction" class="btn secondary hidden" type="button"></button>
             </div>
 
             <div id="countdownSection" class="countdown-section hidden">
@@ -171,42 +194,50 @@
                         <p class="section-kicker">Cómo llegar</p>
                         <h3>Dirección</h3>
 
-                        <div class="panel-block venue-block">
-                            <p class="section-kicker">Dónde</p>
-                            <h4 class="venue-title">Lugar</h4>
-                            <p id="venueName">-</p>
-                            <p id="venueAddress">-</p>
+                        <div class="access-layout">
+                            <div class="access-hero-card">
+                                <div class="access-hero-copy">
+                                    <p class="section-kicker">Venue</p>
+                                    <h4 id="venueName" class="venue-title">-</h4>
+                                    <p id="venueAddress" class="venue-address-text">-</p>
+                                </div>
 
-                            <a id="mapButton" class="btn secondary" href="#" target="_blank" rel="noopener noreferrer">
-                                Abrir mapa
-                            </a>
-                        </div>
-
-                        <div class="personal-message-box">
-                            <p id="personalMessage" class="personal-message">-</p>
-                        </div>
-
-                        <div id="accessNotesSection" class="access-notes-grid hidden">
-                            <div id="parkingInfoBlock" class="panel-block info-block hidden">
-                                <p class="section-kicker">Logística</p>
-                                <h4>Estacionamiento</h4>
-                                <ul id="parkingInfoList" class="info-list"></ul>
+                                <div class="access-hero-actions">
+                                    <a id="mapButton" class="btn primary" href="#" target="_blank"
+                                        rel="noopener noreferrer">
+                                        Abrir en Google Maps
+                                    </a>
+                                </div>
                             </div>
 
-                            <div id="entryInfoBlock" class="panel-block info-block hidden">
-                                <p class="section-kicker">Ingreso</p>
-                                <h4>Cómo entrar</h4>
-                                <ul id="entryInfoList" class="info-list"></ul>
+                            <div id="accessQuickFacts" class="access-quick-facts"></div>
+
+                            <div class="personal-message-box access-message-box">
+                                <p id="personalMessage" class="personal-message">-</p>
                             </div>
 
-                            <div id="recommendationsBlock" class="panel-block info-block hidden">
-                                <p class="section-kicker">A tener en cuenta</p>
-                                <h4>Recomendaciones</h4>
-                                <ul id="recommendationsList" class="info-list"></ul>
+                            <div id="accessNotesSection" class="access-notes-grid hidden">
+                                <div id="parkingInfoBlock" class="panel-block info-block hidden">
+                                    <p class="section-kicker">Logística</p>
+                                    <h4>Estacionamiento</h4>
+                                    <ul id="parkingInfoList" class="info-list"></ul>
+                                </div>
+
+                                <div id="entryInfoBlock" class="panel-block info-block hidden">
+                                    <p class="section-kicker">Ingreso</p>
+                                    <h4>Cómo entrar</h4>
+                                    <ul id="entryInfoList" class="info-list"></ul>
+                                </div>
+
+                                <div id="recommendationsBlock" class="panel-block info-block hidden">
+                                    <p class="section-kicker">A tener en cuenta</p>
+                                    <h4>Recomendaciones</h4>
+                                    <ul id="recommendationsList" class="info-list"></ul>
+                                </div>
                             </div>
+
+                            <div id="guestTags" class="tags"></div>
                         </div>
-
-                        <div id="guestTags" class="tags"></div>
                     </div>
 
                     <div id="panelGallery" class="panel-section" data-panel="gallery" role="tabpanel" aria-hidden="true"
@@ -215,103 +246,134 @@
                         <h3>Galería</h3>
 
                         <div id="gallerySection" class="panel-subsection hidden">
-                            <div class="gallery-wrapper">
-                                <div id="gallery" class="gallery gallery-horizontal"></div>
+                            <div class="gallery-editorial-head">
+                                <div class="gallery-editorial-copy">
+                                    <p id="galleryIntroText" class="gallery-intro-text">
+                                        Algunos recuerdos que nos trajeron hasta acá.
+                                    </p>
+                                </div>
+
+                                <div class="gallery-editorial-meta">
+                                    <span id="galleryCounter" class="gallery-counter hidden">01 / 01</span>
+                                </div>
                             </div>
+
+                            <div id="gallery" class="gallery-horizontal"></div>
                         </div>
                     </div>
 
                     <div id="panelRsvp" class="panel-section" data-panel="rsvp" role="tabpanel" aria-hidden="true"
                         aria-labelledby="tabRsvp">
-                        <p class="section-kicker">Acción importante</p>
-                        <h3>Confirmación</h3>
+                        <p class="section-kicker">Confirmación</p>
+                        <h3>RSVP</h3>
 
-                        <p class="rsvp-text">
-                            <span id="rsvpIntroText">Ayudanos confirmando tu asistencia antes del</span>
-                            <strong id="rsvpDeadline">-</strong>.
-                        </p>
+                        <div class="rsvp-shell">
+                            <div class="rsvp-header-card">
+                                <p id="rsvpIntroText" class="rsvp-text">Queremos celebrar con vos, por eso necesitamos
+                                    tu respuesta.</p>
+                                <p class="rsvp-helper-text">Confirmar antes del <strong id="rsvpDeadline">-</strong>.
+                                </p>
+                                <p id="rsvpHelperText" class="rsvp-helper-text"></p>
+                            </div>
 
-                        <p id="rsvpHelperText" class="rsvp-helper-text">
-                            Nos ayuda muchísimo para organizar cada detalle.
-                        </p>
+                            <div id="confirmationProgress" class="confirmation-progress"
+                                aria-label="Progreso de confirmación">
+                                <div id="progressStepStatus" class="confirmation-progress-step is-active">
+                                    <span class="confirmation-progress-index">1</span>
+                                    <span class="confirmation-progress-copy">
+                                        <strong>Respuesta</strong>
+                                        <small>Decinos si vienen</small>
+                                    </span>
+                                </div>
+                                <div id="progressStepCount" class="confirmation-progress-step">
+                                    <span class="confirmation-progress-index">2</span>
+                                    <span class="confirmation-progress-copy">
+                                        <strong>Cantidad</strong>
+                                        <small>Reservamos su lugar</small>
+                                    </span>
+                                </div>
+                                <div id="progressStepDetails" class="confirmation-progress-step">
+                                    <span class="confirmation-progress-index">3</span>
+                                    <span class="confirmation-progress-copy">
+                                        <strong>Detalles</strong>
+                                        <small>Dieta, chicos y nota</small>
+                                    </span>
+                                </div>
+                            </div>
 
-                        <div id="confirmationSummary" class="confirmation-summary hidden" aria-live="polite"></div>
+                            <div id="confirmationSummary" class="confirmation-summary hidden"></div>
+                            <p id="confirmationClosedNote" class="confirmation-closed-note hidden"></p>
 
-                        <div id="confirmationClosedNote" class="confirmation-closed-note hidden">
-                            La confirmación ya se encuentra cerrada.
+                            <form id="confirmationForm" class="confirmation-form">
+                                <fieldset class="confirmation-fieldset">
+                                    <legend id="confirmationLegend">¿Podrás acompañarnos?</legend>
+
+                                    <label class="choice-card" data-status-card="yes">
+                                        <input type="radio" name="confirmationStatus" value="yes" checked />
+                                        <span>
+                                            <strong id="confirmationYesTitle">Sí, asistiré</strong>
+                                            <small id="confirmationYesHint">Así podremos reservar tu lugar.</small>
+                                        </span>
+                                    </label>
+
+                                    <label class="choice-card" data-status-card="no">
+                                        <input type="radio" name="confirmationStatus" value="no" />
+                                        <span>
+                                            <strong id="confirmationNoTitle">No podré asistir</strong>
+                                            <small id="confirmationNoHint">Igualmente nos encantará saber de
+                                                vos.</small>
+                                        </span>
+                                    </label>
+                                </fieldset>
+
+                                <div id="confirmationCountField" class="confirmation-field hidden">
+                                    <label id="confirmationCountLabel" for="confirmationCount">¿Cuántas personas
+                                        asistirán?</label>
+                                    <select id="confirmationCount"></select>
+                                </div>
+
+                                <div id="confirmationKidsInfoField" class="confirmation-field hidden">
+                                    <label id="confirmationKidsInfoLabel" for="confirmationKidsInfo">
+                                        Si vienen con chicos, contanos sus edades o cualquier dato útil
+                                    </label>
+                                    <textarea id="confirmationKidsInfo" rows="3"
+                                        placeholder="Ej.: Olivia (3) y Benja (6), una necesita menú especial"></textarea>
+                                </div>
+
+                                <div class="confirmation-field">
+                                    <label id="confirmationDietaryLabel"
+                                        for="confirmationDietaryRestrictions">Restricciones alimentarias</label>
+                                    <textarea id="confirmationDietaryRestrictions" rows="3"
+                                        placeholder="Ej.: 1 vegetariano, 1 celíaco"></textarea>
+                                </div>
+
+                                <div class="confirmation-field">
+                                    <label id="confirmationCommentLabel" for="confirmationComment">Comentario</label>
+                                    <textarea id="confirmationComment" rows="4"
+                                        placeholder="Podés dejarnos una nota si lo necesitás."></textarea>
+                                </div>
+
+                                <div class="confirmation-actions">
+                                    <button id="confirmationSubmitButton" class="btn primary" type="submit">Enviar
+                                        confirmación</button>
+                                </div>
+
+                                <p id="confirmationFeedback" class="confirmation-feedback hidden" tabindex="-1"
+                                    aria-live="polite"></p>
+                            </form>
                         </div>
-
-                        <form id="confirmationForm" class="confirmation-form" novalidate>
-                            <fieldset class="confirmation-fieldset">
-                                <legend id="confirmationLegend">¿Podrán acompañarnos?</legend>
-
-                                <label class="choice-card">
-                                    <input type="radio" name="confirmationStatus" value="yes" checked />
-                                    <span>
-                                        <strong id="confirmationYesTitle">Sí, asistiremos</strong>
-                                        <small id="confirmationYesHint">Así podremos reservar su lugar.</small>
-                                    </span>
-                                </label>
-
-                                <label class="choice-card">
-                                    <input type="radio" name="confirmationStatus" value="no" />
-                                    <span>
-                                        <strong id="confirmationNoTitle">No podremos asistir</strong>
-                                        <small id="confirmationNoHint">Igualmente nos encantará saber de
-                                            ustedes.</small>
-                                    </span>
-                                </label>
-                            </fieldset>
-
-                            <div id="confirmationCountField" class="confirmation-field">
-                                <label id="confirmationCountLabel" for="confirmationCount">¿Cuántas personas
-                                    asistirán?</label>
-                                <select id="confirmationCount" name="attendingCount"></select>
-                            </div>
-
-                            <div class="confirmation-field">
-                                <label id="confirmationDietaryLabel" for="confirmationDietaryRestrictions">Restricciones
-                                    alimentarias</label>
-                                <textarea id="confirmationDietaryRestrictions" name="dietaryRestrictions" rows="3"
-                                    maxlength="500" placeholder="Ej.: 1 vegetariano, 1 celíaco"></textarea>
-                            </div>
-
-                            <div id="confirmationKidsInfoField" class="confirmation-field hidden">
-                                <label id="confirmationKidsInfoLabel" for="confirmationKidsInfo">
-                                    Si vienen con chicos, contanos edades o algo importante
-                                </label>
-                                <textarea id="confirmationKidsInfo" name="kidsInfo" rows="3" maxlength="500"
-                                    placeholder="Ej.: Olivia (3) y Benja (6), una necesita menú sin TACC, llevamos cochecito">
-                                </textarea>
-                            </div>
-
-                            <div class="confirmation-field">
-                                <label id="confirmationCommentLabel" for="confirmationComment">Comentario</label>
-                                <textarea id="confirmationComment" name="comment" rows="3" maxlength="500"
-                                    placeholder="Podés dejarnos una nota si lo necesitás."></textarea>
-                            </div>
-
-                            <div class="confirmation-actions">
-                                <button id="confirmationSubmitButton" class="btn primary" type="submit">
-                                    Enviar confirmación
-                                </button>
-                            </div>
-
-                            <p id="confirmationFeedback" class="confirmation-feedback hidden" aria-live="polite"
-                                tabindex="-1"></p>
-                        </form>
                     </div>
 
                     <div id="panelPlaylist" class="panel-section" data-panel="playlist" role="tabpanel"
                         aria-hidden="true" aria-labelledby="tabPlaylist">
-                        <div id="playlistSection" class="panel-subsection hidden">
-                            <p id="playlistKicker" class="section-kicker">La música también la armamos entre todos</p>
-                            <h3 id="playlistTitle">Playlist</h3>
-                            <p id="playlistDescription">Sumá esa canción que no puede faltar 🎶</p>
+                        <p id="playlistKicker" class="section-kicker">Música</p>
+                        <h3 id="playlistTitle">Playlist colaborativa</h3>
+                        <p id="playlistDescription">Elegí una canción que te gustaría escuchar esa noche.</p>
 
-                            <a id="playlistButton" class="btn secondary" href="#" target="_blank"
+                        <div id="playlistSection" class="panel-subsection hidden">
+                            <a id="playlistButton" class="btn primary" href="#" target="_blank"
                                 rel="noopener noreferrer">
-                                Agregar canción
+                                Abrir playlist
                             </a>
                         </div>
                     </div>
@@ -319,14 +381,37 @@
                     <div id="panelGift" class="panel-section" data-panel="gift" role="tabpanel" aria-hidden="true"
                         aria-labelledby="tabGift">
                         <p class="section-kicker">Regalo</p>
-                        <h3 id="giftTitle">Luna de miel</h3>
+                        <h3 id="giftTitle">Aporte para luna de miel</h3>
 
-                        <div class="panel-block">
-                            <p id="giftIntro">
-                                Si querés hacernos un regalo, podés colaborar con nuestra luna de miel.
-                            </p>
+                        <div class="gift-shell">
+                            <div class="gift-intro-card">
+                                <p id="giftIntro" class="gift-intro-text">
+                                    Tu presencia es lo más importante. Si además querés hacernos un regalo, podés
+                                    ayudarnos con nuestra luna de miel.
+                                </p>
+                            </div>
 
-                            <pre id="giftBankData" class="gift-bank-data hidden"></pre>
+                            <div id="giftDataCard" class="gift-data-card hidden">
+                                <div class="gift-data-header">
+                                    <div>
+                                        <p class="section-kicker">Datos para transferencia</p>
+                                        <h4 class="gift-data-title">Transferencia bancaria</h4>
+                                    </div>
+
+                                    <div class="gift-actions">
+                                        <button id="giftCopyButton" class="btn secondary" type="button">
+                                            Copiar datos
+                                        </button>
+                                        <button id="giftShareButton" class="btn secondary" type="button">
+                                            Compartir
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="giftBankStructured" class="gift-bank-structured"></div>
+                                <pre id="giftBankData" class="gift-bank-data hidden"></pre>
+                                <p id="giftFeedback" class="gift-feedback hidden" aria-live="polite"></p>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -334,74 +419,37 @@
         </section>
     </main>
 
-    <section id="errorSection" class="section hidden">
-        <div class="container card center-text">
-            <h3 id="errorTitle">No pudimos validar tu acceso</h3>
-            <p id="errorMessage">
-                Este enlace no es válido o ya no está disponible.
-            </p>
-            <button id="retryButton" class="btn primary" type="button">
-                Reintentar
-            </button>
-        </div>
-    </section>
-
     <footer class="footer">
         <div class="container">
-            <p id="footerText">Con amor</p>
+            <p id="footerText">Gracias por ser parte.</p>
         </div>
     </footer>
 
-    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Visor de imágenes"
-        aria-hidden="true">
+    <section id="errorSection" class="section hidden">
+        <div class="container">
+            <div class="card center-text">
+                <p class="section-kicker">Invitación</p>
+                <h3 id="errorTitle">No pudimos cargar esta invitación</h3>
+                <p id="errorMessage">Revisá el enlace o intentá nuevamente más tarde.</p>
+                <button id="retryButton" class="btn secondary" type="button">Volver a intentar</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" class="lightbox hidden" aria-hidden="true">
         <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
-        <img id="lightboxImage" class="lightbox-image" src="" alt="" />
+        <img id="lightboxImage" src="" alt="Vista ampliada" />
     </div>
 
-    <div id="catStage" class="cat-stage" aria-hidden="true">
-        <div id="orangeCat" class="orange-cat" data-mode="walk">
-            <svg class="cat-svg" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
-                <g class="cat-root">
-                    <g class="cat-tail-group">
-                        <path class="cat-tail"
-                            d="M171 74 C194 56, 203 43, 198 26 C194 13, 178 14, 178 28 C178 40, 185 48, 191 52" />
-                    </g>
-
-                    <g class="cat-legs cat-legs-back">
-                        <path class="leg leg-back-1" d="M106 94 C101 106, 100 117, 102 129" />
-                        <path class="leg leg-back-2" d="M144 92 C142 104, 142 117, 145 129" />
-                    </g>
-
-                    <ellipse class="cat-body" cx="118" cy="78" rx="56" ry="24" />
-                    <ellipse class="cat-belly" cx="101" cy="86" rx="22" ry="9" />
-
-                    <g class="cat-head-group">
-                        <polygon class="cat-ear cat-ear-left" points="43,52 50,33 58,54" />
-                        <polygon class="cat-ear cat-ear-right" points="61,51 69,32 77,53" />
-                        <ellipse class="cat-head" cx="60" cy="68" rx="22" ry="20" />
-
-                        <g class="cat-face">
-                            <circle cx="52" cy="66" r="2.6" class="cat-eye" />
-                            <circle cx="66" cy="66" r="2.6" class="cat-eye" />
-                            <path d="M57 72 Q59 75 61 72" class="cat-mouth" />
-                            <path d="M46 72 C39 71, 34 70, 28 68" class="cat-whisker" />
-                            <path d="M69 72 C76 71, 81 70, 87 68" class="cat-whisker" />
-                            <path d="M46 77 C39 78, 34 79, 28 81" class="cat-whisker" />
-                            <path d="M69 77 C76 78, 81 79, 87 81" class="cat-whisker" />
-                        </g>
-                    </g>
-
-                    <g class="cat-legs cat-legs-front">
-                        <path class="leg leg-front-1" d="M72 92 C69 104, 68 116, 69 128" />
-                        <path class="leg leg-front-2" d="M88 93 C85 105, 84 116, 85 128" />
-                    </g>
-                </g>
-            </svg>
+    <div id="mobileStickyRsvp" class="mobile-sticky-rsvp hidden" aria-live="polite">
+        <div class="mobile-sticky-rsvp__copy">
+            <strong id="mobileStickyRsvpTitle">Confirmar asistencia</strong>
+            <span id="mobileStickyRsvpHint">Reservá tu lugar en unos segundos</span>
         </div>
+        <button id="mobileStickyRsvpButton" class="btn primary" type="button">Ir al RSVP</button>
     </div>
 
     <script type="module" src="main.js"></script>
-
 </body>
 
 </html>

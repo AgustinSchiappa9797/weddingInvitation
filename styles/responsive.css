@@ -40,6 +40,26 @@
         margin-bottom: 14px;
     }
 
+    .hero-status-pill {
+        width: 100%;
+        margin-bottom: 14px;
+    }
+
+    .hero-highlights {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 0;
+    }
+
+    .hero-highlight-card {
+        padding: 16px;
+    }
+
+    .hero-actions-split {
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .btn {
         width: 100%;
         text-align: center;
@@ -54,20 +74,72 @@
     }
 
     .hub-nav {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+        position: sticky;
+        top: 8px;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 10px;
         width: 100%;
+        margin: 0 auto 16px;
+        padding: 10px 36px 10px 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        border-radius: 20px;
+    }
+
+    .hub-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hub-nav::before,
+    .hub-nav::after {
+        content: "";
+        position: sticky;
+        top: 0;
+        width: 18px;
+        flex: 0 0 18px;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .hub-nav::before {
+        left: -10px;
+        margin-right: -18px;
+        background: linear-gradient(90deg, rgba(247, 242, 238, 0.92), rgba(247, 242, 238, 0));
+    }
+
+    .hub-nav::after {
+        right: -26px;
+        margin-left: -18px;
+        background: linear-gradient(270deg, rgba(247, 242, 238, 0.92), rgba(247, 242, 238, 0));
+    }
+
+    .hub-nav.is-scrolled-start::before {
+        opacity: 1;
+    }
+
+    .hub-nav.is-scrolled-end::after {
+        opacity: 1;
     }
 
     .hub-tab {
-        flex-direction: column;
+        flex: 0 0 auto;
+        flex-direction: row;
         align-items: center;
-        justify-content: center;
-        text-align: center;
-        gap: 6px;
-        min-height: 84px;
-        padding: 12px 8px;
-        border-radius: 14px;
+        justify-content: flex-start;
+        text-align: left;
+        gap: 8px;
+        min-width: max-content;
+        min-height: 52px;
+        padding: 10px 14px;
+        border-radius: 16px;
+        scroll-snap-align: center;
     }
 
     .hub-tab-icon {
@@ -78,9 +150,29 @@
     }
 
     .hub-tab-label {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         line-height: 1.15;
-        text-align: center;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .confirmation-progress {
+        grid-template-columns: 1fr;
+    }
+
+    .confirmation-progress-step {
+        padding: 12px 14px;
+    }
+
+    .confirmation-summary-header,
+    .confirmation-summary-row {
+        display: grid;
+        gap: 4px;
+        justify-content: stretch;
+    }
+
+    .confirmation-summary-value {
+        text-align: left;
     }
 
     .confirmation-actions {
@@ -90,11 +182,43 @@
     .choice-card {
         padding: 14px 15px;
     }
+
+    .access-hero-card,
+    .gift-data-header {
+        grid-template-columns: 1fr;
+        display: grid;
+        align-items: stretch;
+    }
+
+    .access-quick-facts,
+    .gift-bank-structured {
+        grid-template-columns: 1fr;
+    }
+
+    .access-hero-actions,
+    .gift-actions {
+        width: 100%;
+    }
+
+    .gift-actions .btn,
+    .access-hero-actions .btn {
+        width: 100%;
+    }
+
+    .mobile-sticky-rsvp {
+        display: flex;
+    }
+
+    body {
+        padding-bottom: 104px;
+    }
 }
 
 @media (max-width: 420px) {
     .hub-nav {
         width: 100%;
+        top: 6px;
+        padding-right: 26px;
     }
 
     .content-panel {

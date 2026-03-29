@@ -89,7 +89,7 @@ function renderInvitationSections(viewData, options = {}) {
     renderDetails(els, viewData);
     renderAccess(els, viewData);
     renderGallery(els, viewData);
-    renderConfirmation(els, viewData, options);
+    renderConfirmation(els, viewData, { ...options, state });
     renderPlaylist(els, viewData);
     renderCountdown(els, state, viewData);
     renderGift(els, viewData);

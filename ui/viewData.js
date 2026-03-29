@@ -128,6 +128,31 @@ function getDaysUntil(dateString) {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
+function buildHeroStatus(existingConfirmation) {
+    if (!existingConfirmation) {
+        return {
+            label: "Falta confirmar",
+            state: "pending",
+            hint: "Esperamos tu respuesta"
+        };
+    }
+
+    if (existingConfirmation.status === "yes") {
+        const count = Math.max(1, Number(existingConfirmation.attendingCount) || 1);
+        return {
+            label: count === 1 ? "Asistencia confirmada" : `${count} lugares confirmados`,
+            state: "confirmed",
+            hint: "Podés editarla cuando quieras"
+        };
+    }
+
+    return {
+        label: "Respuesta registrada",
+        state: "declined",
+        hint: "Gracias por avisarnos"
+    };
+}
+
 export function getInvitationViewData(data) {
     const companions = normalizeCompanions(data.companions);
     const rawGallery = normalizeGallery(data.gallery);
@@ -160,6 +185,7 @@ export function getInvitationViewData(data) {
         "";
 
     const dynamicCopy = buildDynamicCopy(data, companions);
+    const heroStatus = buildHeroStatus(existingConfirmation);
 
     return {
         ...data,
@@ -184,6 +210,9 @@ export function getInvitationViewData(data) {
         giftTitle,
         giftIntro,
         giftBankData,
-        hasGift: Boolean(giftIntro || giftBankData)
+        hasGift: Boolean(giftIntro || giftBankData),
+        heroStatusLabel: heroStatus.label,
+        heroStatusState: heroStatus.state,
+        heroStatusHint: heroStatus.hint
     };
 }
