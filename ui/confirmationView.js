@@ -357,7 +357,7 @@ function renderConfirmationSummary(els, existingConfirmation) {
     els.confirmationSummary.innerHTML = `
         <div class="confirmation-summary-card">
             <div class="confirmation-summary-header">
-                <span class="confirmation-summary-badge">Tu respuesta</span>
+                <span class="confirmation-summary-badge">Tu confirmación</span>
                 ${dateText ? `<small class="confirmation-summary-date">Actualizado: ${dateText}</small>` : ""}
             </div>
             <div class="confirmation-summary-grid">
@@ -406,21 +406,21 @@ function updateConfirmationProgress(els) {
 function getStickyTexts(existingConfirmation) {
     if (existingConfirmation?.status === "yes") {
         return {
-            title: "Editar confirmación",
+            title: "Actualizar confirmación",
             hint: "Ya registramos tu asistencia"
         };
     }
 
     if (existingConfirmation?.status === "no") {
         return {
-            title: "Editar respuesta",
+            title: "Actualizar confirmación",
             hint: "Podés actualizarla si cambió algo"
         };
     }
 
     return {
-        title: "Confirmar asistencia",
-        hint: "Reservá tu lugar en unos segundos"
+        title: "Confirmación",
+        hint: "Completala en unos segundos"
     };
 }
 
@@ -509,7 +509,7 @@ function setupConfirmationForm(els, data, options = {}) {
 
         setFormDisabled(els, true);
         setSubmitLoading(els, true, Boolean(data?.existingConfirmation));
-        setFeedback(els, "Estamos guardando tu respuesta. Esto tarda solo un instante.", "info");
+        setFeedback(els, "Estamos guardando tu confirmación. Esto tarda solo un instante.", "info");
 
         try {
             const result = await submitConfirmation(payload);

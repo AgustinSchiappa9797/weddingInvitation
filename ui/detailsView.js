@@ -1,3 +1,4 @@
+import { COPY } from "../constants/copy.js";
 import { setOptionalLink } from "../utils/links.js";
 import { buildGoogleCalendarUrl } from "../utils/calendar.js";
 
@@ -43,6 +44,12 @@ function renderTimeline(els, timeline) {
 }
 
 export function renderDetails(els, data) {
+    if (els.detailsKicker) els.detailsKicker.textContent = data.detailsKicker || COPY.details.kicker;
+    if (els.detailsTitle) els.detailsTitle.textContent = data.detailsTitle || COPY.details.title;
+    if (els.detailsIntroText) els.detailsIntroText.textContent = data.detailsIntro || "";
+    if (els.detailsScheduleKicker) els.detailsScheduleKicker.textContent = data.detailsScheduleKicker || COPY.details.scheduleKicker;
+    if (els.detailsScheduleTitle) els.detailsScheduleTitle.textContent = data.detailsScheduleTitle || COPY.details.scheduleTitle;
+
     if (els.eventDateText) {
         els.eventDateText.textContent = data.eventDateText || "-";
     }
@@ -52,7 +59,6 @@ export function renderDetails(els, data) {
     }
 
     renderTimeline(els, data.timeline);
-
 
     const calendarUrl = buildGoogleCalendarUrl(data);
     setOptionalLink(els.calendarButton, calendarUrl);

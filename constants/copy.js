@@ -1,93 +1,111 @@
 export const COPY = {
+
+    cinematic: {
+        loadingLead: "Estamos abriendo una experiencia pensada para este momento.",
+        loadingClosingLine: "En unos segundos se abrirá la invitación para vos.",
+        readyLead: "Ya está todo listo para darte la bienvenida.",
+        readyClosingLine: "Disfrutá cada detalle con calma y a tu ritmo.",
+        progress: {
+            validating: "Validando acceso…",
+            preparing: "Preparando apertura…",
+            cover: "Cargando portada…",
+            done: "Todo listo."
+        }
+    },
     loading: {
-        kicker: "Estamos preparando tu invitación",
-        title: "Un momento...",
-        message: "Estamos cargando cada detalle para vos."
+        kicker: "Estamos preparando algo muy especial",
+        title: "Tu invitación está tomando forma",
+        message: "Estamos acomodando cada detalle para que vivas esta invitación como una pequeña experiencia."
     },
     ready: {
-        kicker: "Nos alegra recibirte",
+        kicker: "Qué alegría tenerte acá",
         guestFallback: "Invitado/a",
-        message: "Tu invitación ya está lista para que disfrutes cada detalle."
+        message: "Tu invitación ya está lista. Ojalá disfrutes cada sección tanto como nosotros disfrutamos prepararla."
     },
     defaults: {
         heroTitle: "Nuestra Boda",
+        heroEyebrow: "Guardá esta fecha",
         heroSubtitle: ({ isPlural }) =>
             isPlural
-                ? "Queremos compartir este día con ustedes."
-                : "Queremos compartir este día con vos.",
+                ? "Queremos compartir esta celebración con ustedes y que la vivan desde el primer momento."
+                : "Queremos compartir esta celebración con vos y que la vivas desde el primer momento.",
+        heroIntro: ({ isPlural }) =>
+            isPlural
+                ? "Preparamos este espacio para que encuentren todo de forma simple, clara y linda."
+                : "Preparamos este espacio para que encuentres todo de forma simple, clara y linda.",
         guestName: "Invitado especial",
-        footerText: "Con amor",
+        footerText: "Gracias por acompañarnos en este momento tan importante. Nos emociona compartirlo con vos.",
         rsvpDeadline: "-"
     },
 
     companions: {
-        single: "Esta invitación es solo para vos",
-        multiple: (count) => `Esta invitación es para ${count} personas`
+        single: "Tu lugar ya te está esperando",
+        multiple: (count) => `Reservamos ${count} lugares para ustedes`
     },
 
     tags: {
         kidsAllowed: ({ isPlural }) =>
             isPlural
-                ? "Si quieren, pueden venir con chicos"
-                : "Si querés, podés venir con chicos",
-        adultsOnly: "Solo adultos"
+                ? "Pueden venir con chicos"
+                : "Podés venir con chicos",
+        adultsOnly: "Celebración solo para adultos"
     },
 
     rsvp: {
         sectionTitle: "Confirmación",
         intro: ({ isPlural }) =>
             isPlural
-                ? "Ayudanos confirmando su asistencia antes del"
-                : "Ayudanos confirmando tu asistencia antes del",
+                ? "Nos ayudaría mucho que nos confirmen si podrán acompañarnos, así organizamos cada detalle con tiempo."
+                : "Nos ayudaría mucho que nos confirmes si vas a poder acompañarnos, así organizamos cada detalle con tiempo.",
 
-        helperDefault: "Nos ayuda muchísimo para organizar cada detalle.",
-        helperUrgent: "La fecha de confirmación está muy cerca.",
-        helperExisting: "Ya habíamos recibido tu respuesta. Si querés, podés actualizarla.",
+        helperDefault: "Tu confirmación nos ayuda a preparar la celebración de la mejor manera.",
+        helperUrgent: "Estamos cerrando la organización. Si pueden, les pedimos que confirmen hoy mismo.",
+        helperExisting: "Ya habíamos recibido tu confirmación. Si cambió algo, podés actualizarla acá mismo.",
 
         legend: ({ isPlural, kidsAllowed }) => {
             if (kidsAllowed) {
                 return isPlural
-                    ? "¿Van a poder acompañarnos? Si vienen con chicos, cuéntennos así lo organizamos mejor."
-                    : "¿Vas a poder acompañarnos? Si venís con chicos, contanos así lo organizamos mejor.";
+                    ? "¿Van a acompañarnos? Si vienen con chicos, cuéntennos así dejamos todo listo."
+                    : "¿Vas a acompañarnos? Si venís con chicos, contanos así dejamos todo listo.";
             }
 
             return isPlural
-                ? "¿Podrán acompañarnos?"
-                : "¿Vas a poder acompañarnos?";
+                ? "¿Podrán acompañarnos en este día tan especial?"
+                : "¿Vas a poder acompañarnos en este día tan especial?";
         },
 
-        commentLabel: () => "Comentario adicional",
+        commentLabel: () => "Mensaje adicional",
 
         commentPlaceholder: ({ isPlural }) =>
             isPlural
-                ? "Si quieren, pueden dejarnos una nota adicional."
-                : "Si querés, podés dejarnos una nota adicional.",
+                ? "Si quieren, pueden dejarnos una nota o comentario adicional."
+                : "Si querés, podés dejarnos una nota o comentario adicional.",
 
         kidsInfoLabel: ({ isPlural }) =>
             isPlural
-                ? "Si vienen con chicos, cuéntennos sus edades o cualquier dato útil"
-                : "Si venís con chicos, contanos sus edades o cualquier dato útil",
+                ? "Si vienen con chicos, cuéntennos edades o cualquier dato útil"
+                : "Si venís con chicos, contanos edades o cualquier dato útil",
 
         kidsInfoPlaceholder: ({ isPlural }) =>
             isPlural
-                ? "Ej.: Sofi (4) y Tomi (7), uno necesita menú especial, llevamos cochecito"
+                ? "Ej.: Sofi (4) y Tomi (7), uno necesita menú especial"
                 : "Ej.: Emma (3), necesita menú especial o silla alta",
 
         yesOptionTitle: ({ isPlural }) =>
-            isPlural ? "Sí, asistiremos" : "Sí, asistiré",
+            isPlural ? "Sí, ahí estaremos" : "Sí, ahí estaré",
 
         yesOptionHint: ({ isPlural }) =>
             isPlural
-                ? "Así podremos reservar su lugar."
-                : "Así podremos reservar tu lugar.",
+                ? "Así reservamos sus lugares con todo listo."
+                : "Así reservamos tu lugar con todo listo.",
 
         noOptionTitle: ({ isPlural }) =>
-            isPlural ? "No podremos asistir" : "No podré asistir",
+            isPlural ? "No vamos a poder asistir" : "No voy a poder asistir",
 
         noOptionHint: ({ isPlural }) =>
             isPlural
-                ? "Igualmente nos encantará saber de ustedes."
-                : "Igualmente nos encantará saber de vos.",
+                ? "Igualmente nos encantará recibir un mensajito de ustedes."
+                : "Igualmente nos encantará recibir un mensajito tuyo.",
 
         countLabel: ({ kidsAllowed }) =>
             kidsAllowed
@@ -101,30 +119,73 @@ export const COPY = {
 
         dietaryPlaceholder: ({ kidsAllowed }) =>
             kidsAllowed
-                ? "Ej.: 1 vegetariano, 1 celíaco, viene un niño"
+                ? "Ej.: 1 vegetariano, 1 celíaco, un menor con menú especial"
                 : "Ej.: 1 vegetariano, 1 celíaco",
 
-        submitNew: "Enviar confirmación",
+        submitNew: "Confirmar asistencia",
         submitUpdate: "Actualizar confirmación",
 
-        successNew: "La confirmación quedó registrada. ¡Gracias!",
+        successNew: "Tu confirmación quedó registrada. ¡Gracias por acompañarnos también desde acá!",
         successUpdate: ({ isPlural }) =>
             isPlural
                 ? "Actualizamos su confirmación correctamente."
                 : "Actualizamos tu confirmación correctamente.",
 
-        closed: "La confirmación ya se encuentra cerrada. Si necesitás avisarnos un cambio, escribinos directamente."
+        closed: "La confirmación ya cerró. Si necesitás avisarnos un cambio, escribinos directamente para poder tenerlo en cuenta."
+    },
+
+    details: {
+        kicker: "El gran día",
+        title: "Todo lo importante, en un solo lugar",
+        intro: ({ isPlural }) =>
+            isPlural
+                ? "Acá van a encontrar los horarios principales y la información necesaria para disfrutar la celebración con tranquilidad."
+                : "Acá vas a encontrar los horarios principales y la información necesaria para disfrutar la celebración con tranquilidad.",
+        calendarButton: "Agendar evento",
+        scheduleKicker: "Agenda sugerida",
+        scheduleTitle: "Cómo se va a vivir el día",
+        locationCardTitle: "Lugar de la celebración",
+        locationFallback: "Muy pronto vas a ver acá el lugar confirmado"
+    },
+
+    access: {
+        kicker: "Cómo llegar",
+        title: "Dirección y recomendaciones",
+        intro: ({ isPlural }) =>
+            isPlural
+                ? "Les dejamos toda la información práctica para que llegar sea simple y puedan enfocarse solo en disfrutar."
+                : "Te dejamos toda la información práctica para que llegar sea simple y puedas enfocarte solo en disfrutar.",
+        venueKicker: "Venue",
+        mapButton: "Abrir en Google Maps",
+        copyAddressButton: "Copiar dirección",
+        routeHint: "Guarden esta dirección para tenerla a mano el día del evento.",
+        quickFactsTitle: "Datos rápidos",
+        notesTitle: "Información útil",
+        copied: "Dirección copiada",
+        copyError: "No pudimos copiarla automáticamente"
+    },
+
+
+    gallery: {
+        intro: ({ isPlural }) =>
+            isPlural
+                ? "Una pequeña selección de recuerdos para que recorran esta historia con nosotros."
+                : "Una pequeña selección de recuerdos para que recorras esta historia con nosotros.",
+        hint: "Deslizá para recorrer las fotos y tocá una para verla en grande.",
+        counterLabel: "Selección"
     },
 
     playlist: {
-        kicker: "La música también la armamos entre todos",
+        kicker: "Nuestra música",
         title: "Playlist",
         description: ({ isPlural }) =>
             isPlural
-                ? "Sumen esas canciones que no pueden faltar para ustedes 🎶"
-                : "Sumá esa canción que no puede faltar para vos 🎶",
-        buttonLabel: ({ isPlural }) =>
-            isPlural ? "Agregar canciones" : "Agregar canción"
+                ? "Estas canciones nos acompañaron en momentos importantes y queremos compartirlas con ustedes antes de la celebración."
+                : "Estas canciones nos acompañaron en momentos importantes y queremos compartirlas con vos antes de la celebración.",
+        cardTitle: "Escuchá la playlist del casamiento",
+        buttonLabel: "Abrir en Spotify",
+        highlightLabel: "Nuestra elegida",
+        highlightSong: "Una canción especial para este momento"
     },
 
     errors: {

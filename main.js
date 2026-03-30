@@ -20,10 +20,17 @@ import { setupLightbox, closeLightbox } from "./ui/lightboxView.js";
 import { getInvitationViewData } from "./ui/viewData.js";
 import { renderBackground } from "./ui/backgroundView.js";
 import { renderGift } from "./ui/giftView.js";
+import { initMusic } from "./ui/musicController.js";
 
 const els = Object.freeze(getElements());
 
 let catBehaviorInitialized = false;
+
+function syncFloatingUiState() {
+    const stickyVisible = Boolean(els.mobileStickyRsvp && !els.mobileStickyRsvp.classList.contains("hidden"));
+    document.body.classList.toggle("has-sticky-rsvp", stickyVisible);
+}
+
 
 function getToken() {
     const params = new URLSearchParams(window.location.search);
@@ -120,6 +127,7 @@ async function renderInvitation(data, options = {}) {
     syncSectionFromHash(els, state);
     renderActiveNavigation(els, state, viewData);
     revealContentAnimations();
+    syncFloatingUiState();
 }
 
 async function showInvitationError(copy) {
@@ -155,7 +163,7 @@ async function loadInvitationFlow() {
     showWelcomeScreen(els);
     resetInvitationState();
     setWelcomeScreenLoadingState(els);
-    setWelcomeScreenProgress(els, "Validando acceso…");
+    setWelcomeScreenProgress(els, COPY.cinematic.progress.validating);
 
     const token = getToken();
 
@@ -163,14 +171,14 @@ async function loadInvitationFlow() {
         return showInvitationError(COPY.errors.missingToken);
     }
 
-    setWelcomeScreenProgress(els, "Preparando invitación…");
+    setWelcomeScreenProgress(els, COPY.cinematic.progress.preparing);
 
     try {
         const invitation = await getInvitationData(token);
 
-        setWelcomeScreenProgress(els, "Cargando portada…");
+        setWelcomeScreenProgress(els, COPY.cinematic.progress.cover);
         await renderInvitation(invitation, { token });
-        setWelcomeScreenProgress(els, "Todo listo.");
+        setWelcomeScreenProgress(els, COPY.cinematic.progress.done);
 
         setWelcomeScreenReadyState(els, invitation);
 
@@ -189,6 +197,7 @@ async function init() {
 
     setupAnimations();
     setupLightbox(els);
+    initMusic(els);
 
     els.retryButton?.addEventListener("click", () => {
         els.retryButton.disabled = true;
@@ -196,7 +205,9 @@ async function init() {
     });
 
     setupNavigation(els, state);
+    window.addEventListener("resize", syncFloatingUiState);
     await loadInvitationFlow();
+    syncFloatingUiState();
 }
 
 if (document.readyState === "loading") {

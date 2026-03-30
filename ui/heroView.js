@@ -87,6 +87,20 @@ function getHeroStatusFromConfirmation(existingConfirmation) {
     };
 }
 
+function updateHeroIntro(els, data) {
+    if (!els.heroIntroNote) return;
+
+    const introText = data?.heroIntro || "";
+    els.heroIntroNote.textContent = introText;
+    els.heroIntroNote.classList.toggle("hidden", !introText);
+}
+
+function updateHeroEyebrow(els, data) {
+    if (!els.heroEyebrow) return;
+
+    els.heroEyebrow.textContent = data?.heroEyebrow || COPY.defaults.heroEyebrow;
+}
+
 function renderHeroHighlights(els, data) {
     if (els.heroEventDate) {
         els.heroEventDate.textContent = data?.eventDateText || "Fecha a confirmar";
@@ -111,22 +125,15 @@ function renderHeroHighlights(els, data) {
     if (els.heroRsvpHint) {
         els.heroRsvpHint.textContent = getHeroRsvpMeta(data);
     }
-
-    if (els.heroStatusPill) {
-        const hasStatus = Boolean(data?.heroStatusLabel);
-        els.heroStatusPill.textContent = data?.heroStatusLabel || "";
-        els.heroStatusPill.classList.toggle("hidden", !hasStatus);
-        els.heroStatusPill.dataset.state = data?.heroStatusState || "pending";
-    }
 }
 
-export function updateHeroPrimaryAction(els, data, state = null) {
+export function updateHeroPrimaryAction(els, data, state) {
     if (!els.heroPrimaryAction) return;
 
     els.heroPrimaryAction.textContent = getHeroPrimaryActionLabel(data);
     els.heroPrimaryAction.classList.remove("hidden");
 
-    if (els.heroPrimaryAction.dataset.bound === "true" || !state) return;
+    if (els.heroPrimaryAction.dataset.bound === "true") return;
 
     els.heroPrimaryAction.addEventListener("click", () => {
         goToSection(els, state, "rsvp");
@@ -135,23 +142,28 @@ export function updateHeroPrimaryAction(els, data, state = null) {
     els.heroPrimaryAction.dataset.bound = "true";
 }
 
-function updateHeroSecondaryAction(els, data, state = null) {
+function updateHeroSecondaryAction(els, data, state) {
     if (!els.heroSecondaryAction) return;
 
     els.heroSecondaryAction.textContent = getHeroSecondaryActionLabel(data);
     els.heroSecondaryAction.classList.remove("hidden");
 
-    if (els.heroSecondaryAction.dataset.bound === "true" || !state) return;
+    if (els.heroSecondaryAction.dataset.bound === "true") return;
 
     els.heroSecondaryAction.addEventListener("click", () => {
-        const targetSection = data?.hasMap || data?.venueName || data?.venueAddress ? "access" : "details";
-        goToSection(els, state, targetSection);
+        const nextSection = data?.hasMap || data?.venueName || data?.venueAddress ? "access" : "details";
+        goToSection(els, state, nextSection);
     });
 
     els.heroSecondaryAction.dataset.bound = "true";
 }
 
-export function updateHeroRsvpState(els, existingConfirmation, confirmationDeadlineText = "") {
+export function updateHeroRsvpState(els, options = {}) {
+    const {
+        existingConfirmation = null,
+        confirmationDeadlineText = ""
+    } = options;
+
     const heroStatus = getHeroStatusFromConfirmation(existingConfirmation);
 
     if (els.heroStatusPill) {
@@ -172,6 +184,9 @@ export function updateHeroRsvpState(els, existingConfirmation, confirmationDeadl
 }
 
 export async function renderHero(els, data, state) {
+    updateHeroEyebrow(els, data);
+    updateHeroIntro(els, data);
+
     await Promise.all([
         swapText(
             els.mainTitle,
@@ -184,7 +199,7 @@ export async function renderHero(els, data, state) {
         swapText(
             els.guestName,
             data.guestName || COPY.defaults.guestName
-        ),
+        )
     ]);
 
     renderHeroHighlights(els, data);

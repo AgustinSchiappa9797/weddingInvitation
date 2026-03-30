@@ -21,12 +21,53 @@ function getGuestGrammarContext(data, companions) {
     };
 }
 
+function normalizeText(value) {
+    return typeof value === "string" ? value.trim() : "";
+}
+
+function getCompanionsText(companions) {
+    if (companions <= 1) {
+        return COPY.companions.single;
+    }
+
+    return COPY.companions.multiple(companions);
+}
+
+function buildHeroEyebrow(data) {
+    const custom = normalizeText(data.heroEyebrow);
+    if (custom) return custom;
+
+    if (normalizeText(data.eventDateText)) {
+        return "Reservá este día";
+    }
+
+    return COPY.defaults.heroEyebrow;
+}
+
+function buildHeroIntro(data, grammar) {
+    const custom = normalizeText(data.heroIntro);
+    if (custom) return custom;
+
+    return COPY.defaults.heroIntro(grammar);
+}
+
+function buildWelcomeTitle(data) {
+    const name = normalizeText(data.guestName);
+    if (name) {
+        return name;
+    }
+
+    return COPY.ready.guestFallback;
+}
+
 function buildDynamicCopy(data, companions) {
     const grammar = getGuestGrammarContext(data, companions);
 
     return {
         grammar,
+        heroEyebrow: buildHeroEyebrow(data),
         heroSubtitle: normalizeText(data.heroText) || COPY.defaults.heroSubtitle(grammar),
+        heroIntro: buildHeroIntro(data, grammar),
         companionsText: getCompanionsText(companions),
         kidsTag: data.kidsAllowed
             ? COPY.tags.kidsAllowed(grammar)
@@ -44,26 +85,41 @@ function buildDynamicCopy(data, companions) {
         rsvpCommentLabel: COPY.rsvp.commentLabel(grammar),
         rsvpCommentPlaceholder: COPY.rsvp.commentPlaceholder(grammar),
 
+        detailsKicker: COPY.details.kicker,
+        detailsTitle: COPY.details.title,
+        detailsIntro: COPY.details.intro(grammar),
+        detailsScheduleKicker: COPY.details.scheduleKicker,
+        detailsScheduleTitle: COPY.details.scheduleTitle,
+        detailsLocationCardTitle: COPY.details.locationCardTitle,
+        detailsLocationFallback: COPY.details.locationFallback,
+        accessKicker: COPY.access.kicker,
+        accessTitle: COPY.access.title,
+        accessIntro: COPY.access.intro(grammar),
+        accessVenueKicker: COPY.access.venueKicker,
+        accessMapButtonLabel: COPY.access.mapButton,
+        accessCopyAddressButtonLabel: COPY.access.copyAddressButton,
+        accessRouteHint: COPY.access.routeHint,
+        accessQuickFactsTitle: COPY.access.quickFactsTitle,
+        accessNotesTitle: COPY.access.notesTitle,
+
+        galleryIntroText: COPY.gallery.intro(grammar),
+        galleryHintText: COPY.gallery.hint,
+        galleryCounterLabel: COPY.gallery.counterLabel,
+
         playlistKicker: COPY.playlist.kicker,
         playlistTitle: COPY.playlist.title,
         playlistDescription: COPY.playlist.description(grammar),
-        playlistButtonLabel: COPY.playlist.buttonLabel(grammar),
+        playlistCardTitle: COPY.playlist.cardTitle,
+        playlistButtonLabel: COPY.playlist.buttonLabel,
+        playlistHighlightLabel: COPY.playlist.highlightLabel,
+        playlistHighlightSong: normalizeText(data.playlistHighlightSong) || COPY.playlist.highlightSong,
 
         rsvpKidsInfoLabel: COPY.rsvp.kidsInfoLabel(grammar),
-        rsvpKidsInfoPlaceholder: COPY.rsvp.kidsInfoPlaceholder(grammar)
+        rsvpKidsInfoPlaceholder: COPY.rsvp.kidsInfoPlaceholder(grammar),
+
+        welcomeTitle: buildWelcomeTitle(data),
+        welcomeMessage: normalizeText(data.welcomeMessage) || COPY.ready.message
     };
-}
-
-function getCompanionsText(companions) {
-    if (companions <= 1) {
-        return COPY.companions.single;
-    }
-
-    return COPY.companions.multiple(companions);
-}
-
-function normalizeText(value) {
-    return typeof value === "string" ? value.trim() : "";
 }
 
 function normalizeGallery(gallery) {

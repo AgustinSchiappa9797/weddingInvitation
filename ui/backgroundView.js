@@ -1,9 +1,16 @@
 import { BACKGROUND_IMAGE_PRELOAD_TIMEOUT_MS } from "../config.js";
 
 function normalizeImageUrl(value) {
+    const rawValue = String(value || "").trim();
+    if (!rawValue) return "";
+
+    if (rawValue.startsWith("data:image/") || rawValue.startsWith("blob:")) {
+        return rawValue;
+    }
+
     try {
-        const url = new URL(String(value).trim(), window.location.href);
-        return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+        const url = new URL(rawValue, window.location.href);
+        return ["http:", "https:", "file:"].includes(url.protocol) ? url.href : "";
     } catch {
         return "";
     }

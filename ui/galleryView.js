@@ -3,10 +3,30 @@ import { openLightbox } from "./lightboxView.js";
 const LOOP_CLONES_PER_SIDE = 2;
 const SCROLL_SETTLE_DELAY_MS = 140;
 
-function isSafeImageUrl(value) {
+function normalizeImageUrl(value) {
+    if (typeof value !== "string") return "";
+
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+
+    if (trimmed.startsWith("data:image/") || trimmed.startsWith("blob:")) {
+        return trimmed;
+    }
+
     try {
-        const url = new URL(value, window.location.href);
-        return url.protocol === "http:" || url.protocol === "https:";
+        return new URL(trimmed, window.location.href).href;
+    } catch {
+        return "";
+    }
+}
+
+function isSafeImageUrl(value) {
+    const normalized = normalizeImageUrl(value);
+    if (!normalized) return false;
+
+    try {
+        const url = new URL(normalized, window.location.href);
+        return ["http:", "https:", "data:", "blob:"].includes(url.protocol);
     } catch {
         return false;
     }
@@ -59,7 +79,7 @@ function getGalleryItems(container) {
 }
 
 function getRealGalleryItems(container) {
-    return getGalleryItems(container).filter((item) => item.dataset.clone !== "true");
+    return getGalleryItems(container).filter((item) => item.dataset.clone !== "true" && !item.classList.contains("is-broken"));
 }
 
 function getClosestGalleryItem(container) {
@@ -136,6 +156,7 @@ function updateActiveGalleryItem(container, els = null) {
     items.forEach((item) => {
         const isActive = item.dataset.galleryIndex === activeLogicalIndex && item.dataset.clone !== "true";
         item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-current", isActive ? "true" : "false");
     });
 
     if (els) {
@@ -168,7 +189,7 @@ function normalizeLoopPosition(container) {
     centerGalleryItem(container, realItem, "auto");
 }
 
-function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, els) {
+function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, els, gallerySources) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery-item";
@@ -189,8 +210,30 @@ function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, e
     img.alt = `Foto de la invitación ${logicalIndex + 1}`;
     img.loading = !isClone && logicalIndex < 2 ? "eager" : "lazy";
     img.decoding = "async";
+    img.fetchPriority = !isClone && logicalIndex === 0 ? "high" : "auto";
+    img.sizes = "(max-width: 767px) 82vw, 340px";
     img.draggable = false;
     img.referrerPolicy = "no-referrer";
+
+    img.addEventListener("error", () => {
+        button.classList.add("is-broken");
+        button.setAttribute("aria-hidden", "true");
+        button.tabIndex = -1;
+
+        queueMicrotask(() => {
+            const gallery = els.gallery;
+            if (!gallery) return;
+
+            const visibleItems = [...gallery.querySelectorAll('.gallery-item:not(.is-broken)[data-clone="false"]')];
+            if (!visibleItems.length) {
+                gallery.closest("#gallerySection")?.classList.add("hidden");
+                return;
+            }
+
+            updateActiveGalleryItem(gallery, els);
+            updateGalleryDots(gallery);
+        });
+    });
 
     const meta = document.createElement("span");
     meta.className = "gallery-item-meta";
@@ -213,7 +256,9 @@ function createGalleryItem(src, logicalIndex, totalImages, isClone, cloneSide, e
 
         openLightbox(els, src, img.alt, {
             triggerElement: realItem,
-            galleryIndex: logicalIndex
+            galleryIndex: logicalIndex,
+            gallerySources,
+            total: totalImages
         });
     });
 
@@ -522,7 +567,9 @@ export function renderGallery(els, data) {
     delete els.gallery.dataset.dragging;
 
     const validImages = Array.isArray(data.gallery)
-        ? data.gallery.filter(isSafeImageUrl)
+        ? data.gallery
+            .map(normalizeImageUrl)
+            .filter(isSafeImageUrl)
         : [];
 
     if (validImages.length === 0) {
@@ -537,6 +584,14 @@ export function renderGallery(els, data) {
         els.galleryIntroText.textContent = getGalleryIntroText(data, validImages.length);
     }
 
+    if (els.galleryHintText) {
+        els.galleryHintText.textContent = data?.galleryHintText || "Deslizá para recorrer las fotos y tocá una para verla en grande.";
+    }
+
+    if (els.galleryCounterLabel) {
+        els.galleryCounterLabel.textContent = data?.galleryCounterLabel || "Selección";
+    }
+
     const cloneCount = getCloneCount(validImages.length);
     const visualImages = buildLoopedGalleryImages(validImages);
     const fragment = document.createDocumentFragment();
@@ -549,7 +604,7 @@ export function renderGallery(els, data) {
         }
 
         fragment.appendChild(
-            createGalleryItem(src, logicalIndex, validImages.length, isClone, cloneSide, els)
+            createGalleryItem(src, logicalIndex, validImages.length, isClone, cloneSide, els, validImages)
         );
     });
 

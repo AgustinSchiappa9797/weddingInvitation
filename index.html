@@ -4,9 +4,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invitación</title>
-    <meta name="description" content="Una invitación especial." />
-    <meta name="theme-color" content="#8f6f5a" />
+    <title>Nuestra Boda</title>
+    <meta name="description" content="Una invitación elegante para celebrar un día inolvidable." />
+    <meta name="theme-color" content="#8c6a52" />
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nuestra Boda" />
+    <meta property="og:description" content="Una invitación elegante para celebrar un día inolvidable." />
+    <meta property="og:locale" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/hero.css" />
     <link rel="stylesheet" href="styles/navigation.css" />
@@ -18,32 +29,36 @@
 
 <body>
 
-    <div id="welcomeScreen" class="screen-overlay">
-        <div class="screen-card welcome-card">
+    <div id="welcomeScreen" class="screen-overlay cinematic-overlay">
+        <div class="screen-card welcome-card cinematic-card">
+            <div class="cinematic-grain" aria-hidden="true"></div>
+            <div id="welcomeMonogram" class="cinematic-monogram" aria-hidden="true">N &amp; A</div>
+            <div class="screen-ornament cinematic-ornament" aria-hidden="true"></div>
 
-            <p id="welcomeKicker" class="screen-kicker">Bienvenido/a</p>
+            <p id="welcomeKicker" class="screen-kicker">Una invitación especial</p>
 
-            <h2 id="welcomeGuestName" class="screen-title">
+            <h2 id="welcomeGuestName" class="screen-title cinematic-title">
                 Estamos preparando tu invitación
             </h2>
 
-            <p id="welcomeMessage" class="screen-text">
+            <p id="welcomeLead" class="cinematic-lead">
+                Queremos recibirte con una apertura más íntima y especial.
+            </p>
+
+            <p id="welcomeMessage" class="screen-text cinematic-message">
                 Un momento, estamos dejando todo listo para vos.
             </p>
 
-            <div id="welcomeStatus" class="welcome-status">
-
+            <div id="welcomeStatus" class="welcome-status cinematic-status">
                 <div id="welcomeLoader" class="welcome-loader"></div>
-
-                <p id="welcomeProgressText" class="screen-text">Validando acceso…</p>
-
+                <p id="welcomeProgressText" class="screen-text cinematic-progress-text">Validando acceso…</p>
                 <div id="welcomeReady" class="welcome-ready hidden">
                     <span class="welcome-ready-icon">✓</span>
                     <span>Tu invitación está lista</span>
                 </div>
-
             </div>
 
+            <p id="welcomeClosingLine" class="cinematic-closing-line">En unos segundos se abrirá la invitación.</p>
         </div>
     </div>
 
@@ -52,8 +67,9 @@
     <header class="hero">
 
         <div class="container hero-card fade-in visible">
+            <div class="hero-monogram" aria-hidden="true">N &amp; A</div>
 
-            <p class="eyebrow">Una invitación especial</p>
+            <p id="heroEyebrow" class="eyebrow">Una invitación especial</p>
 
             <h1 id="mainTitle" class="title">
                 Cargando invitación...
@@ -62,6 +78,8 @@
             <p id="mainSubtitle" class="subtitle">
                 Estamos preparando tu experiencia.
             </p>
+
+            <p id="heroIntroNote" class="hero-intro-note hidden"></p>
 
             <div class="guest-box">
 
@@ -91,7 +109,7 @@
                 </article>
 
                 <article class="hero-highlight-card">
-                    <p class="hero-highlight-label">RSVP</p>
+                    <p class="hero-highlight-label">Confirmación</p>
                     <p id="heroRsvpDeadline" class="hero-highlight-value">-</p>
                     <p id="heroRsvpHint" class="hero-highlight-meta">Confirmación pendiente</p>
                 </article>
@@ -112,6 +130,10 @@
                     <div><span id="minutes">00</span><small>min</small></div>
                     <div><span id="seconds">00</span><small>seg</small></div>
                 </div>
+            </div>
+
+            <div class="hero-scroll-cue" aria-hidden="true">
+                <span>Deslizá para descubrir cada detalle</span>
             </div>
 
         </div>
@@ -168,52 +190,78 @@
                 <section id="contentPanel" class="card fade-up content-panel visible">
                     <div id="panelDetails" class="panel-section is-active" data-panel="details" role="tabpanel"
                         aria-hidden="false" aria-labelledby="tabDetails">
-                        <div class="panel-grid">
-                            <div class="panel-block">
-                                <p class="section-kicker">Cuándo</p>
-                                <h3>Detalles del evento</h3>
-                                <p id="eventDateText">-</p>
-                                <p id="eventTimeText">-</p>
+                        <p id="detailsKicker" class="section-kicker">El gran día</p>
+                        <h3 id="detailsTitle">Todo lo importante, en un solo lugar</h3>
+                        <p id="detailsIntroText">Acá vas a encontrar los horarios principales y la información necesaria para disfrutar la celebración con tranquilidad.</p>
+
+                        <div class="panel-grid details-grid">
+                            <div class="panel-block panel-block-featured details-main-card">
+                                <div class="details-main-header">
+                                    <div>
+                                        <p class="section-kicker">Fecha y horario</p>
+                                        <h4 class="details-card-title">Reservá este momento</h4>
+                                    </div>
+                                    <span class="details-chip">Celebración</span>
+                                </div>
+
+                                <div class="details-highlight-stack">
+                                    <p id="eventDateText" class="details-highlight-value">-</p>
+                                    <p id="eventTimeText" class="details-highlight-meta">-</p>
+                                </div>
 
                                 <a id="calendarButton" class="btn secondary hidden" href="#" target="_blank"
                                     rel="noopener noreferrer">
                                     Agendar evento
                                 </a>
                             </div>
-
                         </div>
 
                         <div id="timelineSection" class="panel-subsection hidden">
-                            <p class="section-kicker">Agenda del día</p>
+                            <div class="details-section-heading">
+                                <div>
+                                    <p id="detailsScheduleKicker" class="section-kicker">Agenda sugerida</p>
+                                    <h4 id="detailsScheduleTitle" class="details-subtitle">Cómo se va a vivir el día</h4>
+                                </div>
+                            </div>
                             <div id="timeline" class="timeline"></div>
                         </div>
                     </div>
 
                     <div id="panelAccess" class="panel-section" data-panel="access" role="tabpanel" aria-hidden="true"
                         aria-labelledby="tabAccess">
-                        <p class="section-kicker">Cómo llegar</p>
-                        <h3>Dirección</h3>
+                        <p id="accessKicker" class="section-kicker">Cómo llegar</p>
+                        <h3 id="accessTitle">Dirección y recomendaciones</h3>
+                        <p id="accessIntroText">Te dejamos toda la información práctica para que llegar sea simple y puedas enfocarte solo en disfrutar.</p>
 
                         <div class="access-layout">
                             <div class="access-hero-card">
                                 <div class="access-hero-copy">
-                                    <p class="section-kicker">Venue</p>
+                                    <p id="accessVenueKicker" class="section-kicker">Venue</p>
                                     <h4 id="venueName" class="venue-title">-</h4>
                                     <p id="venueAddress" class="venue-address-text">-</p>
+                                    <p id="accessRouteHint" class="access-route-hint">Guardá esta dirección para tenerla a mano el día del evento.</p>
                                 </div>
 
-                                <div class="access-hero-actions">
+                                <div class="access-hero-actions access-hero-actions-group">
                                     <a id="mapButton" class="btn primary" href="#" target="_blank"
                                         rel="noopener noreferrer">
                                         Abrir en Google Maps
                                     </a>
+                                    <button id="copyAddressButton" class="btn tertiary" type="button">Copiar dirección</button>
                                 </div>
                             </div>
 
+                            <div class="access-section-heading">
+                                <p id="accessQuickFactsTitle" class="section-kicker">Datos rápidos</p>
+                            </div>
                             <div id="accessQuickFacts" class="access-quick-facts"></div>
 
                             <div class="personal-message-box access-message-box">
                                 <p id="personalMessage" class="personal-message">-</p>
+                            </div>
+
+                            <div class="access-section-heading">
+                                <p id="accessNotesTitle" class="section-kicker">Información útil</p>
                             </div>
 
                             <div id="accessNotesSection" class="access-notes-grid hidden">
@@ -254,10 +302,12 @@
                                 </div>
 
                                 <div class="gallery-editorial-meta">
+                                    <span id="galleryCounterLabel" class="gallery-counter-label">Selección</span>
                                     <span id="galleryCounter" class="gallery-counter hidden">01 / 01</span>
                                 </div>
                             </div>
 
+                            <p id="galleryHintText" class="gallery-hint-text">Deslizá para recorrer las fotos y tocá una para verla en grande.</p>
                             <div id="gallery" class="gallery-horizontal"></div>
                         </div>
                     </div>
@@ -265,12 +315,11 @@
                     <div id="panelRsvp" class="panel-section" data-panel="rsvp" role="tabpanel" aria-hidden="true"
                         aria-labelledby="tabRsvp">
                         <p class="section-kicker">Confirmación</p>
-                        <h3>RSVP</h3>
+                        <h3>Tu confirmación</h3>
 
                         <div class="rsvp-shell">
                             <div class="rsvp-header-card">
-                                <p id="rsvpIntroText" class="rsvp-text">Queremos celebrar con vos, por eso necesitamos
-                                    tu respuesta.</p>
+                                <p id="rsvpIntroText" class="rsvp-text">Nos haría muy felices contar con tu confirmación para organizar este día con todo listo.</p>
                                 <p class="rsvp-helper-text">Confirmar antes del <strong id="rsvpDeadline">-</strong>.
                                 </p>
                                 <p id="rsvpHelperText" class="rsvp-helper-text"></p>
@@ -282,21 +331,21 @@
                                     <span class="confirmation-progress-index">1</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Respuesta</strong>
-                                        <small>Decinos si vienen</small>
+                                        <small>Contanos si podrán venir</small>
                                     </span>
                                 </div>
                                 <div id="progressStepCount" class="confirmation-progress-step">
                                     <span class="confirmation-progress-index">2</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Cantidad</strong>
-                                        <small>Reservamos su lugar</small>
+                                        <small>Dejamos todo preparado</small>
                                     </span>
                                 </div>
                                 <div id="progressStepDetails" class="confirmation-progress-step">
                                     <span class="confirmation-progress-index">3</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Detalles</strong>
-                                        <small>Dieta, chicos y nota</small>
+                                        <small>Aclaraciones importantes</small>
                                     </span>
                                 </div>
                             </div>
@@ -348,33 +397,51 @@
                                 </div>
 
                                 <div class="confirmation-field">
-                                    <label id="confirmationCommentLabel" for="confirmationComment">Comentario</label>
+                                    <label id="confirmationCommentLabel" for="confirmationComment">Mensaje adicional</label>
                                     <textarea id="confirmationComment" rows="4"
-                                        placeholder="Podés dejarnos una nota si lo necesitás."></textarea>
+                                        placeholder="Si querés, podés dejarnos un mensaje o alguna aclaración importante."></textarea>
                                 </div>
 
                                 <div class="confirmation-actions">
-                                    <button id="confirmationSubmitButton" class="btn primary" type="submit">Enviar
-                                        confirmación</button>
+                                    <button id="confirmationSubmitButton" class="btn primary" type="submit">Confirmar asistencia</button>
                                 </div>
 
                                 <p id="confirmationFeedback" class="confirmation-feedback hidden" tabindex="-1"
-                                    aria-live="polite"></p>
+                                    role="status" aria-live="polite" aria-atomic="true"></p>
                             </form>
                         </div>
                     </div>
 
                     <div id="panelPlaylist" class="panel-section" data-panel="playlist" role="tabpanel"
                         aria-hidden="true" aria-labelledby="tabPlaylist">
-                        <p id="playlistKicker" class="section-kicker">Música</p>
-                        <h3 id="playlistTitle">Playlist colaborativa</h3>
-                        <p id="playlistDescription">Elegí una canción que te gustaría escuchar esa noche.</p>
+                        <p id="playlistKicker" class="section-kicker">Nuestra música</p>
+                        <h3 id="playlistTitle">Playlist</h3>
+                        <p id="playlistDescription">Estas canciones nos acompañaron en momentos importantes. Hoy queremos compartirlas con vos.</p>
 
-                        <div id="playlistSection" class="panel-subsection hidden">
-                            <a id="playlistButton" class="btn primary" href="#" target="_blank"
-                                rel="noopener noreferrer">
-                                Abrir playlist
-                            </a>
+                        <div id="playlistSection" class="panel-subsection playlist-shell hidden">
+                            <div class="playlist-header-card">
+                                <div>
+                                    <p class="section-kicker">Wedding vibe</p>
+                                    <h4 id="playlistCardTitle" class="details-card-title">Escuchá la playlist del casamiento</h4>
+                                </div>
+                                <a id="playlistButton" class="btn primary" href="#" target="_blank"
+                                    rel="noopener noreferrer">
+                                    Abrir en Spotify
+                                </a>
+                            </div>
+
+                            <div class="playlist-highlight-card">
+                                <p id="playlistHighlightLabel" class="playlist-highlight-label">Nuestra elegida</p>
+                                <h4 id="playlistHighlightSong" class="playlist-highlight-song">Una canción especial para este momento</h4>
+                            </div>
+
+                            <div id="playlistEmbedWrap" class="playlist-embed-wrap hidden">
+                                <iframe id="playlistEmbed" class="playlist-embed"
+                                    src=""
+                                    title="Playlist de Spotify"
+                                    loading="lazy"
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                            </div>
                         </div>
                     </div>
 
@@ -421,7 +488,10 @@
 
     <footer class="footer">
         <div class="container">
-            <p id="footerText">Gracias por ser parte.</p>
+            <div class="footer-shell">
+                <p class="footer-signature">Con mucha emoción</p>
+                <p id="footerText">Gracias por ser parte de este capítulo tan importante para nosotros.</p>
+            </div>
         </div>
     </footer>
 
@@ -438,7 +508,15 @@
 
     <div id="lightbox" class="lightbox hidden" aria-hidden="true">
         <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
-        <img id="lightboxImage" src="" alt="Vista ampliada" />
+        <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" type="button" aria-label="Ver imagen anterior">‹</button>
+        <figure class="lightbox-figure">
+            <img id="lightboxImage" class="lightbox-image" src="" alt="Vista ampliada" />
+            <figcaption class="lightbox-caption">
+                <span id="lightboxCaptionText">Vista ampliada</span>
+                <span id="lightboxCaptionCounter" class="lightbox-caption-counter hidden">01 / 01</span>
+            </figcaption>
+        </figure>
+        <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" type="button" aria-label="Ver imagen siguiente">›</button>
     </div>
 
     <div id="mobileStickyRsvp" class="mobile-sticky-rsvp hidden" aria-live="polite">
@@ -446,10 +524,61 @@
             <strong id="mobileStickyRsvpTitle">Confirmar asistencia</strong>
             <span id="mobileStickyRsvpHint">Reservá tu lugar en unos segundos</span>
         </div>
-        <button id="mobileStickyRsvpButton" class="btn primary" type="button">Ir al RSVP</button>
+        <button id="mobileStickyRsvpButton" class="btn primary" type="button">Ir a confirmación</button>
+    </div>
+
+
+    <div id="catStage" class="cat-stage hidden" aria-hidden="true">
+        <div id="orangeCat" class="orange-cat" data-mode="walk">
+            <svg class="cat-svg" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
+                <g class="cat-root">
+                    <g class="cat-tail-group">
+                        <path class="cat-tail" d="M171 74 C194 56, 203 43, 198 26 C194 13, 178 14, 178 28 C178 40, 185 48, 191 52" />
+                    </g>
+                    <g class="cat-legs cat-legs-back">
+                        <path class="leg leg-back-1" d="M106 94 C101 106, 100 117, 102 129" />
+                        <path class="leg leg-back-2" d="M144 92 C142 104, 142 117, 145 129" />
+                    </g>
+                    <ellipse class="cat-body" cx="118" cy="78" rx="56" ry="24" />
+                    <ellipse class="cat-belly" cx="101" cy="86" rx="22" ry="9" />
+                    <g class="cat-head-group">
+                        <polygon class="cat-ear cat-ear-left" points="43,52 50,33 58,54" />
+                        <polygon class="cat-ear cat-ear-right" points="61,51 69,32 77,53" />
+                        <ellipse class="cat-head" cx="60" cy="68" rx="22" ry="20" />
+                        <g class="cat-face">
+                            <circle cx="52" cy="66" r="2.6" class="cat-eye" />
+                            <circle cx="66" cy="66" r="2.6" class="cat-eye" />
+                            <path d="M57 72 Q59 75 61 72" class="cat-mouth" />
+                            <path d="M46 72 C39 71, 34 70, 28 68" class="cat-whisker" />
+                            <path d="M69 72 C76 71, 81 70, 87 68" class="cat-whisker" />
+                            <path d="M46 77 C39 78, 34 79, 28 81" class="cat-whisker" />
+                            <path d="M69 77 C76 78, 81 79, 87 81" class="cat-whisker" />
+                        </g>
+                    </g>
+                    <g class="cat-legs cat-legs-front">
+                        <path class="leg leg-front-1" d="M72 92 C69 104, 68 116, 69 128" />
+                        <path class="leg leg-front-2" d="M88 93 C85 105, 84 116, 85 128" />
+                    </g>
+                </g>
+            </svg>
+        </div>
     </div>
 
     <script type="module" src="main.js"></script>
+
+    <button id="musicToggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Activar música de fondo" title="Controlar música de fondo" hidden>
+        <span class="music-toggle__icon" aria-hidden="true">♪</span>
+        <span class="music-toggle__copy">
+            <span id="musicToggleText" class="music-toggle__text">Activar música</span>
+            <span id="musicToggleHint" class="music-toggle__hint">Sonido suave de fondo</span>
+        </span>
+        <span id="musicToggleStatus" class="sr-only" aria-live="polite"></span>
+    </button>
+
+    <audio id="bgMusic" loop preload="metadata" playsinline>
+        <source src="assets/audio/boda.ogg" type="audio/ogg" />
+    </audio>
+
 </body>
 
 </html>

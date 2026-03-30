@@ -53,6 +53,11 @@ export function setupAnimations() {
 }
 
 export function revealContentAnimations() {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll("#invitationContent .fade-up").forEach((el) => el.classList.add("visible"));
+        return;
+    }
+
     requestAnimationFrame(() => {
         document.querySelectorAll("#invitationContent .fade-up").forEach((el) => {
             el.classList.add("visible");

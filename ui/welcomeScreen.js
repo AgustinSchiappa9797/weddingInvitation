@@ -10,11 +10,17 @@ export function showWelcomeScreen(els) {
 export function setWelcomeScreenLoadingState(els) {
     if (els.welcomeKicker) els.welcomeKicker.textContent = COPY.loading.kicker;
     if (els.welcomeGuestName) els.welcomeGuestName.textContent = COPY.loading.title;
+    if (els.welcomeLead) els.welcomeLead.textContent = COPY.cinematic.loadingLead;
     if (els.welcomeMessage) els.welcomeMessage.textContent = COPY.loading.message;
+    if (els.welcomeClosingLine) els.welcomeClosingLine.textContent = COPY.cinematic.loadingClosingLine;
     if (els.welcomeLoader) els.welcomeLoader.classList.remove("hidden");
     if (els.welcomeReady) els.welcomeReady.classList.add("hidden");
     if (els.welcomeProgressText) {
-        els.welcomeProgressText.textContent = "Validando acceso…";
+        els.welcomeProgressText.textContent = COPY.cinematic.progress.validating;
+    }
+
+    if (els.welcomeScreen) {
+        els.welcomeScreen.classList.remove("is-ready");
     }
 
     document.body.classList.remove("bg-ready");
@@ -22,10 +28,23 @@ export function setWelcomeScreenLoadingState(els) {
 
 export function setWelcomeScreenReadyState(els, invitation) {
     if (els.welcomeKicker) els.welcomeKicker.textContent = COPY.ready.kicker;
-    if (els.welcomeGuestName) els.welcomeGuestName.textContent = invitation.guestName || COPY.ready.guestFallback;
-    if (els.welcomeMessage) els.welcomeMessage.textContent = COPY.ready.message;
+    if (els.welcomeGuestName) {
+        els.welcomeGuestName.textContent = invitation.welcomeTitle || invitation.guestName || COPY.ready.guestFallback;
+    }
+    if (els.welcomeLead) {
+        els.welcomeLead.textContent = invitation.welcomeLead || COPY.cinematic.readyLead;
+    }
+    if (els.welcomeMessage) {
+        els.welcomeMessage.textContent = invitation.welcomeMessage || COPY.ready.message;
+    }
+    if (els.welcomeClosingLine) {
+        els.welcomeClosingLine.textContent = invitation.welcomeClosingLine || COPY.cinematic.readyClosingLine;
+    }
     if (els.welcomeLoader) els.welcomeLoader.classList.add("hidden");
     if (els.welcomeReady) els.welcomeReady.classList.remove("hidden");
+    if (els.welcomeScreen) {
+        els.welcomeScreen.classList.add("is-ready");
+    }
 
     document.body.classList.add("bg-ready");
 }

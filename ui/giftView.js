@@ -102,11 +102,11 @@ function setupGiftActions(els, rawText) {
         els.giftCopyButton.addEventListener("click", async () => {
             try {
                 await copyGiftData(rawText);
-                setGiftFeedback(els, "Copiamos todos los datos para que puedas pegarlos donde quieras.", "success");
+                setGiftFeedback(els, "Copiamos los datos para que puedas pegarlos directamente en tu app bancaria.", "success");
             } catch (error) {
                 setGiftFeedback(
                     els,
-                    "No pudimos copiar automáticamente desde este navegador. Igual te dejamos los datos visibles más abajo.",
+                    "No pudimos copiar automáticamente desde este navegador. Igual te dejamos todos los datos visibles acá abajo.",
                     "error"
                 );
             }
@@ -150,7 +150,7 @@ function setupGiftActions(els, rawText) {
 export function renderGift(els, data) {
     const giftTitle = data.giftTitle || "Aporte para luna de miel";
     const giftIntro =
-        data.giftIntro || "Si querés hacernos un regalo, podés colaborar con nuestra luna de miel.";
+        data.giftIntro || "Tu presencia ya es un regalo enorme. Si además querés acompañarnos con un detalle, podés ayudarnos con nuestra luna de miel.";
     const rawText = normalizeGiftText(data.giftBankData);
     const parsedRows = parseGiftBankData(rawText);
     const hasBankData = rawText !== "";
