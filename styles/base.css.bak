@@ -258,13 +258,6 @@ button:focus-visible {
     flex: 1 1 auto;
 }
 
-.mobile-sticky-rsvp.is-contextually-hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(16px);
-    pointer-events: none;
-}
-
 .mobile-sticky-rsvp__copy strong {
     font-size: 0.96rem;
 }
@@ -605,38 +598,4 @@ body.has-sticky-rsvp .music-toggle {
 
 .gallery-item img {
     background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(239,229,220,0.45));
-}
-
-
-body.has-sticky-rsvp {
-    padding-bottom: calc(env(safe-area-inset-bottom) + 92px);
-}
-
-body.is-mobile-experience .fade-in,
-body.is-mobile-experience .fade-up,
-body.is-mobile-experience .hero-card {
-    transition-duration: 0.45s;
-    animation: none;
-}
-
-body.is-mobile-experience .card,
-body.is-mobile-experience .screen-card,
-body.is-mobile-experience .hub-nav,
-body.is-mobile-experience .mobile-sticky-rsvp,
-body.is-mobile-experience .music-toggle {
-    box-shadow: 0 10px 26px rgba(61, 48, 41, 0.10);
-}
-
-body.is-mobile-experience .cat-stage {
-    display: none;
-}
-
-.music-toggle.is-mobile-idle {
-    opacity: 0.74;
-}
-
-.music-toggle.is-mobile-idle:focus-visible,
-.music-toggle.is-mobile-idle:hover,
-.music-toggle.is-mobile-idle.is-active {
-    opacity: 1;
 }

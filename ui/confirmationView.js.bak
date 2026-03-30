@@ -428,9 +428,7 @@ function renderMobileStickyRsvp(els, data, options = {}) {
     if (!els.mobileStickyRsvp || !els.mobileStickyRsvpButton) return;
 
     const closed = isConfirmationClosed(data);
-    const existingConfirmation = data?.existingConfirmation || null;
-    const shouldShowSticky = !existingConfirmation;
-    const texts = getStickyTexts(existingConfirmation);
+    const texts = getStickyTexts(data?.existingConfirmation);
 
     if (els.mobileStickyRsvpTitle) {
         els.mobileStickyRsvpTitle.textContent = texts.title;
@@ -443,17 +441,10 @@ function renderMobileStickyRsvp(els, data, options = {}) {
     }
 
     els.mobileStickyRsvpButton.textContent = closed ? "Ver estado" : texts.title;
-    els.mobileStickyRsvp.classList.toggle("hidden", !shouldShowSticky);
+    els.mobileStickyRsvp.classList.toggle("hidden", false);
     els.mobileStickyRsvp.classList.toggle("is-closed", closed);
-    els.mobileStickyRsvp.classList.toggle("is-contextually-hidden", true);
 
-    if (els.mobileStickyRsvp.dataset.bound === "true") {
-        els.mobileStickyRsvp.dataset.enabled = shouldShowSticky ? "true" : "false";
-        window.dispatchEvent(new CustomEvent("invitation:mobilefloatingui"));
-        return;
-    }
-
-    els.mobileStickyRsvp.dataset.enabled = shouldShowSticky ? "true" : "false";
+    if (els.mobileStickyRsvpButton.dataset.bound === "true") return;
 
     const navigateToRsvp = () => {
         if (options.state) {
@@ -464,42 +455,14 @@ function renderMobileStickyRsvp(els, data, options = {}) {
         els.panelRsvp?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
-    const syncStickyVisibility = () => {
-        const enabled = els.mobileStickyRsvp.dataset.enabled === "true";
-
-        if (!enabled) {
-            els.mobileStickyRsvp.classList.add("hidden");
-            window.dispatchEvent(new CustomEvent("invitation:mobilefloatingui"));
-            return;
-        }
-
-        const isMobile = window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
-        const isRsvpActive = document.body.dataset.activeSection === "rsvp";
-        const hero = document.querySelector(".hero-card");
-        const heroRect = hero?.getBoundingClientRect?.();
-        const footer = document.querySelector(".footer");
-        const footerRect = footer?.getBoundingClientRect?.();
-        const navRect = els.sectionNav?.getBoundingClientRect?.();
-        const heroMostlyVisible = Boolean(heroRect && heroRect.bottom > window.innerHeight * 0.42);
-        const navNearTop = Boolean(navRect && navRect.top < 110);
-        const deepEnoughIntoPage = window.scrollY > Math.max(window.innerHeight * 0.55, 260);
-        const nearFooter = Boolean(footerRect && footerRect.top < window.innerHeight - 140);
-        const shouldHide = !isMobile || isRsvpActive || !deepEnoughIntoPage || heroMostlyVisible || !navNearTop || nearFooter;
-
-        els.mobileStickyRsvp.classList.remove("hidden");
-        els.mobileStickyRsvp.classList.toggle("is-contextually-hidden", shouldHide);
-        window.dispatchEvent(new CustomEvent("invitation:mobilefloatingui"));
-    };
-
     els.mobileStickyRsvpButton.addEventListener("click", navigateToRsvp);
-    window.addEventListener("invitation:sectionchange", syncStickyVisibility);
-    window.addEventListener("scroll", syncStickyVisibility, { passive: true });
-    window.addEventListener("resize", syncStickyVisibility);
-    window.addEventListener("orientationchange", syncStickyVisibility);
 
-    requestAnimationFrame(syncStickyVisibility);
+    window.addEventListener("invitation:sectionchange", (event) => {
+        const isRsvpActive = event?.detail?.section === "rsvp";
+        els.mobileStickyRsvp?.classList.toggle("is-hidden-by-section", isRsvpActive);
+    });
 
-    els.mobileStickyRsvp.dataset.bound = "true";
+    els.mobileStickyRsvpButton.dataset.bound = "true";
 }
 
 function refreshUiState(els, data, options = {}) {

@@ -31,8 +31,9 @@ function getCurrentTransformPosition(cat) {
 
 export function setupAnimations() {
     const elements = document.querySelectorAll(".fade-up");
+    const isMobile = window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
 
-    if (!("IntersectionObserver" in window)) {
+    if (isMobile || !("IntersectionObserver" in window)) {
         elements.forEach((el) => el.classList.add("visible"));
         return;
     }
@@ -68,8 +69,9 @@ export function revealContentAnimations() {
 export function createOrangeCatApi() {
     const cat = document.getElementById("orangeCat");
     const stage = document.getElementById("catStage");
+    const isMobile = window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
 
-    if (!cat || !stage || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!cat || !stage || isMobile || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return null;
     }
 

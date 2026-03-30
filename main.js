@@ -26,8 +26,17 @@ const els = Object.freeze(getElements());
 
 let catBehaviorInitialized = false;
 
+function isMobileViewport() {
+    return window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
+}
+
 function syncFloatingUiState() {
-    const stickyVisible = Boolean(els.mobileStickyRsvp && !els.mobileStickyRsvp.classList.contains("hidden"));
+    const stickyVisible = Boolean(
+        els.mobileStickyRsvp &&
+        !els.mobileStickyRsvp.classList.contains("hidden") &&
+        !els.mobileStickyRsvp.classList.contains("is-contextually-hidden")
+    );
+
     document.body.classList.toggle("has-sticky-rsvp", stickyVisible);
 }
 
@@ -114,7 +123,7 @@ async function renderInvitation(data, options = {}) {
 
     showInvitationShell();
 
-    if (!catBehaviorInitialized) {
+    if (!catBehaviorInitialized && !isMobileViewport()) {
         const catApi = createOrangeCatApi();
         if (catApi) {
             setupCatBehavior(catApi);
@@ -195,6 +204,8 @@ async function init() {
     if (initialized) return;
     initialized = true;
 
+    document.body.classList.toggle("is-mobile-experience", isMobileViewport());
+
     setupAnimations();
     setupLightbox(els);
     initMusic(els);
@@ -205,7 +216,11 @@ async function init() {
     });
 
     setupNavigation(els, state);
-    window.addEventListener("resize", syncFloatingUiState);
+    window.addEventListener("resize", () => {
+        document.body.classList.toggle("is-mobile-experience", isMobileViewport());
+        syncFloatingUiState();
+    });
+    window.addEventListener("invitation:mobilefloatingui", syncFloatingUiState);
     await loadInvitationFlow();
     syncFloatingUiState();
 }

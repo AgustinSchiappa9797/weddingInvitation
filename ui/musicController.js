@@ -32,6 +32,10 @@ function setStatusText(els, text = "") {
     }
 }
 
+function isMobileViewport() {
+    return window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
+}
+
 function updateButtonState(els, state) {
     if (!els.musicToggle || !els.musicToggleText) return;
 
@@ -60,6 +64,7 @@ function updateButtonState(els, state) {
     document.body.classList.toggle("music-enabled", isPlaying);
     document.body.classList.toggle("music-pending", isPending);
     document.body.dataset.musicState = isPlaying ? "playing" : isPending ? "pending" : "idle";
+    document.body.classList.toggle("music-idle-mobile", isMobileViewport() && !isPlaying && !isPending);
 }
 
 async function playSafely(audio) {
@@ -140,10 +145,12 @@ export function initMusic(els) {
         button.disabled = false;
         if (!audio.paused) {
             updateButtonState(els, "playing");
+            syncMobileVisibility();
             return;
         }
 
         updateButtonState(els, pendingAutoplay ? "pending" : "idle");
+        syncMobileVisibility();
     };
 
     const removeAutoplayListeners = () => {
@@ -289,6 +296,12 @@ export function initMusic(els) {
         updateButtonState(els, "idle");
     });
 
+    const syncMobileVisibility = () => {
+        const isMobile = isMobileViewport();
+        const shouldCompact = isMobile && audio.paused && !pendingAutoplay;
+        button.classList.toggle("is-mobile-idle", shouldCompact);
+    };
+
     audio.addEventListener("canplay", () => {
         button.classList.remove("is-disabled");
         button.disabled = false;
@@ -300,7 +313,10 @@ export function initMusic(els) {
         }
     });
 
+    window.addEventListener("resize", syncMobileVisibility);
+
     syncState();
+    syncMobileVisibility();
 
     if (playbackIntent) {
         runExclusive(() => startPlayback());
