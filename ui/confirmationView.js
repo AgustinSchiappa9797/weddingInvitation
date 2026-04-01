@@ -21,6 +21,121 @@ function syncKidsInfoFieldVisibility(els, data = null) {
     }
 }
 
+function getSelectedAttendingCount(els) {
+    const status = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
+    if (status !== "yes") return 0;
+
+    const companions = Number.parseInt(els.confirmationForm?.dataset.companions || "1", 10);
+    if (companions <= 1) return 1;
+
+    return Math.max(1, Number.parseInt(els.confirmationCount?.value || "1", 10));
+}
+
+function getGuestNameInputs(els) {
+    return Array.from(els.confirmationGuestNamesList?.querySelectorAll('input[data-guest-name-input="true"]') || []);
+}
+
+function extractGuestNamesFromComment(comment = "") {
+    if (!comment) {
+        return { cleanComment: "", guestNames: [] };
+    }
+
+    const namesMatch = comment.match(/(?:^|\n\n)Asistentes:\s*([\s\S]*?)(?=(?:\n\nInfo chicos:)|$)/i);
+    if (!namesMatch) {
+        return { cleanComment: comment, guestNames: [] };
+    }
+
+    const guestNames = namesMatch[1]
+        .split(/\n+/)
+        .map((line) => line.replace(/^[-•]\s*/, "").trim())
+        .filter(Boolean);
+
+    const cleanComment = comment
+        .replace(/(?:^|\n\n)Asistentes:\s*[\s\S]*?(?=(?:\n\nInfo chicos:)|$)/i, "")
+        .replace(/^\s+|\s+$/g, "")
+        .replace(/\n{3,}/g, "\n\n");
+
+    return { cleanComment, guestNames };
+}
+
+function renderGuestNameFields(els, count, existingNames = []) {
+    if (!els.confirmationGuestNamesList) return;
+
+    els.confirmationGuestNamesList.replaceChildren();
+
+    for (let index = 0; index < count; index += 1) {
+        const wrap = document.createElement("div");
+        wrap.className = "confirmation-guest-name-item";
+
+        const label = document.createElement("label");
+        label.htmlFor = `confirmationGuestName${index + 1}`;
+        label.textContent = `Nombre y apellido ${index + 1}`;
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = `confirmationGuestName${index + 1}`;
+        input.placeholder = "Ej.: Juan Pérez";
+        input.autocomplete = "name";
+        input.dataset.guestNameInput = "true";
+        input.value = existingNames[index] || "";
+
+        wrap.append(label, input);
+        els.confirmationGuestNamesList.appendChild(wrap);
+    }
+}
+
+function syncGuestNamesFieldVisibility(els) {
+    const attendingCount = getSelectedAttendingCount(els);
+    const shouldShow = attendingCount > 1;
+
+    els.confirmationGuestNamesField?.classList.toggle("hidden", !shouldShow);
+
+    const currentInputs = getGuestNameInputs(els);
+    if (shouldShow && currentInputs.length !== attendingCount) {
+        const preservedValues = currentInputs.map((input) => input.value.trim()).filter(Boolean);
+        const existingValues = preservedValues.length ? preservedValues : (() => {
+            try {
+                return JSON.parse(els.confirmationForm?.dataset.attendeeNames || "[]");
+            } catch {
+                return [];
+            }
+        })();
+        renderGuestNameFields(els, attendingCount, existingValues);
+    }
+
+    getGuestNameInputs(els).forEach((input) => {
+        input.disabled = !shouldShow;
+    });
+
+    if (!shouldShow) {
+        try {
+            els.confirmationForm.dataset.attendeeNames = "[]";
+        } catch {
+        }
+    }
+}
+
+function syncProgressStepVisibility(els) {
+    const companions = Number.parseInt(els.confirmationForm?.dataset.companions || "1", 10);
+    const shouldShowCountStep = companions > 1;
+    const visibleSteps = [
+        els.progressStepStatus,
+        shouldShowCountStep ? els.progressStepCount : null,
+        els.progressStepDetails
+    ].filter(Boolean);
+
+    els.progressStepCount?.classList.toggle("hidden", !shouldShowCountStep);
+    if (els.confirmationProgress) {
+        els.confirmationProgress.style.gridTemplateColumns = `repeat(${visibleSteps.length}, minmax(0, 1fr))`;
+    }
+
+    visibleSteps.forEach((el, index) => {
+        const indexNode = el.querySelector(".confirmation-progress-index");
+        if (indexNode) indexNode.textContent = String(index + 1);
+        el.dataset.step = String(index + 1);
+    });
+}
+
 function renderConfirmationCopy(els, data) {
     if (els.rsvpIntroText) {
         els.rsvpIntroText.textContent =
@@ -59,6 +174,14 @@ function renderConfirmationCopy(els, data) {
 
     if (els.confirmationCountLabel) {
         els.confirmationCountLabel.textContent = data.rsvpCountLabel || "¿Cuántas personas asistirán?";
+    }
+
+    if (els.confirmationGuestNamesLabel) {
+        els.confirmationGuestNamesLabel.textContent = data.rsvpGuestNamesLabel || "¿Quiénes asistirán?";
+    }
+
+    if (els.confirmationGuestNamesHelper) {
+        els.confirmationGuestNamesHelper.textContent = data.rsvpGuestNamesHelper || "Escribí nombre y apellido de cada persona que va a asistir.";
     }
 
     if (els.confirmationDietaryLabel) {
@@ -128,6 +251,7 @@ function setFormDisabled(els, disabled) {
         els.confirmationDietaryRestrictions,
         els.confirmationComment,
         els.confirmationKidsInfo,
+        ...getGuestNameInputs(els),
         ...Array.from(els.confirmationForm?.querySelectorAll('input[name="confirmationStatus"]') || [])
     ];
 
@@ -214,8 +338,15 @@ function buildPayload(els) {
 
     const comment = els.confirmationComment?.value?.trim() || "";
     const kidsInfo = els.confirmationKidsInfo?.value?.trim() || "";
+    const attendeeNames = status === "yes"
+        ? getGuestNameInputs(els).map((input) => input.value.trim()).filter(Boolean)
+        : [];
 
-    const mergedComment = [comment, kidsInfo ? `Info chicos: ${kidsInfo}` : ""]
+    const mergedComment = [
+        comment,
+        attendeeNames.length > 1 ? `Asistentes:\n${attendeeNames.map((name) => `- ${name}`).join("\n")}` : "",
+        kidsInfo ? `Info chicos: ${kidsInfo}` : ""
+    ]
         .filter(Boolean)
         .join("\n\n");
 
@@ -223,6 +354,7 @@ function buildPayload(els) {
         token: els.confirmationForm?.dataset.token || "",
         status,
         attendingCount,
+        attendeeNames,
         dietaryRestrictions: els.confirmationDietaryRestrictions?.value?.trim() || "",
         comment: mergedComment
     };
@@ -270,11 +402,17 @@ function hydrateConfirmationForm(els, data) {
         if (els.confirmationDietaryRestrictions) els.confirmationDietaryRestrictions.value = "";
         if (els.confirmationComment) els.confirmationComment.value = "";
         if (els.confirmationKidsInfo) els.confirmationKidsInfo.value = "";
+        try {
+            els.confirmationForm.dataset.attendeeNames = "[]";
+        } catch {
+            // noop
+        }
         populateCountOptions(els.confirmationCount, companions, 1);
         return;
     }
 
-    const { cleanComment, kidsInfo } = extractKidsInfoFromComment(existing.comment || "");
+    const { cleanComment: commentWithoutKids, kidsInfo } = extractKidsInfoFromComment(existing.comment || "");
+    const { cleanComment, guestNames } = extractGuestNamesFromComment(commentWithoutKids || "");
     const isAttending = existing.status === "yes";
 
     if (yesInput) yesInput.checked = isAttending;
@@ -292,6 +430,11 @@ function hydrateConfirmationForm(els, data) {
 
     if (els.confirmationComment) {
         els.confirmationComment.value = cleanComment;
+    }
+
+    try {
+        els.confirmationForm.dataset.attendeeNames = JSON.stringify(guestNames);
+    } catch {
     }
 
     if (els.confirmationKidsInfo) {
@@ -314,6 +457,8 @@ function renderConfirmationSummary(els, existingConfirmation) {
     })();
 
     const summaryRows = [];
+    const { cleanComment: summaryCommentWithoutKids, kidsInfo: summaryKidsInfo } = extractKidsInfoFromComment(existingConfirmation.comment || "");
+    const { cleanComment: summaryComment, guestNames: summaryGuestNames } = extractGuestNamesFromComment(summaryCommentWithoutKids || "");
 
     if (existingConfirmation.status === "yes") {
         const count = Math.max(1, Number(existingConfirmation.attendingCount) || 1);
@@ -336,6 +481,15 @@ function renderConfirmationSummary(els, existingConfirmation) {
         `);
     }
 
+    if (summaryGuestNames.length > 1) {
+        summaryRows.push(`
+            <div class="confirmation-summary-row is-multiline">
+                <span class="confirmation-summary-label">Asistentes</span>
+                <span class="confirmation-summary-value">${summaryGuestNames.join("<br>")}</span>
+            </div>
+        `);
+    }
+
     if (existingConfirmation.dietaryRestrictions) {
         summaryRows.push(`
             <div class="confirmation-summary-row is-multiline">
@@ -345,11 +499,20 @@ function renderConfirmationSummary(els, existingConfirmation) {
         `);
     }
 
-    if (existingConfirmation.comment) {
+    if (summaryKidsInfo) {
+        summaryRows.push(`
+            <div class="confirmation-summary-row is-multiline">
+                <span class="confirmation-summary-label">Info chicos</span>
+                <span class="confirmation-summary-value">${summaryKidsInfo.replace(/\n/g, "<br>")}</span>
+            </div>
+        `);
+    }
+
+    if (summaryComment) {
         summaryRows.push(`
             <div class="confirmation-summary-row is-multiline">
                 <span class="confirmation-summary-label">Datos adicionales</span>
-                <span class="confirmation-summary-value">${existingConfirmation.comment.replace(/\n/g, "<br>")}</span>
+                <span class="confirmation-summary-value">${summaryComment.replace(/\n/g, "<br>")}</span>
             </div>
         `);
     }
@@ -379,10 +542,14 @@ function syncChoiceCardSelection(els) {
 }
 
 function updateConfirmationProgress(els) {
+    syncProgressStepVisibility(els);
+
     const selectedStatus = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
     const companions = Number.parseInt(els.confirmationForm?.dataset.companions || "1", 10);
     const countFieldVisible = selectedStatus === "yes" && companions > 1;
+    const hasGuestNames = getGuestNameInputs(els).some((input) => input.value.trim());
     const hasDetails = Boolean(
+        hasGuestNames ||
         els.confirmationDietaryRestrictions?.value?.trim() ||
         els.confirmationComment?.value?.trim() ||
         els.confirmationKidsInfo?.value?.trim()
@@ -394,12 +561,11 @@ function updateConfirmationProgress(els) {
         [els.progressStepDetails, hasDetails, true]
     ];
 
-    stepMap.forEach(([el, completed, active], index) => {
-        if (!el) return;
+    stepMap.forEach(([el, completed, active]) => {
+        if (!el || el.classList.contains("hidden")) return;
 
         el.classList.toggle("is-complete", Boolean(completed));
         el.classList.toggle("is-active", !completed && Boolean(active));
-        el.dataset.step = String(index + 1);
     });
 }
 
@@ -504,6 +670,7 @@ function renderMobileStickyRsvp(els, data, options = {}) {
 
 function refreshUiState(els, data, options = {}) {
     syncCountFieldVisibility(els);
+    syncGuestNamesFieldVisibility(els);
     syncKidsInfoFieldVisibility(els, data);
     syncChoiceCardSelection(els);
     updateConfirmationProgress(els);
@@ -525,9 +692,20 @@ function setupConfirmationForm(els, data, options = {}) {
         .filter(Boolean)
         .forEach((field) => {
             field.addEventListener("input", () => {
-                updateConfirmationProgress(els);
+                refreshUiState(els, data, options);
             });
         });
+
+    els.confirmationGuestNamesList?.addEventListener("input", () => {
+        try {
+            els.confirmationForm.dataset.attendeeNames = JSON.stringify(
+                getGuestNameInputs(els).map((field) => field.value.trim())
+            );
+        } catch {
+            // noop
+        }
+        updateConfirmationProgress(els);
+    });
 
     els.confirmationForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -541,6 +719,11 @@ function setupConfirmationForm(els, data, options = {}) {
         const payload = buildPayload(els);
         if (payload.status === "yes" && (!Number.isFinite(payload.attendingCount) || payload.attendingCount < 1)) {
             setFeedback(els, "Elegí cuántas personas asistirán antes de enviar la confirmación.", "error");
+            return;
+        }
+
+        if (payload.status === "yes" && payload.attendingCount > 1 && payload.attendeeNames.length < payload.attendingCount) {
+            setFeedback(els, "Completá nombre y apellido de todas las personas que van a asistir.", "error");
             return;
         }
 
@@ -588,6 +771,7 @@ function setupConfirmationForm(els, data, options = {}) {
             setFormDisabled(els, false);
             setSubmitButtonLabel(els, Boolean(data?.existingConfirmation));
             syncCountFieldVisibility(els);
+            syncGuestNamesFieldVisibility(els);
             syncKidsInfoFieldVisibility(els, data);
         }
     });
@@ -606,6 +790,9 @@ export function renderConfirmation(els, data, options = {}) {
     );
     els.confirmationForm.dataset.kidsAllowed = data?.grammar?.kidsAllowed ? "true" : "false";
     els.confirmationForm.dataset.isPlural = data?.grammar?.isPlural ? "true" : "false";
+    if (!els.confirmationForm.dataset.attendeeNames) {
+        els.confirmationForm.dataset.attendeeNames = "[]";
+    }
 
     renderConfirmationCopy(els, data);
     hydrateConfirmationForm(els, data);

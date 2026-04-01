@@ -1,8 +1,8 @@
 export const COPY = {
 
     cinematic: {
-        loadingLead: "Estamos abriendo una experiencia pensada para este momento.",
-        loadingClosingLine: "En unos segundos se abrirá la invitación para vos.",
+        loadingLead: "En unos segundos vas a poder verla.",
+        loadingClosingLine: "Gracias por acompañarnos en este momento 💛",
         readyLead: "Ya está todo listo para darte la bienvenida.",
         readyClosingLine: "Disfrutá cada detalle con calma y a tu ritmo.",
         progress: {
@@ -13,9 +13,9 @@ export const COPY = {
         }
     },
     loading: {
-        kicker: "Estamos preparando algo muy especial",
-        title: "Tu invitación está tomando forma",
-        message: "Estamos acomodando cada detalle para que vivas esta invitación como una pequeña experiencia."
+        kicker: "Estamos preparando tu invitación",
+        title: "Tu invitación",
+        message: ""
     },
     ready: {
         kicker: "Qué alegría tenerte acá",
@@ -29,10 +29,7 @@ export const COPY = {
             isPlural
                 ? "Queremos compartir esta celebración con ustedes y que la vivan desde el primer momento."
                 : "Queremos compartir esta celebración con vos y que la vivas desde el primer momento.",
-        heroIntro: ({ isPlural }) =>
-            isPlural
-                ? "Preparamos este espacio para que encuentren todo de forma simple, clara y linda."
-                : "Preparamos este espacio para que encuentres todo de forma simple, clara y linda.",
+        heroIntro: () => "",
         guestName: "Invitado especial",
         footerText: "Gracias por acompañarnos en este momento tan importante. Nos emociona compartirlo con vos.",
         rsvpDeadline: "-"
@@ -48,7 +45,7 @@ export const COPY = {
             isPlural
                 ? "Pueden venir con chicos"
                 : "Podés venir con chicos",
-        adultsOnly: "Celebración solo para adultos"
+        adultsOnly: "En esta ocasión, la invitación es sin niños"
     },
 
     rsvp: {
@@ -111,6 +108,9 @@ export const COPY = {
             kidsAllowed
                 ? "¿Cuántas personas asistirán en total?"
                 : "¿Cuántas personas asistirán?",
+
+        guestNamesLabel: () => "¿Quiénes asistirán?",
+        guestNamesHelper: () => "Escribí nombre y apellido de cada persona que va a asistir.",
 
         dietaryLabel: ({ kidsAllowed }) =>
             kidsAllowed

@@ -192,7 +192,8 @@
                         aria-hidden="false" aria-labelledby="tabDetails">
                         <p id="detailsKicker" class="section-kicker">El gran día</p>
                         <h3 id="detailsTitle">Todo lo importante, en un solo lugar</h3>
-                        <p id="detailsIntroText">Acá vas a encontrar los horarios principales y la información necesaria para disfrutar la celebración con tranquilidad.</p>
+                        <p id="detailsIntroText">Acá vas a encontrar los horarios principales y la información necesaria
+                            para disfrutar la celebración con tranquilidad.</p>
 
                         <div class="panel-grid details-grid">
                             <div class="panel-block panel-block-featured details-main-card">
@@ -220,7 +221,8 @@
                             <div class="details-section-heading">
                                 <div>
                                     <p id="detailsScheduleKicker" class="section-kicker">Agenda sugerida</p>
-                                    <h4 id="detailsScheduleTitle" class="details-subtitle">Cómo se va a vivir el día</h4>
+                                    <h4 id="detailsScheduleTitle" class="details-subtitle">Cómo se va a vivir el día
+                                    </h4>
                                 </div>
                             </div>
                             <div id="timeline" class="timeline"></div>
@@ -231,7 +233,8 @@
                         aria-labelledby="tabAccess">
                         <p id="accessKicker" class="section-kicker">Cómo llegar</p>
                         <h3 id="accessTitle">Dirección y recomendaciones</h3>
-                        <p id="accessIntroText">Te dejamos toda la información práctica para que llegar sea simple y puedas enfocarte solo en disfrutar.</p>
+                        <p id="accessIntroText">Te dejamos toda la información práctica para que llegar sea simple y
+                            puedas enfocarte solo en disfrutar.</p>
 
                         <div class="access-layout">
                             <div class="access-hero-card">
@@ -239,7 +242,8 @@
                                     <p id="accessVenueKicker" class="section-kicker">Venue</p>
                                     <h4 id="venueName" class="venue-title">-</h4>
                                     <p id="venueAddress" class="venue-address-text">-</p>
-                                    <p id="accessRouteHint" class="access-route-hint">Guardá esta dirección para tenerla a mano el día del evento.</p>
+                                    <p id="accessRouteHint" class="access-route-hint">Guardá esta dirección para tenerla
+                                        a mano el día del evento.</p>
                                 </div>
 
                                 <div class="access-hero-actions access-hero-actions-group">
@@ -247,7 +251,8 @@
                                         rel="noopener noreferrer">
                                         Abrir en Google Maps
                                     </a>
-                                    <button id="copyAddressButton" class="btn tertiary" type="button">Copiar dirección</button>
+                                    <button id="copyAddressButton" class="btn tertiary" type="button">Copiar
+                                        dirección</button>
                                 </div>
                             </div>
 
@@ -307,7 +312,8 @@
                                 </div>
                             </div>
 
-                            <p id="galleryHintText" class="gallery-hint-text">Deslizá para recorrer las fotos y tocá una para verla en grande.</p>
+                            <p id="galleryHintText" class="gallery-hint-text">Deslizá para recorrer las fotos y tocá una
+                                para verla en grande.</p>
                             <div id="gallery" class="gallery-horizontal"></div>
                         </div>
                     </div>
@@ -319,7 +325,8 @@
 
                         <div class="rsvp-shell">
                             <div class="rsvp-header-card">
-                                <p id="rsvpIntroText" class="rsvp-text">Nos haría muy felices contar con tu confirmación para organizar este día con todo listo.</p>
+                                <p id="rsvpIntroText" class="rsvp-text">Nos haría muy felices contar con tu confirmación
+                                    para organizar este día con todo listo.</p>
                                 <p class="rsvp-helper-text">Confirmar antes del <strong id="rsvpDeadline">-</strong>.
                                 </p>
                                 <p id="rsvpHelperText" class="rsvp-helper-text"></p>
@@ -331,21 +338,21 @@
                                     <span class="confirmation-progress-index">1</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Respuesta</strong>
-                                        <small>Contanos si podrán venir</small>
+                                        <small>¿Van a poder venir?</small>
                                     </span>
                                 </div>
                                 <div id="progressStepCount" class="confirmation-progress-step">
                                     <span class="confirmation-progress-index">2</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Cantidad</strong>
-                                        <small>Dejamos todo preparado</small>
+                                        <small>¿Cuántas personas asistirán?</small>
                                     </span>
                                 </div>
                                 <div id="progressStepDetails" class="confirmation-progress-step">
                                     <span class="confirmation-progress-index">3</span>
                                     <span class="confirmation-progress-copy">
                                         <strong>Detalles</strong>
-                                        <small>Aclaraciones importantes</small>
+                                        <small>Información importante</small>
                                     </span>
                                 </div>
                             </div>
@@ -381,6 +388,13 @@
                                     <select id="confirmationCount"></select>
                                 </div>
 
+                                <div id="confirmationGuestNamesField" class="confirmation-field hidden">
+                                    <label id="confirmationGuestNamesLabel">¿Quiénes asistirán?</label>
+                                    <p id="confirmationGuestNamesHelper" class="confirmation-helper-text">Escribí nombre
+                                        y apellido de cada persona que va a asistir.</p>
+                                    <div id="confirmationGuestNamesList" class="confirmation-guest-names-list"></div>
+                                </div>
+
                                 <div id="confirmationKidsInfoField" class="confirmation-field hidden">
                                     <label id="confirmationKidsInfoLabel" for="confirmationKidsInfo">
                                         Si vienen con chicos, contanos sus edades o cualquier dato útil
@@ -397,13 +411,15 @@
                                 </div>
 
                                 <div class="confirmation-field">
-                                    <label id="confirmationCommentLabel" for="confirmationComment">Mensaje adicional</label>
+                                    <label id="confirmationCommentLabel" for="confirmationComment">Mensaje
+                                        adicional</label>
                                     <textarea id="confirmationComment" rows="4"
                                         placeholder="Si querés, podés dejarnos un mensaje o alguna aclaración importante."></textarea>
                                 </div>
 
                                 <div class="confirmation-actions">
-                                    <button id="confirmationSubmitButton" class="btn primary" type="submit">Confirmar asistencia</button>
+                                    <button id="confirmationSubmitButton" class="btn primary" type="submit">Confirmar
+                                        asistencia</button>
                                 </div>
 
                                 <p id="confirmationFeedback" class="confirmation-feedback hidden" tabindex="-1"
@@ -416,13 +432,15 @@
                         aria-hidden="true" aria-labelledby="tabPlaylist">
                         <p id="playlistKicker" class="section-kicker">Nuestra música</p>
                         <h3 id="playlistTitle">Playlist</h3>
-                        <p id="playlistDescription">Estas canciones nos acompañaron en momentos importantes. Hoy queremos compartirlas con vos.</p>
+                        <p id="playlistDescription">Estas canciones nos acompañaron en momentos importantes. Hoy
+                            queremos compartirlas con vos.</p>
 
                         <div id="playlistSection" class="panel-subsection playlist-shell hidden">
                             <div class="playlist-header-card">
                                 <div>
                                     <p class="section-kicker">Wedding vibe</p>
-                                    <h4 id="playlistCardTitle" class="details-card-title">Escuchá la playlist del casamiento</h4>
+                                    <h4 id="playlistCardTitle" class="details-card-title">Escuchá la playlist del
+                                        casamiento</h4>
                                 </div>
                                 <a id="playlistButton" class="btn primary" href="#" target="_blank"
                                     rel="noopener noreferrer">
@@ -432,13 +450,12 @@
 
                             <div class="playlist-highlight-card">
                                 <p id="playlistHighlightLabel" class="playlist-highlight-label">Nuestra elegida</p>
-                                <h4 id="playlistHighlightSong" class="playlist-highlight-song">Una canción especial para este momento</h4>
+                                <h4 id="playlistHighlightSong" class="playlist-highlight-song">Una canción especial para
+                                    este momento</h4>
                             </div>
 
                             <div id="playlistEmbedWrap" class="playlist-embed-wrap hidden">
-                                <iframe id="playlistEmbed" class="playlist-embed"
-                                    src=""
-                                    title="Playlist de Spotify"
+                                <iframe id="playlistEmbed" class="playlist-embed" src="" title="Playlist de Spotify"
                                     loading="lazy"
                                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                             </div>
@@ -508,7 +525,8 @@
 
     <div id="lightbox" class="lightbox hidden" aria-hidden="true">
         <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
-        <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" type="button" aria-label="Ver imagen anterior">‹</button>
+        <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" type="button"
+            aria-label="Ver imagen anterior">‹</button>
         <figure class="lightbox-figure">
             <img id="lightboxImage" class="lightbox-image" src="" alt="Vista ampliada" />
             <figcaption class="lightbox-caption">
@@ -516,7 +534,8 @@
                 <span id="lightboxCaptionCounter" class="lightbox-caption-counter hidden">01 / 01</span>
             </figcaption>
         </figure>
-        <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" type="button" aria-label="Ver imagen siguiente">›</button>
+        <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" type="button"
+            aria-label="Ver imagen siguiente">›</button>
     </div>
 
     <div id="mobileStickyRsvp" class="mobile-sticky-rsvp hidden" aria-live="polite">
@@ -533,7 +552,8 @@
             <svg class="cat-svg" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
                 <g class="cat-root">
                     <g class="cat-tail-group">
-                        <path class="cat-tail" d="M171 74 C194 56, 203 43, 198 26 C194 13, 178 14, 178 28 C178 40, 185 48, 191 52" />
+                        <path class="cat-tail"
+                            d="M171 74 C194 56, 203 43, 198 26 C194 13, 178 14, 178 28 C178 40, 185 48, 191 52" />
                     </g>
                     <g class="cat-legs cat-legs-back">
                         <path class="leg leg-back-1" d="M106 94 C101 106, 100 117, 102 129" />
@@ -566,7 +586,8 @@
 
     <script type="module" src="main.js"></script>
 
-    <button id="musicToggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Activar música de fondo" title="Controlar música de fondo" hidden>
+    <button id="musicToggle" class="music-toggle" type="button" aria-pressed="false"
+        aria-label="Activar música de fondo" title="Controlar música de fondo" hidden>
         <span class="music-toggle__icon" aria-hidden="true">♪</span>
         <span class="music-toggle__copy">
             <span id="musicToggleText" class="music-toggle__text">Activar música</span>

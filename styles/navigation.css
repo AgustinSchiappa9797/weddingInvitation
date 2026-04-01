@@ -2,7 +2,7 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 0 auto 20px;
 }
 
@@ -32,13 +32,13 @@
 }
 
 .hub-nav {
-    position: sticky;
-    top: 12px;
+    position: static;
+    top: auto;
     z-index: 18;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    width: min(100%, 980px);
+    width: min(100%, 680px);
     padding: 10px;
     margin: 0 auto 18px;
     border-radius: 22px;

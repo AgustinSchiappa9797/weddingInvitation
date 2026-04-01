@@ -80,6 +80,8 @@ function buildDynamicCopy(data, companions) {
         rsvpNoTitle: COPY.rsvp.noOptionTitle(grammar),
         rsvpNoHint: COPY.rsvp.noOptionHint(grammar),
         rsvpCountLabel: COPY.rsvp.countLabel(grammar),
+        rsvpGuestNamesLabel: COPY.rsvp.guestNamesLabel(grammar),
+        rsvpGuestNamesHelper: COPY.rsvp.guestNamesHelper(grammar),
         rsvpDietaryLabel: COPY.rsvp.dietaryLabel(grammar),
         rsvpDietaryPlaceholder: COPY.rsvp.dietaryPlaceholder(grammar),
         rsvpCommentLabel: COPY.rsvp.commentLabel(grammar),

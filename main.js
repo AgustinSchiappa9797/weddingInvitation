@@ -40,6 +40,24 @@ function syncFloatingUiState() {
     document.body.classList.toggle("has-sticky-rsvp", stickyVisible);
 }
 
+function syncSectionNavMode() {
+    const isMobile = isMobileViewport();
+    const activeSection = document.body.dataset.activeSection || state.activeSection || "details";
+    const navRect = els.sectionNav?.getBoundingClientRect?.();
+    const panelRect = els.contentPanel?.getBoundingClientRect?.();
+    const hasPanelInView = Boolean(
+        navRect &&
+        panelRect &&
+        navRect.top <= 18 &&
+        panelRect.top < window.innerHeight * 0.55 &&
+        panelRect.bottom > 180
+    );
+    const hasKnownPanel = Boolean(activeSection && activeSection !== "hero");
+    const useHorizontalMobileNav = isMobile && hasKnownPanel && hasPanelInView;
+
+    document.body.classList.toggle("is-mobile-panel-nav", useHorizontalMobileNav);
+}
+
 
 function getToken() {
     const params = new URLSearchParams(window.location.search);
@@ -219,10 +237,15 @@ async function init() {
     window.addEventListener("resize", () => {
         document.body.classList.toggle("is-mobile-experience", isMobileViewport());
         syncFloatingUiState();
+        syncSectionNavMode();
     });
+    window.addEventListener("scroll", syncSectionNavMode, { passive: true });
+    window.addEventListener("orientationchange", syncSectionNavMode);
     window.addEventListener("invitation:mobilefloatingui", syncFloatingUiState);
+    window.addEventListener("invitation:sectionchange", syncSectionNavMode);
     await loadInvitationFlow();
     syncFloatingUiState();
+    syncSectionNavMode();
 }
 
 if (document.readyState === "loading") {

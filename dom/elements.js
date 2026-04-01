@@ -152,6 +152,10 @@ export function getElements() {
         confirmationNoTitle: document.getElementById("confirmationNoTitle"),
         confirmationNoHint: document.getElementById("confirmationNoHint"),
         confirmationCountLabel: document.getElementById("confirmationCountLabel"),
+        confirmationGuestNamesField: document.getElementById("confirmationGuestNamesField"),
+        confirmationGuestNamesLabel: document.getElementById("confirmationGuestNamesLabel"),
+        confirmationGuestNamesHelper: document.getElementById("confirmationGuestNamesHelper"),
+        confirmationGuestNamesList: document.getElementById("confirmationGuestNamesList"),
         confirmationDietaryLabel: document.getElementById("confirmationDietaryLabel"),
         confirmationCommentLabel: document.getElementById("confirmationCommentLabel"),
 
