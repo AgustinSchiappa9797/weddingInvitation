@@ -47,8 +47,8 @@
     box-shadow:
         0 16px 40px rgba(44, 29, 21, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .hub-tab {
@@ -164,4 +164,40 @@
 
 .section-tab.is-active {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Premium navigation overrides */
+.hub-nav {
+    background: linear-gradient(180deg, rgba(248, 243, 244, 0.68), rgba(244, 239, 237, 0.52));
+    border-color: rgba(255, 255, 255, 0.46);
+}
+
+.hub-tab {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(255, 250, 248, 0.52));
+}
+
+.hub-tab:hover {
+    box-shadow: 0 14px 30px rgba(52, 35, 43, 0.08);
+}
+
+.hub-tab.is-active {
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,248,0.9));
+    border-color: rgba(125, 163, 216, 0.18);
+}
+
+.hub-tab.is-active::after {
+    background: linear-gradient(90deg, rgba(215, 143, 169, 0.3), rgba(125, 163, 216, 0.95), rgba(111, 147, 138, 0.35));
+}
+
+.hub-tab-icon {
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,245,245,0.82));
+}
+
+.hub-tab.is-active .hub-tab-icon {
+    background: linear-gradient(135deg, rgba(215, 143, 169, 0.16), rgba(125, 163, 216, 0.16));
+    color: var(--primary-dark);
+}
+
+.hub-tab.is-active .hub-tab-label {
+    color: var(--primary-dark);
 }
