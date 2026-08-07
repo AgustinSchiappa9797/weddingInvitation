@@ -81,6 +81,7 @@
         font-size: 0.88rem;
         padding: 10px 14px;
     }
+
     .bg-overlay {
         background:
             radial-gradient(circle at top, rgba(255, 255, 255, 0.28), transparent 40%),
@@ -635,6 +636,7 @@
 }
 
 @media (max-width: 420px) {
+
     .hero-card,
     .card,
     .screen-card {
@@ -660,6 +662,7 @@
 
 /* Premium responsive overrides */
 @media (max-width: 767px) {
+
     .bg-overlay::before,
     .bg-overlay::after {
         opacity: 0.28;
@@ -750,7 +753,7 @@
         min-height: 46px;
     }
 
-    .panel-section > h3,
+    .panel-section>h3,
     .details-subtitle,
     .access-section-heading h4,
     .confirmation-section-heading h4,

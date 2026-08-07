@@ -167,7 +167,6 @@ export function initMusic(els) {
             try {
                 await previousTask;
             } catch {
-                // noop
             }
         }
 

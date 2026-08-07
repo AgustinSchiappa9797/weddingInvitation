@@ -165,7 +165,6 @@ export const COPY = {
         copyError: "No pudimos copiarla automáticamente"
     },
 
-
     gallery: {
         intro: ({ isPlural }) =>
             isPlural

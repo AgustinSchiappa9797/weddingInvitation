@@ -433,73 +433,383 @@ button:focus-visible {
     overflow: visible;
 }
 
-.cat-body { fill: #d98538; }
-.cat-belly { fill: #efc091; opacity: 0.5; }
-.cat-head { fill: #de8b3d; }
-.cat-head-group .cat-ear { fill: #cf7a2d; }
-.cat-ear-left, .cat-ear-right { transform-origin: center bottom; }
-.cat-eye { fill: #3f2a1b; }
-.cat-mouth, .cat-whisker, .cat-tail, .leg {
+.cat-body {
+    fill: #d98538;
+}
+
+.cat-belly {
+    fill: #efc091;
+    opacity: 0.5;
+}
+
+.cat-head {
+    fill: #de8b3d;
+}
+
+.cat-head-group .cat-ear {
+    fill: #cf7a2d;
+}
+
+.cat-ear-left,
+.cat-ear-right {
+    transform-origin: center bottom;
+}
+
+.cat-eye {
+    fill: #3f2a1b;
+}
+
+.cat-mouth,
+.cat-whisker,
+.cat-tail,
+.leg {
     fill: none;
     stroke: #8c4f22;
     stroke-width: 4.2;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
-.cat-tail { stroke-width: 6; }
-.leg { stroke-width: 5; }
-.cat-legs-back .leg { opacity: 0.92; }
-.cat-legs-front .leg { opacity: 1; }
 
-.orange-cat[data-mode="walk"] .cat-tail-group { animation: catTailWalk 900ms ease-in-out infinite; transform-origin: 170px 72px; }
-.orange-cat[data-mode="trot"] .cat-tail-group { animation: catTailTrot 500ms ease-in-out infinite; transform-origin: 170px 72px; }
-.orange-cat[data-mode="scratch"] .cat-tail-group { animation: catTailScratch 520ms ease-in-out infinite; transform-origin: 170px 72px; }
-.orange-cat[data-mode="climb"] .cat-tail-group { animation: catTailClimb 650ms ease-in-out infinite; transform-origin: 170px 72px; }
+.cat-tail {
+    stroke-width: 6;
+}
+
+.leg {
+    stroke-width: 5;
+}
+
+.cat-legs-back .leg {
+    opacity: 0.92;
+}
+
+.cat-legs-front .leg {
+    opacity: 1;
+}
+
+.orange-cat[data-mode="walk"] .cat-tail-group {
+    animation: catTailWalk 900ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="trot"] .cat-tail-group {
+    animation: catTailTrot 500ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="scratch"] .cat-tail-group {
+    animation: catTailScratch 520ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="climb"] .cat-tail-group {
+    animation: catTailClimb 650ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
 .orange-cat[data-mode="sit"] .cat-tail-group,
-.orange-cat[data-mode="loaf"] .cat-tail-group { animation: catTailSit 1800ms ease-in-out infinite; transform-origin: 170px 72px; }
-.orange-cat[data-mode="look"] .cat-head-group { animation: catHeadLook 900ms ease-in-out infinite; transform-origin: 60px 68px; }
-.orange-cat[data-mode="look"] .cat-tail-group { animation: catTailSit 1600ms ease-in-out infinite; transform-origin: 170px 72px; }
-.orange-cat[data-mode="walk"] .leg-front-1,
-.orange-cat[data-mode="walk"] .leg-back-2 { animation: catLegSwingA 700ms ease-in-out infinite; transform-origin: center top; }
-.orange-cat[data-mode="walk"] .leg-front-2,
-.orange-cat[data-mode="walk"] .leg-back-1 { animation: catLegSwingB 700ms ease-in-out infinite; transform-origin: center top; }
-.orange-cat[data-mode="trot"] .leg-front-1,
-.orange-cat[data-mode="trot"] .leg-back-2 { animation: catLegSwingA 380ms ease-in-out infinite; transform-origin: center top; }
-.orange-cat[data-mode="trot"] .leg-front-2,
-.orange-cat[data-mode="trot"] .leg-back-1 { animation: catLegSwingB 380ms ease-in-out infinite; transform-origin: center top; }
-.orange-cat[data-mode="scratch"] .leg-front-1,
-.orange-cat[data-mode="scratch"] .leg-front-2 { animation: catScratchPaw 120ms ease-in-out infinite alternate; transform-origin: center top; }
-.orange-cat[data-mode="scratch"] .cat-head-group { animation: catHeadScratch 180ms ease-in-out infinite alternate; transform-origin: 60px 68px; }
-.orange-cat[data-mode="climb"] .cat-root { transform: rotate(-90deg); transform-origin: 110px 75px; }
-.orange-cat[data-mode="climb"] .leg-front-1,
-.orange-cat[data-mode="climb"] .leg-back-2 { animation: catClimbA 320ms ease-in-out infinite alternate; transform-origin: center top; }
-.orange-cat[data-mode="climb"] .leg-front-2,
-.orange-cat[data-mode="climb"] .leg-back-1 { animation: catClimbB 320ms ease-in-out infinite alternate; transform-origin: center top; }
-.orange-cat[data-mode="sit"] .cat-root { transform: translateY(4px) scaleY(0.96); transform-origin: center bottom; }
-.orange-cat[data-mode="loaf"] .cat-root { transform: translateY(6px) scaleY(0.88) scaleX(1.03); transform-origin: center bottom; }
-.orange-cat[data-mode="stretch"] .cat-root { animation: catStretch 900ms ease-in-out infinite alternate; transform-origin: center center; }
-.orange-cat[data-mode="walk"] .cat-root { animation: catBodyWalk 700ms ease-in-out infinite; transform-origin: 110px 82px; }
-.orange-cat[data-mode="trot"] .cat-root { animation: catBodyTrot 380ms ease-in-out infinite; transform-origin: 110px 82px; }
-.orange-cat[data-mode="walk"] .cat-head-group { animation: catHeadWalk 700ms ease-in-out infinite; transform-origin: 60px 68px; }
-.orange-cat[data-mode="trot"] .cat-head-group { animation: catHeadTrot 380ms ease-in-out infinite; transform-origin: 60px 68px; }
+.orange-cat[data-mode="loaf"] .cat-tail-group {
+    animation: catTailSit 1800ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
 
-@keyframes catLegSwingA { 0% { transform: rotate(9deg); } 50% { transform: rotate(-7deg); } 100% { transform: rotate(9deg); } }
-@keyframes catLegSwingB { 0% { transform: rotate(-7deg); } 50% { transform: rotate(9deg); } 100% { transform: rotate(-7deg); } }
-@keyframes catScratchPaw { from { transform: translateX(0) rotate(8deg); } to { transform: translateX(-5px) rotate(-13deg); } }
-@keyframes catClimbA { from { transform: translateY(-1px) rotate(8deg); } to { transform: translateY(4px) rotate(-10deg); } }
-@keyframes catClimbB { from { transform: translateY(4px) rotate(-10deg); } to { transform: translateY(-1px) rotate(8deg); } }
-@keyframes catTailWalk { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(-10deg); } }
-@keyframes catTailTrot { 0%,100% { transform: rotate(14deg); } 50% { transform: rotate(-16deg); } }
-@keyframes catTailScratch { 0%,100% { transform: rotate(18deg); } 50% { transform: rotate(-4deg); } }
-@keyframes catTailClimb { 0%,100% { transform: rotate(28deg); } 50% { transform: rotate(4deg); } }
-@keyframes catTailSit { 0%,100% { transform: rotate(10deg); } 50% { transform: rotate(-6deg); } }
-@keyframes catHeadLook { 0%,100% { transform: rotate(0deg) translateX(0); } 40% { transform: rotate(-4deg) translateX(-1px); } 70% { transform: rotate(3deg) translateX(1px); } }
-@keyframes catHeadScratch { from { transform: rotate(-4deg); } to { transform: rotate(3deg); } }
-@keyframes catBodyWalk { 0%,100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
-@keyframes catBodyTrot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(2.5px); } }
-@keyframes catHeadWalk { 0%,100% { transform: translateY(0); } 50% { transform: translateY(1px); } }
-@keyframes catHeadTrot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
-@keyframes catStretch { from { transform: scaleX(1) scaleY(1); } to { transform: scaleX(1.04) scaleY(0.96); } }
+.orange-cat[data-mode="look"] .cat-head-group {
+    animation: catHeadLook 900ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="look"] .cat-tail-group {
+    animation: catTailSit 1600ms ease-in-out infinite;
+    transform-origin: 170px 72px;
+}
+
+.orange-cat[data-mode="walk"] .leg-front-1,
+.orange-cat[data-mode="walk"] .leg-back-2 {
+    animation: catLegSwingA 700ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="walk"] .leg-front-2,
+.orange-cat[data-mode="walk"] .leg-back-1 {
+    animation: catLegSwingB 700ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="trot"] .leg-front-1,
+.orange-cat[data-mode="trot"] .leg-back-2 {
+    animation: catLegSwingA 380ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="trot"] .leg-front-2,
+.orange-cat[data-mode="trot"] .leg-back-1 {
+    animation: catLegSwingB 380ms ease-in-out infinite;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="scratch"] .leg-front-1,
+.orange-cat[data-mode="scratch"] .leg-front-2 {
+    animation: catScratchPaw 120ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="scratch"] .cat-head-group {
+    animation: catHeadScratch 180ms ease-in-out infinite alternate;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="climb"] .cat-root {
+    transform: rotate(-90deg);
+    transform-origin: 110px 75px;
+}
+
+.orange-cat[data-mode="climb"] .leg-front-1,
+.orange-cat[data-mode="climb"] .leg-back-2 {
+    animation: catClimbA 320ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="climb"] .leg-front-2,
+.orange-cat[data-mode="climb"] .leg-back-1 {
+    animation: catClimbB 320ms ease-in-out infinite alternate;
+    transform-origin: center top;
+}
+
+.orange-cat[data-mode="sit"] .cat-root {
+    transform: translateY(4px) scaleY(0.96);
+    transform-origin: center bottom;
+}
+
+.orange-cat[data-mode="loaf"] .cat-root {
+    transform: translateY(6px) scaleY(0.88) scaleX(1.03);
+    transform-origin: center bottom;
+}
+
+.orange-cat[data-mode="stretch"] .cat-root {
+    animation: catStretch 900ms ease-in-out infinite alternate;
+    transform-origin: center center;
+}
+
+.orange-cat[data-mode="walk"] .cat-root {
+    animation: catBodyWalk 700ms ease-in-out infinite;
+    transform-origin: 110px 82px;
+}
+
+.orange-cat[data-mode="trot"] .cat-root {
+    animation: catBodyTrot 380ms ease-in-out infinite;
+    transform-origin: 110px 82px;
+}
+
+.orange-cat[data-mode="walk"] .cat-head-group {
+    animation: catHeadWalk 700ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+.orange-cat[data-mode="trot"] .cat-head-group {
+    animation: catHeadTrot 380ms ease-in-out infinite;
+    transform-origin: 60px 68px;
+}
+
+@keyframes catLegSwingA {
+    0% {
+        transform: rotate(9deg);
+    }
+
+    50% {
+        transform: rotate(-7deg);
+    }
+
+    100% {
+        transform: rotate(9deg);
+    }
+}
+
+@keyframes catLegSwingB {
+    0% {
+        transform: rotate(-7deg);
+    }
+
+    50% {
+        transform: rotate(9deg);
+    }
+
+    100% {
+        transform: rotate(-7deg);
+    }
+}
+
+@keyframes catScratchPaw {
+    from {
+        transform: translateX(0) rotate(8deg);
+    }
+
+    to {
+        transform: translateX(-5px) rotate(-13deg);
+    }
+}
+
+@keyframes catClimbA {
+    from {
+        transform: translateY(-1px) rotate(8deg);
+    }
+
+    to {
+        transform: translateY(4px) rotate(-10deg);
+    }
+}
+
+@keyframes catClimbB {
+    from {
+        transform: translateY(4px) rotate(-10deg);
+    }
+
+    to {
+        transform: translateY(-1px) rotate(8deg);
+    }
+}
+
+@keyframes catTailWalk {
+
+    0%,
+    100% {
+        transform: rotate(8deg);
+    }
+
+    50% {
+        transform: rotate(-10deg);
+    }
+}
+
+@keyframes catTailTrot {
+
+    0%,
+    100% {
+        transform: rotate(14deg);
+    }
+
+    50% {
+        transform: rotate(-16deg);
+    }
+}
+
+@keyframes catTailScratch {
+
+    0%,
+    100% {
+        transform: rotate(18deg);
+    }
+
+    50% {
+        transform: rotate(-4deg);
+    }
+}
+
+@keyframes catTailClimb {
+
+    0%,
+    100% {
+        transform: rotate(28deg);
+    }
+
+    50% {
+        transform: rotate(4deg);
+    }
+}
+
+@keyframes catTailSit {
+
+    0%,
+    100% {
+        transform: rotate(10deg);
+    }
+
+    50% {
+        transform: rotate(-6deg);
+    }
+}
+
+@keyframes catHeadLook {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateX(0);
+    }
+
+    40% {
+        transform: rotate(-4deg) translateX(-1px);
+    }
+
+    70% {
+        transform: rotate(3deg) translateX(1px);
+    }
+}
+
+@keyframes catHeadScratch {
+    from {
+        transform: rotate(-4deg);
+    }
+
+    to {
+        transform: rotate(3deg);
+    }
+}
+
+@keyframes catBodyWalk {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(1.5px);
+    }
+}
+
+@keyframes catBodyTrot {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(2.5px);
+    }
+}
+
+@keyframes catHeadWalk {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(1px);
+    }
+}
+
+@keyframes catHeadTrot {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+}
+
+@keyframes catStretch {
+    from {
+        transform: scaleX(1) scaleY(1);
+    }
+
+    to {
+        transform: scaleX(1.04) scaleY(0.96);
+    }
+}
 
 .music-toggle {
     position: fixed;
@@ -599,6 +909,7 @@ body.has-sticky-rsvp .music-toggle {
 }
 
 @keyframes musicPulse {
+
     0%,
     100% {
         transform: scale(1);
@@ -621,7 +932,9 @@ body.has-sticky-rsvp .music-toggle {
         scroll-behavior: auto;
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -639,7 +952,7 @@ body.has-sticky-rsvp .music-toggle {
 }
 
 .gallery-item img {
-    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(239,229,220,0.45));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 229, 220, 0.45));
 }
 
 
@@ -812,7 +1125,7 @@ body::after {
 
 .fade-in,
 .fade-up {
-    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.22,1,.36,1), filter 0.9s ease;
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.22, 1, .36, 1), filter 0.9s ease;
     filter: blur(10px);
 }
 
@@ -837,6 +1150,7 @@ body::after {
     0% {
         transform: translate3d(0, 0, 0) scale(1);
     }
+
     100% {
         transform: translate3d(-36px, 28px, 0) scale(1.12);
     }
@@ -846,6 +1160,7 @@ body::after {
     0% {
         transform: translate3d(0, 0, 0) scale(1);
     }
+
     100% {
         transform: translate3d(42px, -34px, 0) scale(1.14);
     }
@@ -887,6 +1202,7 @@ body.is-mobile-experience .btn::after {
 }
 
 @media (max-width: 520px) {
+
     body.is-mobile-experience::before,
     body.is-mobile-experience::after {
         display: none;

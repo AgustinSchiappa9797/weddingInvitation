@@ -43,11 +43,11 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
 }
 
-.panel-section > p + h3 {
+.panel-section>p+h3 {
     margin-top: -2px;
 }
 
-.panel-section > h3 + p {
+.panel-section>h3+p {
     max-width: 56ch;
     color: var(--muted);
     line-height: 1.75;
@@ -278,11 +278,11 @@
     color: var(--muted);
 }
 
-.panel-section > .section-kicker:first-child {
+.panel-section>.section-kicker:first-child {
     margin-bottom: 8px;
 }
 
-.panel-section > p:not(.section-kicker):not(.rsvp-text):not(.rsvp-helper-text),
+.panel-section>p:not(.section-kicker):not(.rsvp-text):not(.rsvp-helper-text),
 .panel-section li,
 .timeline-content p,
 .panel-block p,
@@ -405,7 +405,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .access-notes-grid > :last-child:nth-child(odd) {
+    .access-notes-grid> :last-child:nth-child(odd) {
         grid-column: 1 / -1;
     }
 }
@@ -818,7 +818,7 @@
 .gift-intro-card,
 .gift-data-card,
 .access-hero-card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,249,247,0.58));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 249, 247, 0.58));
     border: 1px solid rgba(255, 255, 255, 0.48);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.34),
@@ -830,7 +830,7 @@
     background:
         radial-gradient(circle at top right, rgba(125, 163, 216, 0.12), transparent 26%),
         radial-gradient(circle at bottom left, rgba(215, 143, 169, 0.1), transparent 28%),
-        linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,249,247,0.64));
+        linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 249, 247, 0.64));
 }
 
 .confirmation-summary-card {
@@ -841,17 +841,17 @@
 .confirmation-summary-badge,
 .details-chip,
 .tag {
-    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(250,244,255,0.7));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(250, 244, 255, 0.7));
     border: 1px solid rgba(154, 137, 215, 0.14);
 }
 
 .confirmation-progress-step.is-active {
     border-color: rgba(125, 163, 216, 0.22);
-    background: linear-gradient(180deg, rgba(244,249,255,0.9), rgba(255,255,255,0.86));
+    background: linear-gradient(180deg, rgba(244, 249, 255, 0.9), rgba(255, 255, 255, 0.86));
 }
 
 .confirmation-progress-step.is-complete {
-    background: linear-gradient(180deg, rgba(238,248,245,0.88), rgba(246,255,252,0.78));
+    background: linear-gradient(180deg, rgba(238, 248, 245, 0.88), rgba(246, 255, 252, 0.78));
     border-color: rgba(111, 147, 138, 0.22);
 }
 

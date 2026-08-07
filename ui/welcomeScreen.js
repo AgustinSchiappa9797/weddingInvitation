@@ -29,7 +29,7 @@ export function setWelcomeScreenLoadingState(els) {
 export function setWelcomeScreenReadyState(els, invitation) {
     if (els.welcomeKicker) els.welcomeKicker.textContent = COPY.ready.kicker;
     if (els.welcomeGuestName) {
-        els.welcomeGuestName.textContent = invitation.welcomeTitle || invitation.guestName || COPY.ready.guestFallback;
+        typeWriter(els.welcomeGuestName, invitation.welcomeTitle || invitation.guestName || COPY.ready.guestFallback);
     }
     if (els.welcomeLead) {
         els.welcomeLead.textContent = invitation.welcomeLead || COPY.cinematic.readyLead;
@@ -62,4 +62,9 @@ export async function hideWelcomeScreen(els) {
     await wait(WELCOME_SCREEN_HIDE_DELAY_MS);
     els.welcomeScreen.classList.add("hidden");
     els.welcomeScreen.classList.remove("is-leaving");
+}
+
+async function typeWriter(element,text){
+ element.textContent="";
+ for(const ch of text){element.textContent+=ch; await wait(35);}
 }

@@ -181,7 +181,7 @@
 }
 
 .hub-tab.is-active {
-    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,248,0.9));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 250, 248, 0.9));
     border-color: rgba(125, 163, 216, 0.18);
 }
 
@@ -190,7 +190,7 @@
 }
 
 .hub-tab-icon {
-    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,245,245,0.82));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 245, 0.82));
 }
 
 .hub-tab.is-active .hub-tab-icon {

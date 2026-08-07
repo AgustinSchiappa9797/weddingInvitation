@@ -304,7 +304,7 @@
 
 /* Premium gallery overrides */
 .gallery-counter {
-    background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(250,245,255,0.78));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(250, 245, 255, 0.78));
     border-color: rgba(154, 137, 215, 0.16);
     color: var(--primary-dark);
 }
@@ -319,13 +319,13 @@
 
 .gallery-item-frame {
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,250,248,0.46));
-    border-color: rgba(255,255,255,0.46);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 250, 248, 0.46));
+    border-color: rgba(255, 255, 255, 0.46);
 }
 
 .gallery-item-frame::after {
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.03)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.03)),
         linear-gradient(0deg, rgba(49, 31, 34, 0.18), rgba(49, 31, 34, 0));
 }
 
@@ -339,12 +339,12 @@
 }
 
 .gallery-item-meta {
-    background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,245,255,0.82));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 245, 255, 0.82));
     box-shadow: 0 12px 26px rgba(52, 35, 43, 0.14);
 }
 
 .gallery-nav-button {
-    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,248,246,0.9));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 248, 246, 0.9));
 }
 
 .gallery-nav-button:hover:not(:disabled) {
@@ -357,6 +357,7 @@
 
 /* Mobile polish v3 */
 @media (max-width: 720px) {
+
     .gallery-wrapper::before,
     .gallery-wrapper::after {
         width: 20px;
