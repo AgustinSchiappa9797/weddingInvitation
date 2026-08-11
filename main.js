@@ -1,204 +1,22 @@
-import { COPY } from "./constants/copy.js";
-import { WELCOME_SCREEN_READY_DELAY_MS } from "./config.js";
 import { getElements } from "./dom/elements.js";
 import { state } from "./state.js";
-import { fetchInvitation } from "./api/invitationApi.js";
-import { wait } from "./utils/wait.js";
-import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./ui/welcomeScreen.js";
-import { renderActiveNavigation, syncNavigationVisibility, setupNavigation, syncSectionFromHash } from "./ui/navigation.js";
-import { hideError, showError } from "./ui/errorView.js";
-import { renderHero } from "./ui/heroView.js";
-import { renderDetails } from "./ui/detailsView.js";
-import { renderAccess } from "./ui/accessView.js";
-import { renderGallery } from "./ui/galleryView.js";
-import { renderPlaylist } from "./ui/playlistView.js";
-import { renderCountdown } from "./ui/countdownView.js";
-import { renderConfirmation } from "./ui/confirmationView.js";
-import { createOrangeCatApi, setupAnimations, revealContentAnimations } from "./ui/animations.js";
-import { setupCatBehavior } from "./ui/catBehavior.js";
-import { setupLightbox, closeLightbox } from "./ui/lightboxView.js";
-import { getInvitationViewData } from "./ui/viewData.js";
-import { renderBackground } from "./ui/backgroundView.js";
-import { renderGift } from "./ui/giftView.js";
+
+import { setupNavigation } from "./ui/navigation.js";
+import { setupAnimations } from "./ui/animations.js";
+import { setupLightbox } from "./ui/lightboxView.js";
 import { initMusic } from "./ui/musicController.js";
 import { setupViewportController } from "./ui/viewportController.js";
+import { createInvitationController } from "./ui/invitationController.js";
 
 const els = Object.freeze(getElements());
 
-let catBehaviorInitialized = false;
-
-function getToken() {
-    const url = new URL(window.location.href);
-    const token = url.searchParams.get("token")?.trim();
-
-    if (!token) {
-        return null;
-    }
-
-    url.searchParams.delete("token");
-
-    window.history.replaceState(
-        window.history.state,
-        "",
-        `${url.pathname}${url.search}${url.hash}`
-    );
-
-    return token;
-}
-
-function hideElements(...elements) {
-    elements.forEach(el => el?.classList.add("hidden"));
-}
-
-function resetInvitationState() {
-    hideError(els);
-
-    hideElements(
-        els.invitationContent,
-        els.gallerySection,
-        els.playlistSection,
-        els.countdownSection,
-        els.timelineSection,
-        els.errorSection,
-        els.lightbox
-    );
-
-    closeLightbox(els);
-
-    els.gallery?.replaceChildren();
-    els.guestTags?.replaceChildren();
-
-    state.reset();
-
-    [
-        els.tabDetails,
-        els.tabAccess,
-        els.tabGallery,
-        els.tabRsvp,
-        els.tabPlaylist,
-        els.panelDetails,
-        els.panelAccess,
-        els.panelGallery,
-        els.panelRsvp,
-        els.panelPlaylist,
-        els.tabGift,
-        els.panelGift
-    ].forEach((element) => {
-        element?.classList.remove("hidden");
-    });
-
-    renderActiveNavigation(els, state, {
-        hasGallery: true,
-        hasConfirmation: true,
-        hasPlaylist: true,
-        hasGift: true
-    });
-}
-
-function showInvitationShell() {
-    els.invitationContent?.classList.remove("hidden");
-}
-
-function renderInvitationSections(viewData, options = {}) {
-    renderDetails(els, viewData);
-    renderAccess(els, viewData);
-    renderGallery(els, viewData);
-    renderConfirmation(els, viewData, { ...options, state });
-    renderPlaylist(els, viewData);
-    renderCountdown(els, state, viewData);
-    renderGift(els, viewData);
-}
-
-async function renderInvitation(data, options = {}) {
-    const viewData = getInvitationViewData(data);
-
-    state.setActiveSection("details");
-
-    document.body.dataset.eventPhase = viewData.eventPhase || "upcoming";
-
-    await renderBackground(els, viewData);
-    await renderHero(els, viewData, state);
-
-    showInvitationShell();
-
-    if (!catBehaviorInitialized && !window.matchMedia?.("(max-width: 720px)")?.matches) {
-        const catApi = createOrangeCatApi();
-        if (catApi) {
-            setupCatBehavior(catApi);
-            catBehaviorInitialized = true;
-        }
-    }
-
-    renderInvitationSections(viewData, options);
-    syncNavigationVisibility(els, state, viewData);
-    syncSectionFromHash(els, state);
-    renderActiveNavigation(els, state, viewData);
-    revealContentAnimations();
-}
-
-async function showInvitationError(copy) {
-    showError(els, copy);
-    await hideWelcomeScreen(els);
-}
-
-async function getInvitationData(token) {
-    const data = await fetchInvitation(token);
-
-    if (!data || !data.ok || !data.invitation) {
-        throw new Error("INVALID_INVITATION");
-    }
-
-    return data.invitation;
-}
-
-async function handleInvitationError(error) {
-    console.error("Error cargando invitación:", error);
-
-    if (error?.message === "REQUEST_TIMEOUT") {
-        return showInvitationError(COPY.errors.timeout);
-    }
-
-    if (error?.message === "INVALID_INVITATION") {
-        return showInvitationError(COPY.errors.invalidAccess);
-    }
-
-    return showInvitationError(COPY.errors.connection);
-}
-
-async function loadInvitationFlow() {
-    showWelcomeScreen(els);
-    resetInvitationState();
-    setWelcomeScreenLoadingState(els);
-    setWelcomeScreenProgress(els, COPY.cinematic.progress.validating);
-
-    const token = getToken();
-
-    if (!token) {
-        return showInvitationError(COPY.errors.missingToken);
-    }
-
-    setWelcomeScreenProgress(els, COPY.cinematic.progress.preparing);
-
-    try {
-        const invitation = await getInvitationData(token);
-
-        setWelcomeScreenProgress(els, COPY.cinematic.progress.cover);
-        await renderInvitation(invitation, { token });
-        setWelcomeScreenProgress(els, COPY.cinematic.progress.done);
-
-        setWelcomeScreenReadyState(els, invitation);
-
-        await wait(WELCOME_SCREEN_READY_DELAY_MS);
-        await hideWelcomeScreen(els);
-    } catch (error) {
-        await handleInvitationError(error);
-    }
-}
+const invitationController = createInvitationController(els, state);
 
 let initialized = false;
 
 async function init() {
     if (initialized) return;
+
     initialized = true;
 
     setupAnimations();
@@ -213,7 +31,7 @@ async function init() {
 
     setupNavigation(els, state);
 
-    await loadInvitationFlow();
+    await invitationController.load();
 }
 
 if (document.readyState === "loading") {

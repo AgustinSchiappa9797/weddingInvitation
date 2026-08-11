@@ -1,7 +1,7 @@
 export const API_URL = "https://script.google.com/macros/s/AKfycbyaB7N4psVLnrtGDBGXpn4a3rOFzFdTvhcZ2SmTax4i2dkU2o7UMbDwvw6sfdrB0eyb4Q/exec";
 
-export const WELCOME_SCREEN_READY_DELAY_MS = 1200;
-export const WELCOME_SCREEN_HIDE_DELAY_MS = 520;
+export const WELCOME_SCREEN_READY_DELAY_MS = 1400;
+export const WELCOME_SCREEN_HIDE_DELAY_MS = 620;
 
 export const FETCH_TIMEOUT_MS = 8000;
 export const INVITATION_CACHE_TTL_MS = 5 * 60 * 1000;

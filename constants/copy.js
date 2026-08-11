@@ -1,5 +1,4 @@
 export const COPY = {
-
     cinematic: {
         loadingLead: "En unos segundos vas a poder verla.",
         loadingClosingLine: "Gracias por acompañarnos en este momento 💛",
@@ -12,16 +11,19 @@ export const COPY = {
             done: "Todo listo."
         }
     },
+
     loading: {
         kicker: "Estamos preparando tu invitación",
         title: "Tu invitación",
         message: ""
     },
+
     ready: {
         kicker: "Qué alegría tenerte acá",
         guestFallback: "Invitado/a",
         message: "Tu invitación ya está lista. Ojalá disfrutes cada sección tanto como nosotros disfrutamos prepararla."
     },
+    
     defaults: {
         heroTitle: "Nuestra Boda",
         heroEyebrow: "Guardá esta fecha",
