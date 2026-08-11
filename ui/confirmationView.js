@@ -446,7 +446,7 @@ function renderConfirmationSummary(els, existingConfirmation) {
     if (!els.confirmationSummary) return;
 
     if (!existingConfirmation) {
-        els.confirmationSummary.innerHTML = "";
+        els.confirmationSummary.replaceChildren();
         els.confirmationSummary.classList.add("hidden");
         return;
     }
@@ -456,79 +456,134 @@ function renderConfirmationSummary(els, existingConfirmation) {
         return Number.isNaN(date.getTime()) ? "" : date.toLocaleString("es-AR");
     })();
 
-    const summaryRows = [];
-    const { cleanComment: summaryCommentWithoutKids, kidsInfo: summaryKidsInfo } = extractKidsInfoFromComment(existingConfirmation.comment || "");
-    const { cleanComment: summaryComment, guestNames: summaryGuestNames } = extractGuestNamesFromComment(summaryCommentWithoutKids || "");
+    const summaryCommentWithoutKids = extractKidsInfoFromComment(
+        existingConfirmation.comment || ""
+    );
+
+    const { cleanComment: summaryComment, kidsInfo: summaryKidsInfo } =
+        summaryCommentWithoutKids;
+
+    const { guestNames: summaryGuestNames } =
+        extractGuestNamesFromComment(summaryComment || "");
+
+    const card = document.createElement("div");
+    card.className = "confirmation-summary-card";
+
+    const header = document.createElement("div");
+    header.className = "confirmation-summary-header";
+
+    const badge = document.createElement("span");
+    badge.className = "confirmation-summary-badge";
+    badge.textContent = "Tu confirmación";
+
+    header.appendChild(badge);
+
+    if (dateText) {
+        const date = document.createElement("small");
+        date.className = "confirmation-summary-date";
+        date.textContent = `Actualizado: ${dateText}`;
+        header.appendChild(date);
+    }
+
+    card.appendChild(header);
+
+    const grid = document.createElement("div");
+    grid.className = "confirmation-summary-grid";
+
+    const appendRow = (labelText, value, { multiline = false } = {}) => {
+        const row = document.createElement("div");
+        row.className = "confirmation-summary-row";
+
+        if (multiline) {
+            row.classList.add("is-multiline");
+        }
+
+        const label = document.createElement("span");
+        label.className = "confirmation-summary-label";
+        label.textContent = labelText;
+
+        const valueElement = document.createElement("span");
+        valueElement.className = "confirmation-summary-value";
+
+        if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+                if (index > 0) {
+                    valueElement.appendChild(document.createElement("br"));
+                }
+
+                valueElement.appendChild(
+                    document.createTextNode(item)
+                );
+            });
+        } else {
+            const lines = String(value).split("\n");
+
+            lines.forEach((line, index) => {
+                if (index > 0) {
+                    valueElement.appendChild(document.createElement("br"));
+                }
+
+                valueElement.appendChild(
+                    document.createTextNode(line)
+                );
+            });
+        }
+
+        row.append(label, valueElement);
+        grid.appendChild(row);
+    };
 
     if (existingConfirmation.status === "yes") {
-        const count = Math.max(1, Number(existingConfirmation.attendingCount) || 1);
-        summaryRows.push(`
-            <div class="confirmation-summary-row">
-                <span class="confirmation-summary-label">Estado</span>
-                <strong class="confirmation-summary-value">Asistencia confirmada</strong>
-            </div>
-            <div class="confirmation-summary-row">
-                <span class="confirmation-summary-label">Lugares reservados</span>
-                <strong class="confirmation-summary-value">${count} persona${count === 1 ? "" : "s"}</strong>
-            </div>
-        `);
+        const count = Math.max(
+            1,
+            Number(existingConfirmation.attendingCount) || 1
+        );
+
+        appendRow("Estado", "Asistencia confirmada");
+
+        appendRow(
+            "Lugares reservados",
+            `${count} persona${count === 1 ? "" : "s"}`
+        );
     } else {
-        summaryRows.push(`
-            <div class="confirmation-summary-row">
-                <span class="confirmation-summary-label">Estado</span>
-                <strong class="confirmation-summary-value">No asistirá</strong>
-            </div>
-        `);
+        appendRow("Estado", "No asistirá");
     }
 
     if (summaryGuestNames.length > 1) {
-        summaryRows.push(`
-            <div class="confirmation-summary-row is-multiline">
-                <span class="confirmation-summary-label">Asistentes</span>
-                <span class="confirmation-summary-value">${summaryGuestNames.join("<br>")}</span>
-            </div>
-        `);
+        appendRow(
+            "Asistentes",
+            summaryGuestNames,
+            { multiline: true }
+        );
     }
 
     if (existingConfirmation.dietaryRestrictions) {
-        summaryRows.push(`
-            <div class="confirmation-summary-row is-multiline">
-                <span class="confirmation-summary-label">Restricciones</span>
-                <span class="confirmation-summary-value">${existingConfirmation.dietaryRestrictions}</span>
-            </div>
-        `);
+        appendRow(
+            "Restricciones",
+            existingConfirmation.dietaryRestrictions,
+            { multiline: true }
+        );
     }
 
     if (summaryKidsInfo) {
-        summaryRows.push(`
-            <div class="confirmation-summary-row is-multiline">
-                <span class="confirmation-summary-label">Info chicos</span>
-                <span class="confirmation-summary-value">${summaryKidsInfo.replace(/\n/g, "<br>")}</span>
-            </div>
-        `);
+        appendRow(
+            "Info chicos",
+            summaryKidsInfo,
+            { multiline: true }
+        );
     }
 
     if (summaryComment) {
-        summaryRows.push(`
-            <div class="confirmation-summary-row is-multiline">
-                <span class="confirmation-summary-label">Datos adicionales</span>
-                <span class="confirmation-summary-value">${summaryComment.replace(/\n/g, "<br>")}</span>
-            </div>
-        `);
+        appendRow(
+            "Datos adicionales",
+            summaryComment,
+            { multiline: true }
+        );
     }
 
-    els.confirmationSummary.innerHTML = `
-        <div class="confirmation-summary-card">
-            <div class="confirmation-summary-header">
-                <span class="confirmation-summary-badge">Tu confirmación</span>
-                ${dateText ? `<small class="confirmation-summary-date">Actualizado: ${dateText}</small>` : ""}
-            </div>
-            <div class="confirmation-summary-grid">
-                ${summaryRows.join("")}
-            </div>
-        </div>
-    `;
+    card.appendChild(grid);
 
+    els.confirmationSummary.replaceChildren(card);
     els.confirmationSummary.classList.remove("hidden");
 }
 

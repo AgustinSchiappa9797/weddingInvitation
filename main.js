@@ -58,12 +58,23 @@ function syncSectionNavMode() {
     document.body.classList.toggle("is-mobile-panel-nav", useHorizontalMobileNav);
 }
 
-
 function getToken() {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token")?.trim();
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("token")?.trim();
 
-    return token || null;
+    if (!token) {
+        return null;
+    }
+
+    url.searchParams.delete("token");
+
+    window.history.replaceState(
+        window.history.state,
+        "",
+        `${url.pathname}${url.search}${url.hash}`
+    );
+
+    return token;
 }
 
 function hideElements(...elements) {

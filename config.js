@@ -1,4 +1,4 @@
-export const API_URL = "https://script.google.com/macros/s/AKfycby_ktZpNPYLOoSvqGIiFrHFy5_uzjNaqFaXNsBTaT-GDiLY9tWFlC_fUEVjYy29olSPSw/exec";
+export const API_URL = "https://script.google.com/macros/s/AKfycbyaB7N4psVLnrtGDBGXpn4a3rOFzFdTvhcZ2SmTax4i2dkU2o7UMbDwvw6sfdrB0eyb4Q/exec";
 
 export const WELCOME_SCREEN_READY_DELAY_MS = 1200;
 export const WELCOME_SCREEN_HIDE_DELAY_MS = 520;
