@@ -21,42 +21,11 @@ import { getInvitationViewData } from "./ui/viewData.js";
 import { renderBackground } from "./ui/backgroundView.js";
 import { renderGift } from "./ui/giftView.js";
 import { initMusic } from "./ui/musicController.js";
+import { setupViewportController } from "./ui/viewportController.js";
 
 const els = Object.freeze(getElements());
 
 let catBehaviorInitialized = false;
-
-function isMobileViewport() {
-    return window.matchMedia?.("(max-width: 720px)")?.matches ?? window.innerWidth <= 720;
-}
-
-function syncFloatingUiState() {
-    const stickyVisible = Boolean(
-        els.mobileStickyRsvp &&
-        !els.mobileStickyRsvp.classList.contains("hidden") &&
-        !els.mobileStickyRsvp.classList.contains("is-contextually-hidden")
-    );
-
-    document.body.classList.toggle("has-sticky-rsvp", stickyVisible);
-}
-
-function syncSectionNavMode() {
-    const isMobile = isMobileViewport();
-    const activeSection = document.body.dataset.activeSection || state.activeSection || "details";
-    const navRect = els.sectionNav?.getBoundingClientRect?.();
-    const panelRect = els.contentPanel?.getBoundingClientRect?.();
-    const hasPanelInView = Boolean(
-        navRect &&
-        panelRect &&
-        navRect.top <= 18 &&
-        panelRect.top < window.innerHeight * 0.55 &&
-        panelRect.bottom > 180
-    );
-    const hasKnownPanel = Boolean(activeSection && activeSection !== "hero");
-    const useHorizontalMobileNav = isMobile && hasKnownPanel && hasPanelInView;
-
-    document.body.classList.toggle("is-mobile-panel-nav", useHorizontalMobileNav);
-}
 
 function getToken() {
     const url = new URL(window.location.href);
@@ -152,7 +121,7 @@ async function renderInvitation(data, options = {}) {
 
     showInvitationShell();
 
-    if (!catBehaviorInitialized && !isMobileViewport()) {
+    if (!catBehaviorInitialized && !window.matchMedia?.("(max-width: 720px)")?.matches) {
         const catApi = createOrangeCatApi();
         if (catApi) {
             setupCatBehavior(catApi);
@@ -165,7 +134,6 @@ async function renderInvitation(data, options = {}) {
     syncSectionFromHash(els, state);
     renderActiveNavigation(els, state, viewData);
     revealContentAnimations();
-    syncFloatingUiState();
 }
 
 async function showInvitationError(copy) {
@@ -233,11 +201,10 @@ async function init() {
     if (initialized) return;
     initialized = true;
 
-    document.body.classList.toggle("is-mobile-experience", isMobileViewport());
-
     setupAnimations();
     setupLightbox(els);
     initMusic(els);
+    setupViewportController(els, state);
 
     els.retryButton?.addEventListener("click", () => {
         els.retryButton.disabled = true;
@@ -245,18 +212,8 @@ async function init() {
     });
 
     setupNavigation(els, state);
-    window.addEventListener("resize", () => {
-        document.body.classList.toggle("is-mobile-experience", isMobileViewport());
-        syncFloatingUiState();
-        syncSectionNavMode();
-    });
-    window.addEventListener("scroll", syncSectionNavMode, { passive: true });
-    window.addEventListener("orientationchange", syncSectionNavMode);
-    window.addEventListener("invitation:mobilefloatingui", syncFloatingUiState);
-    window.addEventListener("invitation:sectionchange", syncSectionNavMode);
+
     await loadInvitationFlow();
-    syncFloatingUiState();
-    syncSectionNavMode();
 }
 
 if (document.readyState === "loading") {
