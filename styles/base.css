@@ -27,6 +27,7 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 94%;
 }
 
 body {
@@ -152,7 +153,7 @@ body.bg-ready .bg-overlay {
 }
 
 .section {
-    padding: 84px 0;
+    padding: 72px 0;
     content-visibility: auto;
     contain-intrinsic-size: 700px;
 }

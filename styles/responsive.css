@@ -98,7 +98,7 @@
     }
 
     .hero {
-        padding: 22px 0 16px;
+        padding: 18px 0 14px;
     }
 
     .hero-card,
@@ -109,13 +109,13 @@
     }
 
     .hero-card {
-        padding-top: 30px;
+        padding-top: 26px;
     }
 
 
     .title {
         max-width: 11ch;
-        font-size: clamp(2.8rem, 10vw, 4.2rem);
+        font-size: clamp(2.55rem, 9.2vw, 3.9rem);
     }
 
     .subtitle {
@@ -129,7 +129,7 @@
     }
 
     .guest-box {
-        padding: 18px 16px 16px;
+        padding: 16px 15px 14px;
         margin-bottom: 14px;
     }
 
@@ -145,7 +145,7 @@
     }
 
     .hero-highlight-card {
-        padding: 16px;
+        padding: 14px;
     }
 
     .hero-actions-split {
@@ -410,7 +410,7 @@
 
 @media (max-width: 720px) {
     .section {
-        padding: 68px 0;
+        padding: 56px 0;
     }
 
     .footer {
