@@ -1,0 +1,385 @@
+/*
+ * Day → night scene
+ *
+ * This file is intentionally loaded last. The scene is a visual layer shared
+ * by the whole invitation, so it must be able to override component-level
+ * pastel surfaces without changing each component's original design.
+ */
+
+:root {
+    --scene-night-percent: calc(var(--scene-progress) * 100%);
+    --scene-day-percent: calc(100% - var(--scene-night-percent));
+
+    /* Day palette */
+    --scene-day-bg: #f8f4ef;
+    --scene-day-bg-alt: #efe4dc;
+    --scene-day-surface: #fffaf6;
+    --scene-day-surface-soft: #f8f0eb;
+    --scene-day-text: #342924;
+    --scene-day-muted: #766864;
+
+    /* Night palette — deliberately blue/charcoal, not pastel purple */
+    --scene-night-bg: #0d1221;
+    --scene-night-bg-alt: #171d31;
+    --scene-night-surface: #1b2235;
+    --scene-night-surface-soft: #252d43;
+    --scene-night-text: #f5f0e8;
+    --scene-night-muted: #b8bac5;
+    --scene-night-border: #46506a;
+    --scene-night-gold: #d8b77b;
+
+    /* Shared semantic colors */
+    --scene-bg: color-mix(in srgb, var(--scene-day-bg) var(--scene-day-percent), var(--scene-night-bg) var(--scene-night-percent));
+    --scene-bg-alt: color-mix(in srgb, var(--scene-day-bg-alt) var(--scene-day-percent), var(--scene-night-bg-alt) var(--scene-night-percent));
+    --scene-surface: color-mix(in srgb, var(--scene-day-surface) var(--scene-day-percent), var(--scene-night-surface) var(--scene-night-percent));
+    --scene-surface-soft: color-mix(in srgb, var(--scene-day-surface-soft) var(--scene-day-percent), var(--scene-night-surface-soft) var(--scene-night-percent));
+    --scene-text: color-mix(in srgb, var(--scene-day-text) var(--scene-day-percent), var(--scene-night-text) var(--scene-night-percent));
+    --scene-muted: color-mix(in srgb, var(--scene-day-muted) var(--scene-day-percent), var(--scene-night-muted) var(--scene-night-percent));
+    --scene-border: color-mix(in srgb, #ffffff80 var(--scene-day-percent), var(--scene-night-border) var(--scene-night-percent));
+}
+
+/*
+ * The atmosphere is a real layer, rather than just tinting pastel elements.
+ * At night it darkens the entire composition behind the UI.
+ */
+.scene-atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(241, 177, 119, calc(var(--scene-progress) * 0.16)),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(8, 13, 29, calc(var(--scene-progress) * 0.32)),
+            rgba(5, 8, 19, calc(var(--scene-progress) * 0.72))
+        );
+    transition: opacity 0.25s linear;
+}
+
+header,
+main,
+footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* The global palette */
+body {
+    color: var(--scene-text);
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            color-mix(in srgb, #ffffff66 var(--scene-day-percent), transparent var(--scene-night-percent)),
+            transparent 38%
+        ),
+        linear-gradient(180deg, var(--scene-bg) 0%, var(--scene-bg-alt) 100%);
+    transition: color 0.7s ease, background 0.7s ease;
+}
+
+body::before,
+body::after {
+    opacity: calc(0.82 - (var(--scene-progress) * 0.72));
+    filter:
+        drop-shadow(0 12px 24px rgba(61, 48, 41, 0.06))
+        brightness(calc(1 - (var(--scene-progress) * 0.42)))
+        saturate(calc(1 - (var(--scene-progress) * 0.42)));
+    transition: opacity 0.7s ease, filter 0.7s ease;
+}
+
+/* Background image: the photo itself becomes duskier, not merely pinker. */
+.bg-overlay {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 248, 241, calc(0.22 - (var(--scene-progress) * 0.18))),
+            rgba(245, 235, 225, calc(0.42 - (var(--scene-progress) * 0.32)))
+        ),
+        linear-gradient(
+            180deg,
+            rgba(12, 18, 37, calc(var(--scene-progress) * 0.34)),
+            rgba(5, 9, 22, calc(var(--scene-progress) * 0.68))
+        ),
+        var(--bg-photo) center 18% / cover no-repeat,
+        linear-gradient(135deg, var(--scene-day-bg) 0%, var(--scene-day-bg-alt) 100%);
+    filter: saturate(calc(1 - (var(--scene-progress) * 0.28))) brightness(calc(1 - (var(--scene-progress) * 0.20)));
+    transition: filter 0.7s ease;
+}
+
+/* Main surfaces: at 100% these are genuinely dark, opaque surfaces. */
+.card,
+.content-panel,
+.hero-card,
+.panel-block,
+.panel-block-featured,
+.personal-message-box,
+.rsvp-header-card,
+.gift-intro-card,
+.gift-data-card,
+.access-hero-card,
+.details-main-card,
+.details-side-card,
+.playlist-header-card,
+.playlist-highlight-card,
+.playlist-card,
+.gift-bank-card,
+.gift-note-card,
+.access-fact-card,
+.access-note,
+.confirmation-summary-card,
+.choice-card,
+.guest-box,
+.hero-highlight-card {
+    color: var(--scene-text);
+    background: var(--scene-surface);
+    border-color: var(--scene-border);
+    box-shadow:
+        0 22px 60px color-mix(
+            in srgb,
+            rgba(52, 35, 43, 0.10) var(--scene-day-percent),
+            rgba(0, 0, 0, 0.34) var(--scene-night-percent)
+        ),
+        inset 0 1px 0 color-mix(
+            in srgb,
+            rgba(255, 255, 255, 0.34) var(--scene-day-percent),
+            rgba(255, 255, 255, 0.07) var(--scene-night-percent)
+        );
+    transition:
+        color 0.7s ease,
+        background 0.7s ease,
+        border-color 0.7s ease,
+        box-shadow 0.7s ease;
+}
+
+.panel-block-featured,
+.hero-highlight-card,
+.playlist-highlight-card {
+    background: var(--scene-surface-soft);
+}
+
+/* Typography that was previously hard-coded in individual components. */
+.hero-card h1,
+.hero-card h2,
+.hero-card h3,
+.content-panel h1,
+.content-panel h2,
+.content-panel h3,
+.content-panel h4,
+.content-panel p,
+.content-panel li,
+.content-panel label,
+.content-panel strong,
+.content-panel span,
+.details-card-title,
+.details-side-title,
+.details-side-copy,
+.details-subtitle,
+.details-highlight-value,
+.access-section-heading,
+.access-route-hint,
+.gift-data-title,
+.gift-data-value,
+.gift-intro-text,
+.gift-note-card,
+.playlist-highlight-song,
+.playlist-card,
+.timeline-content,
+.timeline-time,
+.detail-row,
+.confirmation-summary-value,
+.confirmation-summary-date,
+.confirmation-helper-text,
+.confirmation-progress-copy {
+    color: var(--scene-text);
+    transition: color 0.7s ease;
+}
+
+.label,
+.section-kicker,
+.eyebrow,
+.screen-kicker,
+.hero-highlight-label,
+.hero-highlight-meta,
+.details-chip,
+.access-fact-label,
+.gift-data-label,
+.confirmation-summary-label,
+.confirmation-progress-copy,
+.confirmation-helper-text,
+.music-toggle__hint {
+    color: var(--scene-muted);
+    transition: color 0.7s ease;
+}
+
+/* Navigation becomes glassy and dark instead of staying white. */
+.hub-nav {
+    background: color-mix(
+        in srgb,
+        rgba(248, 243, 244, 0.74) var(--scene-day-percent),
+        rgba(15, 21, 38, 0.88) var(--scene-night-percent)
+    );
+    border-color: var(--scene-border);
+    box-shadow:
+        0 18px 46px color-mix(
+            in srgb,
+            rgba(44, 29, 21, 0.10) var(--scene-day-percent),
+            rgba(0, 0, 0, 0.42) var(--scene-night-percent)
+        ),
+        inset 0 1px 0 color-mix(
+            in srgb,
+            rgba(255, 255, 255, 0.30) var(--scene-day-percent),
+            rgba(255, 255, 255, 0.09) var(--scene-night-percent)
+        );
+}
+
+.hub-tab {
+    background: color-mix(
+        in srgb,
+        rgba(255, 255, 255, 0.68) var(--scene-day-percent),
+        rgba(255, 255, 255, 0.055) var(--scene-night-percent)
+    );
+    color: var(--scene-text);
+    border-color: color-mix(
+        in srgb,
+        rgba(255, 255, 255, 0.24) var(--scene-day-percent),
+        rgba(255, 255, 255, 0.12) var(--scene-night-percent)
+    );
+}
+
+.hub-tab:hover,
+.hub-tab.is-active {
+    color: var(--scene-text);
+}
+
+.hub-tab.is-active {
+    background: color-mix(
+        in srgb,
+        rgba(255, 255, 255, 0.94) var(--scene-day-percent),
+        rgba(216, 183, 123, 0.17) var(--scene-night-percent)
+    );
+    border-color: color-mix(
+        in srgb,
+        rgba(125, 163, 216, 0.18) var(--scene-day-percent),
+        rgba(216, 183, 123, 0.42) var(--scene-night-percent)
+    );
+}
+
+.hub-tab.is-active .hub-tab-label {
+    color: color-mix(
+        in srgb,
+        var(--primary-dark) var(--scene-day-percent),
+        var(--scene-night-gold) var(--scene-night-percent)
+    );
+}
+
+.hub-tab-icon {
+    background: color-mix(
+        in srgb,
+        #fffaf7 var(--scene-day-percent),
+        #293149 var(--scene-night-percent)
+    );
+    color: var(--scene-text);
+}
+
+.hub-tab.is-active .hub-tab-icon {
+    background: color-mix(
+        in srgb,
+        #f6f2ee var(--scene-day-percent),
+        #3a425b var(--scene-night-percent)
+    );
+    color: var(--scene-night-gold);
+}
+
+/* Buttons and controls */
+.btn.secondary,
+.btn.tertiary,
+.music-toggle {
+    background: color-mix(
+        in srgb,
+        rgba(255, 255, 255, 0.84) var(--scene-day-percent),
+        #252d43 var(--scene-night-percent)
+    );
+    color: var(--scene-text);
+    border-color: var(--scene-border);
+}
+
+.btn.primary {
+    background: color-mix(
+        in srgb,
+        #8e5f74 var(--scene-day-percent),
+        #b89363 var(--scene-night-percent)
+    );
+}
+
+.confirmation-field input,
+.confirmation-field select,
+.confirmation-field textarea,
+.confirmation-guest-name-item input {
+    background: color-mix(
+        in srgb,
+        #fffdfa var(--scene-day-percent),
+        #12182a var(--scene-night-percent)
+    );
+    color: var(--scene-text);
+    border-color: color-mix(
+        in srgb,
+        rgba(111, 81, 63, 0.16) var(--scene-day-percent),
+        #4b5670 var(--scene-night-percent)
+    );
+}
+
+.confirmation-field input::placeholder,
+.confirmation-field textarea::placeholder,
+.confirmation-guest-name-item input::placeholder {
+    color: var(--scene-muted);
+}
+
+/* Gallery media should also belong to the current atmosphere. */
+.gallery-item,
+.gallery-frame,
+.gallery-placeholder {
+    border-color: var(--scene-border);
+    background: var(--scene-surface-soft);
+}
+
+/* Footer closes the story in the same night palette. */
+.footer,
+.footer-shell,
+.footer-signature {
+    color: var(--scene-muted);
+    transition: color 0.7s ease, background 0.7s ease, border-color 0.7s ease;
+}
+
+.footer-signature {
+    color: var(--scene-text);
+}
+
+/* Keep explicit white-on-dark controls readable at night. */
+.hero-status-pill,
+.confirmation-feedback,
+.gift-feedback {
+    transition: background 0.7s ease, color 0.7s ease, border-color 0.7s ease;
+}
+
+/* At night, reduce the feeling of a bright pastel page even in the image. */
+body[data-scene-progress="1.00"] .scene-atmosphere {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    .bg-overlay,
+    .card,
+    .content-panel,
+    .hero-card,
+    .panel-block,
+    .hub-nav,
+    .hub-tab,
+    .music-toggle {
+        transition: none !important;
+    }
+}
