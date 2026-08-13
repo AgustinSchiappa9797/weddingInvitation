@@ -7,6 +7,7 @@ import { setupLightbox } from "./ui/lightboxView.js";
 import { initMusic } from "./ui/musicController.js";
 import { setupViewportController } from "./ui/viewportController.js";
 import { createInvitationController } from "./ui/invitationController.js";
+import { setupSceneController } from "./ui/sceneController.js";
 
 const els = Object.freeze(getElements());
 
@@ -28,6 +29,8 @@ async function init() {
         els.retryButton.disabled = true;
         window.location.reload();
     });
+
+    setupSceneController();
 
     setupNavigation(els, state);
 
