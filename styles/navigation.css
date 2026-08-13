@@ -201,26 +201,3 @@
 .hub-tab.is-active .hub-tab-label {
     color: var(--primary-dark);
 }
-
-/* Scene-aware navigation */
-.hub-tab-label {
-    color: var(--text);
-    transition: color 0.5s ease;
-}
-
-.hub-tab.is-active .hub-tab-label {
-    color: var(--primary-dark);
-}
-
-.hub-tab::after {
-    background: linear-gradient(
-        90deg,
-        color-mix(in srgb, rgba(215, 143, 169, 0.30) var(--scene-day-percent), rgba(224, 197, 141, 0.25) var(--scene-night-percent)),
-        color-mix(in srgb, rgba(125, 163, 216, 0.95) var(--scene-day-percent), rgba(224, 197, 141, 0.90) var(--scene-night-percent)),
-        color-mix(in srgb, rgba(111, 147, 138, 0.35) var(--scene-day-percent), rgba(224, 197, 141, 0.25) var(--scene-night-percent))
-    );
-}
-
-.section-tab.is-active {
-    color: var(--text);
-}

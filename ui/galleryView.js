@@ -444,24 +444,7 @@ function setupGalleryControls(container, totalImages, els) {
             }
         };
 
-        let scrollFrameId = null;
-
-        const scheduleScrollUpdate = () => {
-            if (scrollFrameId !== null) {
-                return;
-            }
-
-            scrollFrameId = requestAnimationFrame(() => {
-                scrollFrameId = null;
-                refreshButtons();
-            });
-        };
-
-        container.addEventListener(
-            "scroll",
-            scheduleScrollUpdate,
-            { passive: true }
-        );
+        container.addEventListener("scroll", refreshButtons, { passive: true });
         window.addEventListener("resize", () => {
             normalizeLoopPosition(container);
             updateNavButtons(container, prevButton, nextButton);
