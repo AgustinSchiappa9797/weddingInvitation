@@ -136,7 +136,11 @@ export function initMusic(els) {
     audio.playsInline = true;
 
     let preference = loadPreference();
-    let playbackIntent = preference !== "off";
+    if (preference !== "off") {
+        preference = "on";
+        savePreference(preference);
+    }
+    let playbackIntent = preference === "on";
     let pendingAutoplay = false;
     let autoplayHandler = null;
     let currentAction = null;
