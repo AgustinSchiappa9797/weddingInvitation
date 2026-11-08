@@ -2,70 +2,152 @@ function normalizeGiftText(value) {
     return typeof value === "string" ? value.trim() : "";
 }
 
+function normalizeGiftLabel(label) {
+    const normalized = label
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+
+    const knownLabels = {
+        alias: "Alias",
+        cbu: "CBU",
+        cvu: "CVU",
+        entidad: "Entidad",
+        banco: "Banco",
+        titular: "Titular"
+    };
+
+    return knownLabels[normalized] || label.trim();
+}
+
+function isGiftAccountHeading(line) {
+    const normalized = line
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+
+    return /^cuenta\b/.test(normalized) &&
+        /(peso|dolar|ars|usd)/.test(normalized);
+}
+
 function parseGiftBankData(rawText) {
     const text = normalizeGiftText(rawText);
-    if (!text) return [];
+
+    if (!text) {
+        return { accounts: [], rows: [] };
+    }
 
     const lines = text
         .split(/\r?\n/)
-        .map((line) => line.trim())
+        .map(line => line.trim())
         .filter(Boolean);
 
-    const parsed = [];
+    const accounts = [];
+    const rows = [];
+    let currentAccount = null;
 
-    lines.forEach((line) => {
+    lines.forEach(line => {
+        if (isGiftAccountHeading(line)) {
+            currentAccount = {
+                title: line.replace(/\s*:\s*$/, ""),
+                rows: []
+            };
+
+            accounts.push(currentAccount);
+            return;
+        }
+
         const colonMatch = line.match(/^([^:]+):\s*(.+)$/);
-        if (colonMatch) {
-            parsed.push({
-                label: colonMatch[1].trim(),
-                value: colonMatch[2].trim()
-            });
-            return;
-        }
+        const dashMatch = !colonMatch
+            ? line.match(/^([^-]+)-\s*(.+)$/)
+            : null;
 
-        const dashMatch = line.match(/^([^-]+)-\s*(.+)$/);
-        if (dashMatch) {
-            parsed.push({
-                label: dashMatch[1].trim(),
-                value: dashMatch[2].trim()
-            });
-            return;
-        }
+        const match = colonMatch || dashMatch;
 
-        parsed.push({
-            label: "Dato",
-            value: line
-        });
+        const row = match ? { label: normalizeGiftLabel(match[1]), value: match[2].trim() } : { label: "Dato", value: line };
+
+        if (currentAccount) {
+            currentAccount.rows.push(row);
+        } else {
+            rows.push(row);
+        }
     });
 
-    return parsed;
+    return {
+        accounts: accounts.filter(account =>
+            account.rows.some(row => row.value)
+        ),
+        rows: rows.filter(row => row.value)
+    };
 }
 
-function renderGiftRows(container, rows) {
+function createGiftDataRow(row) {
+    const article = document.createElement("article");
+    article.className = "gift-data-row";
+
+    const label = document.createElement("p");
+    label.className = "gift-data-label";
+    label.textContent = row.label || "Dato";
+
+    const value = document.createElement("p");
+    value.className = "gift-data-value";
+    value.textContent = row.value || "";
+
+    article.append(label, value);
+
+    return article;
+}
+
+function renderGiftRows(container, parsedData) {
     if (!container) return;
 
     container.replaceChildren();
 
-    const visibleRows = Array.isArray(rows) ? rows.filter((row) => row?.value) : [];
-    if (!visibleRows.length) return;
+    const accounts = Array.isArray(parsedData?.accounts)
+        ? parsedData.accounts
+        : [];
+
+    const rows = Array.isArray(parsedData?.rows)
+        ? parsedData.rows
+        : [];
 
     const fragment = document.createDocumentFragment();
 
-    visibleRows.forEach((row) => {
-        const article = document.createElement("article");
-        article.className = "gift-data-row";
+    accounts.forEach(account => {
+        const visibleRows = account.rows.filter(row => row?.value);
 
-        const label = document.createElement("p");
-        label.className = "gift-data-label";
-        label.textContent = row.label || "Dato";
+        if (!visibleRows.length) return;
 
-        const value = document.createElement("p");
-        value.className = "gift-data-value";
-        value.textContent = row.value || "";
+        const section = document.createElement("section");
+        section.className = "gift-bank-account";
 
-        article.append(label, value);
-        fragment.appendChild(article);
+        const heading = document.createElement("h5");
+        heading.className = "gift-bank-account-title";
+        heading.textContent = account.title;
+
+        const fields = document.createElement("div");
+        fields.className = "gift-bank-account-fields";
+
+        visibleRows.forEach(row => {
+            fields.appendChild(createGiftDataRow(row));
+        });
+
+        section.append(heading, fields);
+        fragment.appendChild(section);
     });
+
+    if (rows.length) {
+        const looseFields = document.createElement("div");
+        looseFields.className = "gift-bank-account-fields gift-bank-loose-fields";
+
+        rows.forEach(row => {
+            looseFields.appendChild(createGiftDataRow(row));
+        });
+
+        fragment.appendChild(looseFields);
+    }
 
     container.appendChild(fragment);
 }
@@ -152,7 +234,9 @@ export function renderGift(els, data) {
     const giftIntro =
         data.giftIntro || "Tu presencia ya es un regalo enorme. Si además querés acompañarnos con un detalle, podés ayudarnos con nuestra luna de miel.";
     const rawText = normalizeGiftText(data.giftBankData);
-    const parsedRows = parseGiftBankData(rawText);
+    const parsedData = parseGiftBankData(rawText);
+
+    const hasStructuredData = parsedData.accounts.length > 0 || parsedData.rows.length > 0;
     const hasBankData = rawText !== "";
 
     if (els.giftTitle) {
@@ -164,12 +248,12 @@ export function renderGift(els, data) {
     }
 
     if (els.giftBankStructured) {
-        renderGiftRows(els.giftBankStructured, parsedRows);
+        renderGiftRows(els.giftBankStructured, parsedData);
     }
 
     if (els.giftBankData) {
         els.giftBankData.textContent = rawText;
-        els.giftBankData.classList.toggle("hidden", parsedRows.length > 0 || !hasBankData);
+        els.giftBankData.classList.toggle("hidden", hasStructuredData || !hasBankData);
     }
 
     if (els.giftDataCard) {
