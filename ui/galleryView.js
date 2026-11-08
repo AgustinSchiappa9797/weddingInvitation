@@ -468,6 +468,7 @@ function setupGalleryControls(container, totalImages, els) {
     });
 }
 
+
 function setupGalleryDrag(container, els) {
     if (!container || container.dataset.dragReady === "true") return;
 
@@ -485,6 +486,7 @@ function setupGalleryDrag(container, els) {
 
         if (moved) {
             container.dataset.justDragged = "true";
+
             window.setTimeout(() => {
                 delete container.dataset.justDragged;
             }, 260);
@@ -503,19 +505,20 @@ function setupGalleryDrag(container, els) {
         if (event.button !== 0) return;
 
         isDragging = true;
-        container.dataset.dragging = "true";
         startX = event.clientX;
         startScrollLeft = container.scrollLeft;
         moved = false;
-        container.classList.add("is-dragging");
     });
 
     window.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
 
         const deltaX = event.clientX - startX;
-        if (Math.abs(deltaX) > 10) {
+
+        if (!moved && Math.abs(deltaX) > 10) {
             moved = true;
+            container.dataset.dragging = "true";
+            container.classList.add("is-dragging");
         }
 
         if (!moved) return;
