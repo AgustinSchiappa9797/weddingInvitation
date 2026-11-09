@@ -69,13 +69,16 @@ function renderGuestNameFields(els, count, existingNames = []) {
 
         const label = document.createElement("label");
         label.htmlFor = `confirmationGuestName${index + 1}`;
-        label.textContent = `Nombre y apellido ${index + 1}`;
+        label.textContent = count === 1 ? "Nombre, apellido y DNI" : `Invitado ${index + 1}: nombre, apellido y DNI`;
 
         const input = document.createElement("input");
         input.type = "text";
         input.id = `confirmationGuestName${index + 1}`;
-        input.placeholder = "Ej.: Juan Pérez";
+        input.placeholder = "Ej.: Juan Pérez — DNI 12.345.678";
         input.autocomplete = "name";
+        input.maxLength = 120;
+        input.required = true;
+        input.title = "Ingresá nombre, apellido y DNI de esta persona.";
         input.dataset.guestNameInput = "true";
         input.value = existingNames[index] || "";
 
@@ -85,34 +88,69 @@ function renderGuestNameFields(els, count, existingNames = []) {
 }
 
 function syncGuestNamesFieldVisibility(els) {
-    const attendingCount = getSelectedAttendingCount(els);
-    const shouldShow = attendingCount > 1;
+    const status = els.confirmationForm?.querySelector('input[name="confirmationStatus"]:checked')?.value || "yes";
 
-    els.confirmationGuestNamesField?.classList.toggle("hidden", !shouldShow);
+    const attendingCount = getSelectedAttendingCount(els);
+
+    const shouldShow = status === "yes" && attendingCount >= 1;
+
+    els.confirmationGuestNamesField?.classList.toggle(
+        "hidden",
+        !shouldShow
+    );
 
     const currentInputs = getGuestNameInputs(els);
+
     if (shouldShow && currentInputs.length !== attendingCount) {
-        const preservedValues = currentInputs.map((input) => input.value.trim()).filter(Boolean);
-        const existingValues = preservedValues.length ? preservedValues : (() => {
-            try {
-                return JSON.parse(els.confirmationForm?.dataset.attendeeNames || "[]");
-            } catch {
-                return [];
-            }
-        })();
-        renderGuestNameFields(els, attendingCount, existingValues);
-    }
+        const preservedValues = currentInputs.map(
+            input => input.value
+        );
 
-    getGuestNameInputs(els).forEach((input) => {
-        input.disabled = !shouldShow;
-    });
+        let storedValues = [];
 
-    if (!shouldShow) {
         try {
-            els.confirmationForm.dataset.attendeeNames = "[]";
+            storedValues = JSON.parse(els.confirmationForm?.dataset.attendeeNames || "[]");
         } catch {
+            storedValues = [];
         }
+
+        const existingValues = preservedValues.length ? preservedValues : storedValues;
+
+        renderGuestNameFields(
+            els,
+            attendingCount,
+            existingValues
+        );
     }
+
+    getGuestNameInputs(els).forEach(input => {
+        input.disabled = !shouldShow;
+        input.required = shouldShow;
+    });
+}
+
+function isCompleteGuestRecord(value) {
+    const text = String(value || "").trim();
+
+    const digits = text.replace(/\D/g, "");
+
+    const namePart = text
+        .replace(/\bDNI\b/gi, " ")
+        .replace(/\d+/g, " ")
+        .replace(/[—–,;:.-]/g, " ")
+        .trim();
+
+    const nameParts = namePart
+        .split(/\s+/)
+        .filter(part =>
+            /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}$/.test(part)
+        );
+
+    return (
+        nameParts.length >= 2 &&
+        digits.length >= 7 &&
+        digits.length <= 8
+    );
 }
 
 function syncProgressStepVisibility(els) {
@@ -298,6 +336,8 @@ function getFriendlyErrorMessage(errorCode) {
             return "Elegí si podrán asistir o no antes de enviar la confirmación.";
         case "INVALID_ATTENDING_COUNT":
             return "Revisá la cantidad de personas antes de enviar la confirmación.";
+        case "INVALID_ATTENDEE_NAMES":
+            return "Completá nombre, apellido y DNI de cada persona que va a asistir.";
         case "CONFIRMATION_CLOSED":
         case "RSVP_CLOSED":
             return "La confirmación ya se encuentra cerrada.";
@@ -339,12 +379,12 @@ function buildPayload(els) {
     const comment = els.confirmationComment?.value?.trim() || "";
     const kidsInfo = els.confirmationKidsInfo?.value?.trim() || "";
     const attendeeNames = status === "yes"
-        ? getGuestNameInputs(els).map((input) => input.value.trim()).filter(Boolean)
+        ? getGuestNameInputs(els).map(input => input.value.trim())
         : [];
 
     const mergedComment = [
         comment,
-        attendeeNames.length > 1 ? `Asistentes:\n${attendeeNames.map((name) => `- ${name}`).join("\n")}` : "",
+        attendeeNames.length > 0 ? `Asistentes:\n${attendeeNames.map((name) => `- ${name}`).join("\n")}` : "",
         kidsInfo ? `Info chicos: ${kidsInfo}` : ""
     ]
         .filter(Boolean)
@@ -549,7 +589,7 @@ function renderConfirmationSummary(els, existingConfirmation) {
         appendRow("Estado", "No asistirá");
     }
 
-    if (summaryGuestNames.length > 1) {
+    if (summaryGuestNames.length > 0) {
         appendRow(
             "Asistentes",
             summaryGuestNames,
@@ -777,8 +817,13 @@ function setupConfirmationForm(els, data, options = {}) {
             return;
         }
 
-        if (payload.status === "yes" && payload.attendingCount > 1 && payload.attendeeNames.length < payload.attendingCount) {
-            setFeedback(els, "Completá nombre y apellido de todas las personas que van a asistir.", "error");
+        if (payload.status === "yes" && (payload.attendeeNames.length !== payload.attendingCount || payload.attendeeNames.some(record => !isCompleteGuestRecord(record)))) {
+            setFeedback(els, "Completá nombre, apellido y DNI de cada persona que va a asistir.", "error");
+
+            getGuestNameInputs(els)
+                .find(input => !isCompleteGuestRecord(input.value))
+                ?.focus();
+
             return;
         }
 

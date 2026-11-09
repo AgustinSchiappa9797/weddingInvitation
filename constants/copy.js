@@ -23,7 +23,7 @@ export const COPY = {
         guestFallback: "Invitado/a",
         message: "Tu invitación ya está lista. Ojalá disfrutes cada sección tanto como nosotros disfrutamos prepararla."
     },
-    
+
     defaults: {
         heroTitle: "Nuestra Boda",
         heroEyebrow: "Guardá esta fecha",
@@ -112,7 +112,7 @@ export const COPY = {
                 : "¿Cuántas personas asistirán?",
 
         guestNamesLabel: () => "¿Quiénes asistirán?",
-        guestNamesHelper: () => "Escribí nombre y apellido de cada persona que va a asistir.",
+        guestNamesHelper: () => "Completá nombre, apellido y DNI de cada persona que va a asistir. Incluí también tus datos.",
 
         dietaryLabel: ({ kidsAllowed }) =>
             kidsAllowed
