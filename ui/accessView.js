@@ -28,12 +28,17 @@ function renderTags(container, tags) {
     if (!container) return;
     container.replaceChildren();
     const fragment = document.createDocumentFragment();
+
     tags.forEach((tag) => {
         const span = document.createElement("span");
-        span.className = "tag";
+
+        const isDressCode = tag.startsWith("Dress code:");
+        span.className = isDressCode ? "tag tag-dress-code" : "tag";
+
         span.textContent = tag;
         fragment.appendChild(span);
     });
+
     container.appendChild(fragment);
 }
 

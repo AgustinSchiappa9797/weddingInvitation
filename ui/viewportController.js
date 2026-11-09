@@ -23,12 +23,22 @@ function syncSectionNavMode(els, state) {
     const navRect = els.sectionNav?.getBoundingClientRect?.();
     const panelRect = els.contentPanel?.getBoundingClientRect?.();
 
+    const isAlreadyHorizontal =
+        document.body.classList.contains("is-mobile-panel-nav");
+
+    const navTopLimit = isAlreadyHorizontal ? 36 : 18;
+
+    const panelTopLimit =
+        window.innerHeight * (isAlreadyHorizontal ? 0.7 : 0.55);
+
+    const panelBottomLimit = isAlreadyHorizontal ? 40 : 180;
+
     const hasPanelInView = Boolean(
         navRect &&
         panelRect &&
-        navRect.top <= 18 &&
-        panelRect.top < window.innerHeight * 0.55 &&
-        panelRect.bottom > 180
+        navRect.top <= navTopLimit &&
+        panelRect.top < panelTopLimit &&
+        panelRect.bottom > panelBottomLimit
     );
 
     const hasKnownPanel = Boolean(

@@ -175,6 +175,12 @@ function syncProgressStepVisibility(els) {
 }
 
 function renderConfirmationCopy(els, data) {
+    const responsePrompt = els.progressStepStatus?.querySelector("small");
+
+    if (responsePrompt) {
+        responsePrompt.textContent = data?.grammar?.isPlural ? "¿Van a poder venir?" : "¿Vas a poder venir?";
+    }
+
     if (els.rsvpIntroText) {
         els.rsvpIntroText.textContent =
             data.rsvpIntro || COPY.rsvp.intro({ isPlural: false });
