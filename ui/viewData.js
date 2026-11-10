@@ -4,10 +4,10 @@ function normalizeCompanions(value) {
     const parsed = Number(value);
 
     if (!Number.isFinite(parsed) || parsed < 0) {
-        return 0;
+        return 1;
     }
 
-    return Math.floor(parsed);
+    return Math.floor(parsed) + 1;
 }
 
 function getGuestGrammarContext(data, companions) {
