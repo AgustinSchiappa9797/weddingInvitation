@@ -141,7 +141,6 @@ export function getElements() {
         giftDataCard: document.getElementById("giftDataCard"),
         giftBankStructured: document.getElementById("giftBankStructured"),
         giftBankData: document.getElementById("giftBankData"),
-        giftCopyButton: document.getElementById("giftCopyButton"),
         giftShareButton: document.getElementById("giftShareButton"),
         giftFeedback: document.getElementById("giftFeedback"),
 

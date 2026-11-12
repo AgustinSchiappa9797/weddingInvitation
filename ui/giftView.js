@@ -83,7 +83,7 @@ function parseGiftBankData(rawText) {
     };
 }
 
-function createGiftDataRow(row) {
+function createGiftDataRow(row, accountTitle = "", feedbackEl = null) {
     const article = document.createElement("article");
     article.className = "gift-data-row";
 
@@ -91,16 +91,60 @@ function createGiftDataRow(row) {
     label.className = "gift-data-label";
     label.textContent = row.label || "Dato";
 
+    const content = document.createElement("div");
+    content.className = "gift-data-row-content";
+
     const value = document.createElement("p");
     value.className = "gift-data-value";
     value.textContent = row.value || "";
+    content.appendChild(value);
 
-    article.append(label, value);
+    const normalizedLabel = normalizeGiftText(row.label).toLowerCase();
+    const canCopyIndividually = ["cbu", "cvu", "alias"].includes(normalizedLabel);
+
+    if (canCopyIndividually && row.value) {
+        const copyButton = document.createElement("button");
+        copyButton.className = "gift-copy-field";
+        copyButton.type = "button";
+        copyButton.textContent = "Copiar";
+        copyButton.setAttribute(
+            "aria-label",
+            `Copiar ${row.label}${accountTitle ? ` de ${accountTitle}` : ""}`
+        );
+        copyButton.addEventListener("click", async () => {
+            copyButton.disabled = true;
+
+            try {
+                await copyGiftData(row.value);
+                copyButton.textContent = "Copiado";
+                setGiftFeedback(
+                    { giftFeedback: feedbackEl },
+                    `${row.label} copiado${accountTitle ? ` de ${accountTitle}` : ""}.`,
+                    "success"
+                );
+            } catch {
+                copyButton.textContent = "Reintentar";
+                setGiftFeedback(
+                    { giftFeedback: feedbackEl },
+                    `No pudimos copiar el ${row.label}. Seleccioná el dato e intentá copiarlo manualmente.`,
+                    "error"
+                );
+            } finally {
+                window.setTimeout(() => {
+                    copyButton.textContent = "Copiar";
+                    copyButton.disabled = false;
+                }, 1800);
+            }
+        });
+        content.appendChild(copyButton);
+    }
+
+    article.append(label, content);
 
     return article;
 }
 
-function renderGiftRows(container, parsedData) {
+function renderGiftRows(container, parsedData, feedbackEl) {
     if (!container) return;
 
     container.replaceChildren();
@@ -131,7 +175,7 @@ function renderGiftRows(container, parsedData) {
         fields.className = "gift-bank-account-fields";
 
         visibleRows.forEach(row => {
-            fields.appendChild(createGiftDataRow(row));
+            fields.appendChild(createGiftDataRow(row, account.title, feedbackEl));
         });
 
         section.append(heading, fields);
@@ -143,7 +187,7 @@ function renderGiftRows(container, parsedData) {
         looseFields.className = "gift-bank-account-fields gift-bank-loose-fields";
 
         rows.forEach(row => {
-            looseFields.appendChild(createGiftDataRow(row));
+            looseFields.appendChild(createGiftDataRow(row, "", feedbackEl));
         });
 
         fragment.appendChild(looseFields);
@@ -161,11 +205,33 @@ function setGiftFeedback(els, message, state = "info") {
 }
 
 async function copyGiftData(text) {
-    if (!navigator.clipboard?.writeText) {
-        throw new Error("COPY_NOT_SUPPORTED");
+    if (navigator.clipboard?.writeText) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return;
+        } catch {
+            // Some browsers expose the Clipboard API but deny access in the current context.
+        }
     }
 
-    await navigator.clipboard.writeText(text);
+    const temporaryInput = document.createElement("textarea");
+    temporaryInput.value = text;
+    temporaryInput.setAttribute("readonly", "");
+    temporaryInput.style.position = "fixed";
+    temporaryInput.style.opacity = "0";
+    document.body.appendChild(temporaryInput);
+    temporaryInput.select();
+
+    let copied = false;
+    try {
+        copied = document.execCommand("copy");
+    } finally {
+        temporaryInput.remove();
+    }
+
+    if (!copied) {
+        throw new Error("COPY_NOT_SUPPORTED");
+    }
 }
 
 async function shareGiftData(text) {
@@ -180,23 +246,6 @@ async function shareGiftData(text) {
 }
 
 function setupGiftActions(els, rawText) {
-    if (els.giftCopyButton && els.giftCopyButton.dataset.bound !== "true") {
-        els.giftCopyButton.addEventListener("click", async () => {
-            try {
-                await copyGiftData(rawText);
-                setGiftFeedback(els, "Copiamos los datos para que puedas pegarlos directamente en tu app bancaria.", "success");
-            } catch (error) {
-                setGiftFeedback(
-                    els,
-                    "No pudimos copiar automáticamente desde este navegador. Igual te dejamos todos los datos visibles acá abajo.",
-                    "error"
-                );
-            }
-        });
-
-        els.giftCopyButton.dataset.bound = "true";
-    }
-
     if (els.giftShareButton && els.giftShareButton.dataset.bound !== "true") {
         els.giftShareButton.addEventListener("click", async () => {
             try {
@@ -204,22 +253,15 @@ function setupGiftActions(els, rawText) {
                 setGiftFeedback(els, "Abrimos la ventana para compartir los datos.", "success");
             } catch (error) {
                 if (error?.message === "SHARE_NOT_SUPPORTED") {
-                    try {
-                        await copyGiftData(rawText);
-                        setGiftFeedback(
-                            els,
-                            "Tu navegador no permite compartir directo, así que copiamos los datos al portapapeles.",
-                            "success"
-                        );
-                    } catch {
-                        setGiftFeedback(
-                            els,
-                            "No pudimos compartir automáticamente, pero los datos siguen disponibles en pantalla.",
-                            "error"
-                        );
-                    }
+                    setGiftFeedback(
+                        els,
+                        "Este navegador no permite compartir directamente. Podés copiar cada CBU o alias con su botón individual.",
+                        "info"
+                    );
                     return;
                 }
+
+                if (error?.name === "AbortError") return;
 
                 setGiftFeedback(els, "No pudimos abrir la opción de compartir en este momento.", "error");
             }
@@ -248,7 +290,7 @@ export function renderGift(els, data) {
     }
 
     if (els.giftBankStructured) {
-        renderGiftRows(els.giftBankStructured, parsedData);
+        renderGiftRows(els.giftBankStructured, parsedData, els.giftFeedback);
     }
 
     if (els.giftBankData) {
@@ -258,10 +300,6 @@ export function renderGift(els, data) {
 
     if (els.giftDataCard) {
         els.giftDataCard.classList.toggle("hidden", !hasBankData);
-    }
-
-    if (els.giftCopyButton) {
-        els.giftCopyButton.disabled = !hasBankData;
     }
 
     if (els.giftShareButton) {
