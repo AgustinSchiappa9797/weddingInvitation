@@ -6,7 +6,6 @@ function buildTags(data) {
 
     if (data.companionsText) tags.push(data.companionsText);
     if (data.kidsTag) tags.push(data.kidsTag);
-    if (data.dressCode) tags.push(`Dress code: ${data.dressCode}`);
 
     return tags;
 }

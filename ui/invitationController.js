@@ -4,7 +4,7 @@ import { fetchInvitation } from "../api/invitationApi.js";
 import { wait } from "../utils/wait.js";
 import { showWelcomeScreen, setWelcomeScreenLoadingState, setWelcomeScreenReadyState, hideWelcomeScreen, setWelcomeScreenProgress } from "./welcomeScreen.js";
 import { renderActiveNavigation, syncNavigationVisibility, syncSectionFromHash } from "./navigation.js";
-import { renderHero } from "./heroView.js";
+import { renderHero, updateHeroRsvpState } from "./heroView.js";
 import { revealContentAnimations } from "./animations.js";
 import { createCatController } from "./catController.js";
 import { closeLightbox } from "./lightboxView.js";
@@ -102,6 +102,10 @@ export function createInvitationController(els, state) {
 
         void renderBackground(els, viewData);
         await renderHero(els, viewData, state);
+
+        if (viewData.existingConfirmation) {
+            updateHeroRsvpState(els, viewData);
+        }
 
         showInvitationShell();
 

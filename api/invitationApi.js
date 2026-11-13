@@ -55,9 +55,8 @@ export function mergeInvitationConfirmationCache(token, confirmation) {
 }
 
 export async function fetchInvitation(token) {
-    const cached = getCachedInvitation(token);
-    if (cached) return cached;
-
+    // La confirmación puede cambiar desde Google Sheets entre visitas.
+    // Consultamos siempre el endpoint para no mostrar un estado de RSVP o regalo obsoleto.
     const url = `${API_URL}?token=${encodeURIComponent(token)}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);

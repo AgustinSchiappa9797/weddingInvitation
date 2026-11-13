@@ -139,16 +139,44 @@ function normalizeExistingConfirmation(value) {
         ? Math.max(0, Math.floor(Number(value.attendingCount)))
         : 0;
 
+    const attendeeNames = Array.isArray(value.attendeeNames)
+        ? value.attendeeNames
+            .map((name) => typeof name === "string" ? name.trim() : "")
+            .filter(Boolean)
+        : [];
+
+    const giftReceived = value.giftReceived && typeof value.giftReceived === "object"
+        ? {
+            hasValue: Boolean(value.giftReceived.hasValue),
+            amount: typeof value.giftReceived.amount === "number" && Number.isFinite(value.giftReceived.amount)
+                ? value.giftReceived.amount
+                : null,
+            currency: typeof value.giftReceived.currency === "string" ? value.giftReceived.currency : "",
+            currencySymbol: typeof value.giftReceived.currencySymbol === "string" ? value.giftReceived.currencySymbol : "",
+            displayValue: typeof value.giftReceived.displayValue === "string" ? value.giftReceived.displayValue : ""
+        }
+        : null;
+
+    const giftMessageType = value.giftMessageType === "thank_you" || value.giftMessageType === "gentle_reminder"
+        ? value.giftMessageType
+        : giftReceived
+            ? (giftReceived.hasValue ? "thank_you" : "gentle_reminder")
+            : "";
+
     return {
         status,
         attendingCount,
+        attendeeNames,
         dietaryRestrictions: typeof value.dietaryRestrictions === "string"
             ? value.dietaryRestrictions
             : "",
         comment: typeof value.comment === "string"
             ? value.comment
             : "",
-        updatedAt: typeof value.updatedAt === "string" ? value.updatedAt : ""
+        updatedAt: typeof value.updatedAt === "string" ? value.updatedAt : "",
+        giftReceived,
+        giftMessageType,
+        giftMessage: typeof value.giftMessage === "string" ? value.giftMessage : ""
     };
 }
 
